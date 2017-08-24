@@ -26,6 +26,17 @@ public extension UIView {
     
 }
 
+extension UILabel{
+
+    func setOptionalText(text:String?){
+        if let title = text {
+            self.text = title
+        }
+    }
+
+}
+
+
 
 class EmveepRegularLabel: UILabel {
 

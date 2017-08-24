@@ -43,7 +43,7 @@ extension UIColor{
         {return self.hexStringToUIColor(hex: "#CD1A5C")}
     
     static var navigationBackground : UIColor
-        {return self.hexStringToUIColor(hex: "#CD1A5C")}
+        {return self.hexStringToUIColor(hex: "#000000")}
     
     static var navigationTextColor : UIColor
         {return self.hexStringToUIColor(hex: "#FFFFFF")}

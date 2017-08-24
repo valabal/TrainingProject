@@ -22,7 +22,7 @@ var ROOT_URL : String {
     
     switch CURRENT_ENV {
     case .APIARY :
-        return "http://private-1aa5a-alacarteapiary.apiary-mock.com/"
+        return "https://private-1aa5a-alacarteapiary.apiary-mock.com/"
     case .STAGING :
         return "http://alacarte.stagingapps.net/api/v1/"
     case .PRODUCTION :
@@ -30,9 +30,6 @@ var ROOT_URL : String {
     }
     
 }
-
-
-let URI_LOGIN = "auth/login/"
 
 
 class APIManager: NSObject {
@@ -68,7 +65,7 @@ class APIManager: NSObject {
     
     static func Login (authDic:NSDictionary, callback:@escaping APIManager.ResultCallback, failure:APIManager.ErrorCallback? = nil){
         
-        let URL = ROOT_URL+URI_LOGIN
+        let URL = ROOT_URL+"login/"
         
         let param = authDic as? Parameters
         

@@ -66,8 +66,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     
     func setUpRootViewController(){
         
-        let storyboard = UIStoryboard.init(name: "MainSB", bundle: Bundle.main)
-        let viewController = storyboard.instantiateViewController(withIdentifier: "MainVC")
+        var storyboard = UIStoryboard.init(name: "MainSB", bundle: Bundle.main)
+        var viewController = storyboard.instantiateViewController(withIdentifier: "MainVC")
+        
+        if(UserManager.accessToken() == nil)
+        {
+            storyboard = UIStoryboard.init(name: "LoginSB", bundle: Bundle.main)
+            viewController = storyboard.instantiateViewController(withIdentifier: "LoginVC")
+        }
         
         let navController : UINavigationController = UINavigationController.init(rootViewController: viewController)
         self.window?.rootViewController = navController;
@@ -99,9 +105,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             
         }
         
-        if(HUD?.alpha == 0){
-            HUD?.label.text = "Loading..."
-            HUD?.show(animated: true)
+        if(self.HUD?.alpha == 0){
+            self.HUD?.label.text = "Loading..."
+            self.HUD?.show(animated: true)
         }
         
     }

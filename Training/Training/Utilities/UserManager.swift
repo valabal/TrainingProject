@@ -52,7 +52,7 @@ class UserManager: NSObject {
         return nil
     }
     
-    static func saveAccessToken(token : NSString){
+    static func saveAccessToken(token : NSString?){
         self.SaveUserDefault(key: "Emveep.AccountToken" , value: token)
     }
 

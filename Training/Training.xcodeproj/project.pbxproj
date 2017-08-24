@@ -35,6 +35,13 @@
 		AF02D23F1F4A8F2000B7F852 /* ProximaNova-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = AF02D23B1F4A8F2000B7F852 /* ProximaNova-Semibold.otf */; };
 		AF22D94F1F4C36D0001DCA42 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF22D94E1F4C36D0001DCA42 /* APIManager.swift */; };
 		AF22D9511F4C3A58001DCA42 /* APIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF22D9501F4C3A58001DCA42 /* APIModel.swift */; };
+		AF29E5DF1F4D467100DF3C27 /* LoginSB.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF29E5DE1F4D467100DF3C27 /* LoginSB.storyboard */; };
+		AF29E5E11F4D46D000DF3C27 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29E5E01F4D46D000DF3C27 /* LoginVC.swift */; };
+		AF29E5E41F4D53CF00DF3C27 /* BasicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29E5E31F4D53CF00DF3C27 /* BasicViewController.swift */; };
+		AF29E5E81F4D5A3C00DF3C27 /* shutdown.png in Resources */ = {isa = PBXBuildFile; fileRef = AF29E5E71F4D5A3C00DF3C27 /* shutdown.png */; };
+		AF29E5EB1F4D5C7700DF3C27 /* BasicViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29E5EA1F4D5C7700DF3C27 /* BasicViewCell.swift */; };
+		AF29E5ED1F4D5CA700DF3C27 /* BasicViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF29E5EC1F4D5CA700DF3C27 /* BasicViewCell.xib */; };
+		AF29E5EF1F4D668C00DF3C27 /* Merchant.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29E5EE1F4D668C00DF3C27 /* Merchant.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +76,13 @@
 		AF02D23B1F4A8F2000B7F852 /* ProximaNova-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Semibold.otf"; sourceTree = "<group>"; };
 		AF22D94E1F4C36D0001DCA42 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		AF22D9501F4C3A58001DCA42 /* APIModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIModel.swift; sourceTree = "<group>"; };
+		AF29E5DE1F4D467100DF3C27 /* LoginSB.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoginSB.storyboard; sourceTree = "<group>"; };
+		AF29E5E01F4D46D000DF3C27 /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		AF29E5E31F4D53CF00DF3C27 /* BasicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicViewController.swift; sourceTree = "<group>"; };
+		AF29E5E71F4D5A3C00DF3C27 /* shutdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shutdown.png; sourceTree = "<group>"; };
+		AF29E5EA1F4D5C7700DF3C27 /* BasicViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicViewCell.swift; sourceTree = "<group>"; };
+		AF29E5EC1F4D5CA700DF3C27 /* BasicViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BasicViewCell.xib; sourceTree = "<group>"; };
+		AF29E5EE1F4D668C00DF3C27 /* Merchant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Merchant.swift; sourceTree = "<group>"; };
 		B9ACD457026462C379EF5734 /* Pods-Training.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Training.release.xcconfig"; path = "Pods/Target Support Files/Pods-Training/Pods-Training.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -167,6 +181,7 @@
 		AF02D1EE1F4A888D00B7F852 /* Asset */ = {
 			isa = PBXGroup;
 			children = (
+				AF29E5E71F4D5A3C00DF3C27 /* shutdown.png */,
 				AF02D2371F4A8F0200B7F852 /* Font */,
 			);
 			path = Asset;
@@ -176,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				AF22D9501F4C3A58001DCA42 /* APIModel.swift */,
+				AF29E5EE1F4D668C00DF3C27 /* Merchant.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -191,6 +207,8 @@
 		AF02D1F11F4A88B300B7F852 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				AF29E5E21F4D53BE00DF3C27 /* BasicVC */,
+				AF29E5DD1F4D465C00DF3C27 /* LoginVC */,
 				AF02D2321F4A8DFB00B7F852 /* MainVC */,
 			);
 			path = ViewController;
@@ -240,6 +258,33 @@
 				AF02D23B1F4A8F2000B7F852 /* ProximaNova-Semibold.otf */,
 			);
 			name = Font;
+			sourceTree = "<group>";
+		};
+		AF29E5DD1F4D465C00DF3C27 /* LoginVC */ = {
+			isa = PBXGroup;
+			children = (
+				AF29E5DE1F4D467100DF3C27 /* LoginSB.storyboard */,
+				AF29E5E01F4D46D000DF3C27 /* LoginVC.swift */,
+			);
+			path = LoginVC;
+			sourceTree = "<group>";
+		};
+		AF29E5E21F4D53BE00DF3C27 /* BasicVC */ = {
+			isa = PBXGroup;
+			children = (
+				AF29E5E91F4D5C5E00DF3C27 /* BasicCell */,
+				AF29E5E31F4D53CF00DF3C27 /* BasicViewController.swift */,
+			);
+			name = BasicVC;
+			sourceTree = "<group>";
+		};
+		AF29E5E91F4D5C5E00DF3C27 /* BasicCell */ = {
+			isa = PBXGroup;
+			children = (
+				AF29E5EA1F4D5C7700DF3C27 /* BasicViewCell.swift */,
+				AF29E5EC1F4D5CA700DF3C27 /* BasicViewCell.xib */,
+			);
+			name = BasicCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -310,8 +355,11 @@
 				AF02D2341F4A8E1000B7F852 /* MainSB.storyboard in Resources */,
 				AF02D1E21F4A858C00B7F852 /* Assets.xcassets in Resources */,
 				AF02D23C1F4A8F2000B7F852 /* ProximaNova-Bold.otf in Resources */,
+				AF29E5ED1F4D5CA700DF3C27 /* BasicViewCell.xib in Resources */,
 				AF02D23D1F4A8F2000B7F852 /* ProximaNova-Light.otf in Resources */,
+				AF29E5E81F4D5A3C00DF3C27 /* shutdown.png in Resources */,
 				AF02D23F1F4A8F2000B7F852 /* ProximaNova-Semibold.otf in Resources */,
+				AF29E5DF1F4D467100DF3C27 /* LoginSB.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,6 +420,7 @@
 			files = (
 				AF02D1FE1F4A88F600B7F852 /* UserManager.swift in Sources */,
 				AF22D94F1F4C36D0001DCA42 /* APIManager.swift in Sources */,
+				AF29E5E11F4D46D000DF3C27 /* LoginVC.swift in Sources */,
 				AF02D2361F4A8E6A00B7F852 /* MainVC.swift in Sources */,
 				AF02D1FB1F4A88F600B7F852 /* StringHelper.swift in Sources */,
 				AF22D9511F4C3A58001DCA42 /* APIModel.swift in Sources */,
@@ -380,7 +429,9 @@
 				AF02D1FD1F4A88F600B7F852 /* FontHelper.swift in Sources */,
 				AF02D2291F4A8A2400B7F852 /* EmveepTextView.swift in Sources */,
 				AF02D22C1F4A8A2400B7F852 /* UIPickerView+MenuBar.swift in Sources */,
+				AF29E5EF1F4D668C00DF3C27 /* Merchant.swift in Sources */,
 				AF02D1D91F4A858C00B7F852 /* AppDelegate.swift in Sources */,
+				AF29E5E41F4D53CF00DF3C27 /* BasicViewController.swift in Sources */,
 				AF02D2271F4A8A2400B7F852 /* EmveepRegularButton.swift in Sources */,
 				AF02D1FC1F4A88F600B7F852 /* FunctionHelper.swift in Sources */,
 				AF02D22A1F4A8A2400B7F852 /* IndexButton.swift in Sources */,
@@ -390,6 +441,7 @@
 				AF02D1F91F4A88F600B7F852 /* ColorHelper.swift in Sources */,
 				AF02D22D1F4A8A2400B7F852 /* EmveepNavigationController.swift in Sources */,
 				AF02D2281F4A8A2400B7F852 /* EmveepTextField.swift in Sources */,
+				AF29E5EB1F4D5C7700DF3C27 /* BasicViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
