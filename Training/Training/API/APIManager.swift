@@ -123,6 +123,36 @@ class APIManager: NSObject {
     }
     
     
+    static func MerchantDetail (merchantID:NSNumber, callback:@escaping APIManager.ResultCallback, failure:APIManager.ErrorCallback? = nil){
+        
+        let URL = ROOT_URL+"merchants/detail/\(merchantID)"
+        
+        Alamofire.request(URL, method: .get,parameters:nil).responseJSON { response in
+            
+            switch response.result {
+            case  .success(let JSON):
+                
+                guard let JSONDic = JSON as? NSDictionary else{
+                    callback(nil)
+                    return
+                }
+                
+                callback(JSONDic)
+                break
+                
+            case .failure(let error):
+                failure?(error)
+                break
+            }
+            
+        }
+    }
+    
+}
+
+//MARK: helper function
+extension APIManager{
+
     static func insertParameterToMultipartForm(multipartFormData:MultipartFormData, parameters:Parameters?,data:Data? ){
         
         if let data = data {
@@ -152,8 +182,7 @@ class APIManager: NSObject {
         }
         
     }
+    
 
-    
-    
-    
 }
+

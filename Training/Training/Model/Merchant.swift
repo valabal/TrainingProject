@@ -10,6 +10,11 @@ import UIKit
 import EVReflection
 import CoreLocation
 
+enum ProductType{
+    case NORMAL
+    case MONTHLY
+}
+
 class Merchant : EVObject{
 
     var descriptions: String?
@@ -33,8 +38,20 @@ class Merchant : EVObject{
 
     
     override func propertyMapping() -> [(keyInObject: String?, keyInResource: String?)] {
-        return[("merchant_id","id"),("descriptions","description")];
+        return[("merchant_id","id"),("descriptions","description"),("merchant_detail","detail")];
     }
+    
+    func getProductType(state:ProductType)->[NSDictionary]?{
+       
+        switch state {
+        case .NORMAL:
+            return self.products?["offers"] as? [NSDictionary]
+        default:
+            return self.products?["monthly_special"] as? [NSDictionary]
+        }
+    
+    }
+    
     
 }
 

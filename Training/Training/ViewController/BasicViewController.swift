@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class BasicViewController: UIViewController {
 
@@ -62,7 +63,7 @@ class BasicViewController: UIViewController {
         self.settingNavBar()
         self.settingBarWithTitle(title: title)
         
-        let leftView = BasicViewController.generateMenuButtonViewWithImage(image: UIImage(named: "ic_back_white"), action: #selector(goBack), target: self)
+        let leftView = BasicViewController.generateMenuButtonViewWithImage(image: UIImage(named: "back"), action: #selector(goBack), target: self)
         
         let negativeSpacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.fixedSpace, target: nil, action: nil)
         negativeSpacer.width = -15
@@ -219,5 +220,57 @@ class BasicViewController: UIViewController {
         return leftView
         
     }
+    
+    
+    func createViewFromButtonArray(_ array : [UIView])->UIView{
+       
+        let container = UIView()
+        var prevButton : UIView? = nil
+        var counter = 0
+        
+        for button:UIView in array {
+          container.addSubview(button)
+            
+          var isButtonImage = true
+            
+            if let but = button as? UIButton{
+                isButtonImage = but.image(for: .normal) != nil ? true : false
+                let edge = but.contentEdgeInsets
+                if(UIEdgeInsetsEqualToEdgeInsets(edge, UIEdgeInsetsMake(0, 0, 0, 0))){
+                  but.contentEdgeInsets = UIEdgeInsetsMake(2, 2, 2, 2)
+                }
+            }
+            
+            button.snp.makeConstraints({ (make) -> Void in
+                make.top.equalTo(container)
+                make.bottom.equalTo(container)
+
+                if(isButtonImage){
+                    make.width.equalTo(40)
+                }
+                
+                make.height.equalTo(40)
+                
+                if(prevButton == nil){
+                  make.leading.equalTo(container)
+                }
+                else{
+                  make.leading.equalTo(prevButton!.snp.trailing)
+                }
+                
+                if(counter == array.count-1){
+                  make.trailing.equalTo(container)
+                }
+            })
+
+            prevButton = button
+            counter += 1
+            
+        }
+     
+        return container
+    
+    }
+    
     
 }

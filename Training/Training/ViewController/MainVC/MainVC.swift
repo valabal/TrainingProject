@@ -99,4 +99,18 @@ extension MainVC:UITableViewDelegate,UITableViewDataSource{
     }
     
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+     
+        if let merchant = self.content[indexPath.row] as? Merchant{
+
+            if let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailVC") as? DetailVC{
+                detailVC.current_merchant = merchant
+                self.navigationController?.pushViewController(detailVC, animated: true)
+            }
+         
+        }
+        
+    }
+    
+    
 }

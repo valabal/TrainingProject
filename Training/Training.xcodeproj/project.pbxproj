@@ -42,6 +42,26 @@
 		AF29E5EB1F4D5C7700DF3C27 /* BasicViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29E5EA1F4D5C7700DF3C27 /* BasicViewCell.swift */; };
 		AF29E5ED1F4D5CA700DF3C27 /* BasicViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF29E5EC1F4D5CA700DF3C27 /* BasicViewCell.xib */; };
 		AF29E5EF1F4D668C00DF3C27 /* Merchant.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29E5EE1F4D668C00DF3C27 /* Merchant.swift */; };
+		AF2ABFDB1F53F1C400D1449E /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2ABFDA1F53F1C400D1449E /* DetailVC.swift */; };
+		AF2ABFDD1F53F25D00D1449E /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = AF2ABFDC1F53F25D00D1449E /* back.png */; };
+		AF2ABFDF1F54095300D1449E /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2ABFDE1F54095300D1449E /* Offer.swift */; };
+		AF2ABFE51F541AEE00D1449E /* ParallaxHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF2ABFE41F541AEE00D1449E /* ParallaxHeaderView.m */; };
+		AF2ABFE81F541B1700D1449E /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = AF2ABFE71F541B1700D1449E /* UIImage+ImageEffects.m */; };
+		AFF59AE71F54254A00C68C32 /* instagram@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AFF59AE51F54254A00C68C32 /* instagram@2x.png */; };
+		AFF59AE81F54254A00C68C32 /* instagram@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AFF59AE61F54254A00C68C32 /* instagram@3x.png */; };
+		AFF59AEA1F54255600C68C32 /* instagram.png in Resources */ = {isa = PBXBuildFile; fileRef = AFF59AE91F54255600C68C32 /* instagram.png */; };
+		AFF59AEE1F54256500C68C32 /* pin.png in Resources */ = {isa = PBXBuildFile; fileRef = AFF59AEB1F54256500C68C32 /* pin.png */; };
+		AFF59AEF1F54256500C68C32 /* pin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AFF59AEC1F54256500C68C32 /* pin@2x.png */; };
+		AFF59AF01F54256500C68C32 /* pin@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AFF59AED1F54256500C68C32 /* pin@3x.png */; };
+		AFF59AF41F54257100C68C32 /* phone.png in Resources */ = {isa = PBXBuildFile; fileRef = AFF59AF11F54257100C68C32 /* phone.png */; };
+		AFF59AF51F54257100C68C32 /* phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AFF59AF21F54257100C68C32 /* phone@2x.png */; };
+		AFF59AF61F54257100C68C32 /* phone@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AFF59AF31F54257100C68C32 /* phone@3x.png */; };
+		AFF59AFA1F54257E00C68C32 /* web.png in Resources */ = {isa = PBXBuildFile; fileRef = AFF59AF71F54257E00C68C32 /* web.png */; };
+		AFF59AFB1F54257E00C68C32 /* web@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AFF59AF81F54257E00C68C32 /* web@2x.png */; };
+		AFF59AFC1F54257E00C68C32 /* web@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AFF59AF91F54257E00C68C32 /* web@3x.png */; };
+		AFF59B001F54258D00C68C32 /* facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = AFF59AFD1F54258D00C68C32 /* facebook.png */; };
+		AFF59B011F54258D00C68C32 /* facebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AFF59AFE1F54258D00C68C32 /* facebook@2x.png */; };
+		AFF59B021F54258D00C68C32 /* facebook@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AFF59AFF1F54258D00C68C32 /* facebook@3x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,6 +103,29 @@
 		AF29E5EA1F4D5C7700DF3C27 /* BasicViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicViewCell.swift; sourceTree = "<group>"; };
 		AF29E5EC1F4D5CA700DF3C27 /* BasicViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BasicViewCell.xib; sourceTree = "<group>"; };
 		AF29E5EE1F4D668C00DF3C27 /* Merchant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Merchant.swift; sourceTree = "<group>"; };
+		AF2ABFDA1F53F1C400D1449E /* DetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
+		AF2ABFDC1F53F25D00D1449E /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
+		AF2ABFDE1F54095300D1449E /* Offer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Offer.swift; sourceTree = "<group>"; };
+		AF2ABFE21F541AED00D1449E /* Training-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Training-Bridging-Header.h"; sourceTree = "<group>"; };
+		AF2ABFE31F541AEE00D1449E /* ParallaxHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParallaxHeaderView.h; sourceTree = "<group>"; };
+		AF2ABFE41F541AEE00D1449E /* ParallaxHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParallaxHeaderView.m; sourceTree = "<group>"; };
+		AF2ABFE61F541B1700D1449E /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
+		AF2ABFE71F541B1700D1449E /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
+		AFF59AE51F54254A00C68C32 /* instagram@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instagram@2x.png"; sourceTree = "<group>"; };
+		AFF59AE61F54254A00C68C32 /* instagram@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instagram@3x.png"; sourceTree = "<group>"; };
+		AFF59AE91F54255600C68C32 /* instagram.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = instagram.png; sourceTree = "<group>"; };
+		AFF59AEB1F54256500C68C32 /* pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin.png; sourceTree = "<group>"; };
+		AFF59AEC1F54256500C68C32 /* pin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin@2x.png"; sourceTree = "<group>"; };
+		AFF59AED1F54256500C68C32 /* pin@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin@3x.png"; sourceTree = "<group>"; };
+		AFF59AF11F54257100C68C32 /* phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = phone.png; sourceTree = "<group>"; };
+		AFF59AF21F54257100C68C32 /* phone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "phone@2x.png"; sourceTree = "<group>"; };
+		AFF59AF31F54257100C68C32 /* phone@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "phone@3x.png"; sourceTree = "<group>"; };
+		AFF59AF71F54257E00C68C32 /* web.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = web.png; sourceTree = "<group>"; };
+		AFF59AF81F54257E00C68C32 /* web@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "web@2x.png"; sourceTree = "<group>"; };
+		AFF59AF91F54257E00C68C32 /* web@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "web@3x.png"; sourceTree = "<group>"; };
+		AFF59AFD1F54258D00C68C32 /* facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook.png; sourceTree = "<group>"; };
+		AFF59AFE1F54258D00C68C32 /* facebook@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook@2x.png"; sourceTree = "<group>"; };
+		AFF59AFF1F54258D00C68C32 /* facebook@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook@3x.png"; sourceTree = "<group>"; };
 		B9ACD457026462C379EF5734 /* Pods-Training.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Training.release.xcconfig"; path = "Pods/Target Support Files/Pods-Training/Pods-Training.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -136,6 +179,7 @@
 		AF02D1D71F4A858C00B7F852 /* Training */ = {
 			isa = PBXGroup;
 			children = (
+				AF2ABFE11F541ACD00D1449E /* Library */,
 				AF02D1F11F4A88B300B7F852 /* ViewController */,
 				AF02D1EF1F4A889500B7F852 /* Model */,
 				AF02D1F01F4A889E00B7F852 /* API */,
@@ -181,6 +225,22 @@
 		AF02D1EE1F4A888D00B7F852 /* Asset */ = {
 			isa = PBXGroup;
 			children = (
+				AFF59AE91F54255600C68C32 /* instagram.png */,
+				AFF59AE51F54254A00C68C32 /* instagram@2x.png */,
+				AFF59AE61F54254A00C68C32 /* instagram@3x.png */,
+				AFF59AFD1F54258D00C68C32 /* facebook.png */,
+				AFF59AFE1F54258D00C68C32 /* facebook@2x.png */,
+				AFF59AFF1F54258D00C68C32 /* facebook@3x.png */,
+				AFF59AF71F54257E00C68C32 /* web.png */,
+				AFF59AF81F54257E00C68C32 /* web@2x.png */,
+				AFF59AF91F54257E00C68C32 /* web@3x.png */,
+				AFF59AF11F54257100C68C32 /* phone.png */,
+				AFF59AF21F54257100C68C32 /* phone@2x.png */,
+				AFF59AF31F54257100C68C32 /* phone@3x.png */,
+				AFF59AEB1F54256500C68C32 /* pin.png */,
+				AFF59AEC1F54256500C68C32 /* pin@2x.png */,
+				AFF59AED1F54256500C68C32 /* pin@3x.png */,
+				AF2ABFDC1F53F25D00D1449E /* back.png */,
 				AF29E5E71F4D5A3C00DF3C27 /* shutdown.png */,
 				AF02D2371F4A8F0200B7F852 /* Font */,
 			);
@@ -192,6 +252,7 @@
 			children = (
 				AF22D9501F4C3A58001DCA42 /* APIModel.swift */,
 				AF29E5EE1F4D668C00DF3C27 /* Merchant.swift */,
+				AF2ABFDE1F54095300D1449E /* Offer.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -245,6 +306,7 @@
 			children = (
 				AF02D2331F4A8E1000B7F852 /* MainSB.storyboard */,
 				AF02D2351F4A8E6A00B7F852 /* MainVC.swift */,
+				AF2ABFDA1F53F1C400D1449E /* DetailVC.swift */,
 			);
 			path = MainVC;
 			sourceTree = "<group>";
@@ -287,6 +349,26 @@
 			name = BasicCell;
 			sourceTree = "<group>";
 		};
+		AF2ABFE11F541ACD00D1449E /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				AF2ABFE91F541B2000D1449E /* paralaxView */,
+				AF2ABFE21F541AED00D1449E /* Training-Bridging-Header.h */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		AF2ABFE91F541B2000D1449E /* paralaxView */ = {
+			isa = PBXGroup;
+			children = (
+				AF2ABFE61F541B1700D1449E /* UIImage+ImageEffects.h */,
+				AF2ABFE71F541B1700D1449E /* UIImage+ImageEffects.m */,
+				AF2ABFE31F541AEE00D1449E /* ParallaxHeaderView.h */,
+				AF2ABFE41F541AEE00D1449E /* ParallaxHeaderView.m */,
+			);
+			name = paralaxView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -323,6 +405,7 @@
 					AF02D1D41F4A858C00B7F852 = {
 						CreatedOnToolsVersion = 8.2;
 						DevelopmentTeam = ABT4UARDR3;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -350,15 +433,31 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AFF59AFC1F54257E00C68C32 /* web@3x.png in Resources */,
+				AFF59B001F54258D00C68C32 /* facebook.png in Resources */,
+				AFF59AFA1F54257E00C68C32 /* web.png in Resources */,
 				AF02D1E51F4A858D00B7F852 /* LaunchScreen.storyboard in Resources */,
+				AFF59AE81F54254A00C68C32 /* instagram@3x.png in Resources */,
 				AF02D23E1F4A8F2000B7F852 /* ProximaNova-Regular.otf in Resources */,
+				AFF59AF01F54256500C68C32 /* pin@3x.png in Resources */,
+				AFF59AEE1F54256500C68C32 /* pin.png in Resources */,
 				AF02D2341F4A8E1000B7F852 /* MainSB.storyboard in Resources */,
+				AFF59B021F54258D00C68C32 /* facebook@3x.png in Resources */,
+				AFF59AE71F54254A00C68C32 /* instagram@2x.png in Resources */,
+				AFF59AF51F54257100C68C32 /* phone@2x.png in Resources */,
 				AF02D1E21F4A858C00B7F852 /* Assets.xcassets in Resources */,
+				AFF59AEA1F54255600C68C32 /* instagram.png in Resources */,
 				AF02D23C1F4A8F2000B7F852 /* ProximaNova-Bold.otf in Resources */,
 				AF29E5ED1F4D5CA700DF3C27 /* BasicViewCell.xib in Resources */,
+				AFF59B011F54258D00C68C32 /* facebook@2x.png in Resources */,
+				AFF59AFB1F54257E00C68C32 /* web@2x.png in Resources */,
+				AFF59AF61F54257100C68C32 /* phone@3x.png in Resources */,
+				AF2ABFDD1F53F25D00D1449E /* back.png in Resources */,
 				AF02D23D1F4A8F2000B7F852 /* ProximaNova-Light.otf in Resources */,
 				AF29E5E81F4D5A3C00DF3C27 /* shutdown.png in Resources */,
+				AFF59AF41F54257100C68C32 /* phone.png in Resources */,
 				AF02D23F1F4A8F2000B7F852 /* ProximaNova-Semibold.otf in Resources */,
+				AFF59AEF1F54256500C68C32 /* pin@2x.png in Resources */,
 				AF29E5DF1F4D467100DF3C27 /* LoginSB.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -418,11 +517,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF2ABFE51F541AEE00D1449E /* ParallaxHeaderView.m in Sources */,
 				AF02D1FE1F4A88F600B7F852 /* UserManager.swift in Sources */,
 				AF22D94F1F4C36D0001DCA42 /* APIManager.swift in Sources */,
+				AF2ABFDF1F54095300D1449E /* Offer.swift in Sources */,
 				AF29E5E11F4D46D000DF3C27 /* LoginVC.swift in Sources */,
 				AF02D2361F4A8E6A00B7F852 /* MainVC.swift in Sources */,
 				AF02D1FB1F4A88F600B7F852 /* StringHelper.swift in Sources */,
+				AF2ABFDB1F53F1C400D1449E /* DetailVC.swift in Sources */,
 				AF22D9511F4C3A58001DCA42 /* APIModel.swift in Sources */,
 				AF02D1FA1F4A88F600B7F852 /* DateHelper.swift in Sources */,
 				AF02D2261F4A8A2400B7F852 /* EmveepRegularLabel.swift in Sources */,
@@ -431,6 +533,7 @@
 				AF02D22C1F4A8A2400B7F852 /* UIPickerView+MenuBar.swift in Sources */,
 				AF29E5EF1F4D668C00DF3C27 /* Merchant.swift in Sources */,
 				AF02D1D91F4A858C00B7F852 /* AppDelegate.swift in Sources */,
+				AF2ABFE81F541B1700D1449E /* UIImage+ImageEffects.m in Sources */,
 				AF29E5E41F4D53CF00DF3C27 /* BasicViewController.swift in Sources */,
 				AF02D2271F4A8A2400B7F852 /* EmveepRegularButton.swift in Sources */,
 				AF02D1FC1F4A88F600B7F852 /* FunctionHelper.swift in Sources */,
@@ -557,11 +660,14 @@
 			baseConfigurationReference = 11B774A568B7510B2F293504 /* Pods-Training.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = ABT4UARDR3;
 				INFOPLIST_FILE = Training/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Emveep.Training;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Training/Library/Training-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -571,11 +677,13 @@
 			baseConfigurationReference = B9ACD457026462C379EF5734 /* Pods-Training.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = ABT4UARDR3;
 				INFOPLIST_FILE = Training/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Emveep.Training;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Training/Library/Training-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
