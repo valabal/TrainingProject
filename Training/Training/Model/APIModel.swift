@@ -9,7 +9,7 @@
 import Foundation
 import EVReflection
 
-class ListMerchantRequest : NSObject,EVReflectable{
+class ListMerchantRequest : EVObject{
     
     var search_type: String?
     var search_key: String?
@@ -23,11 +23,7 @@ class ListMerchantRequest : NSObject,EVReflectable{
     var page : NSNumber?
     var per_page: NSNumber = 8
     var order_alphabetically: NSNumber?
-    
-    override init() {
-        super.init()
-    }
-    
+        
     
 }
 

@@ -10,6 +10,11 @@ import UIKit
 import EVReflection
 import SDWebImage
 
+
+protocol BasicCellObjectProtocol {
+    func convertToCellObject() -> BasicCellObject
+}
+
 class BasicCellObject: NSObject{
 
     var title: String?
@@ -19,7 +24,6 @@ class BasicCellObject: NSObject{
     var other : Any?
     
 }
-
 
 class BasicViewCell : UITableViewCell{
 

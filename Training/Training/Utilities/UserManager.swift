@@ -55,7 +55,19 @@ class UserManager: NSObject {
     static func saveAccessToken(token : NSString?){
         self.SaveUserDefault(key: "Emveep.AccountToken" , value: token)
     }
-
     
+    
+    static func saveCurrentCoordinate(dic : NSDictionary?){
+       self.SaveUserDefault(key: "Emveep.coordinateLoc", value: dic)
+    }
+    
+    static func getCurrentCoordinate() -> NSDictionary? {
+        
+        if let token = self.GetUserDefault(key:"Emveep.coordinateLoc")
+        {return token as? NSDictionary}
+        
+        return nil
+    
+    }
     
 }

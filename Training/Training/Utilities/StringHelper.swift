@@ -39,3 +39,38 @@ extension NSString{
     }
 
 }
+
+extension NSNumber{
+   
+    func abbreviateNumber()->String{
+        var abbrevNum = ""
+        var floatNum = self.floatValue
+        
+        if self.intValue >= 1000{
+          
+            let abbrev = ["K","M","B"]
+            
+            for i in (0 ..< abbrev.count).reversed() {
+                
+                let size = NSDecimalNumber(decimal:pow(10,(i+1)*3)).floatValue
+                
+                if(size <= floatNum){
+                   
+                    floatNum = floatNum / size
+                    let numberString = String(format: "%.1f", floatNum)
+                    
+                    abbrevNum = "\(numberString)\(abbrev[i])"
+                }
+            }
+        }
+        else{
+           abbrevNum = String(format: "%.1f", floatNum)
+        }
+        
+        return abbrevNum
+        
+    }
+    
+
+}
+

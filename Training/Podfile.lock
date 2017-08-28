@@ -72,6 +72,7 @@ PODS:
   - GTMSessionFetcher/Core (1.1.11)
   - GTMSessionFetcher/Full (1.1.11):
     - GTMSessionFetcher/Core (= 1.1.11)
+  - INTULocationManager (4.2.0)
   - JSONModel (1.7.0)
   - JVFloatLabeledTextField (1.1.1)
   - Masonry (1.0.2)
@@ -104,6 +105,7 @@ DEPENDENCIES:
   - Firebase/Crash
   - Firebase/Messaging
   - GoogleSignIn
+  - INTULocationManager
   - JSONModel
   - JVFloatLabeledTextField (from `https://github.com/valabal/JVFloatLabeledTextField.git`)
   - Masonry
@@ -147,6 +149,7 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMOAuth2: 7fc9c10f5c745f4d9850419ea88889fe3baa6b7d
   GTMSessionFetcher: 5ad62e8200fa00ed011fe5e08d27fef72c5b1429
+  INTULocationManager: 73f8254b3d05c897c56bb13c190e5b7c648c0998
   JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
   JVFloatLabeledTextField: 0e5524b097f102036214dd8279edc8ecf08b5e18
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
@@ -159,6 +162,6 @@ SPEC CHECKSUMS:
   TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
   UIActivityIndicator-for-SDWebImage: 7bf7ebbf0ed1747dedc0d6e949c4603a6d0f9e0c
 
-PODFILE CHECKSUM: af2fcea6a2db575a828bdc510c7a144de103c075
+PODFILE CHECKSUM: 08dc26e9ae955d6b15f7114aed2dbc0d6db2aeb8
 
 COCOAPODS: 1.1.1

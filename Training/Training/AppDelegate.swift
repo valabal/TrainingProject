@@ -8,17 +8,20 @@
 
 import UIKit
 import MBProgressHUD
+import INTULocationManager
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
 
     var window: UIWindow? = UIWindow(frame: UIScreen.main.bounds)
     var HUD : MBProgressHUD?
+    var locationRequestID : INTULocationRequestID?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         self.setUpRootViewController()
         self.initHUDNotif()
+        self.startLocationUpdateSubscription()
         
         return true
     
@@ -32,6 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        self.cancelLocationRequest()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -40,6 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+         self.startLocationUpdateSubscription()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -118,4 +123,62 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     
 
 }
+
+// MARK: Location Manager
+extension AppDelegate {
+
+    func getLocationErrorDescription(status : INTULocationStatus) -> String?{
+       
+        if (status == .servicesNotDetermined){
+           return "Error: User has not responded to the permissions alert."
+        }
+        if (status == .servicesDenied){
+            AlertHelper.showAlert(title: "Location Not Found", message: "Location Not Found Please Turn On Your Location Settings")
+            return "Error: User has denied this app permissions to access device location.";
+        }
+        if (status == .servicesRestricted){
+            AlertHelper.showAlert(title: "Location Not Found", message: "Location Not Found Please Turn On Your Location Settings")
+            return "Error: User is restricted from using location services by a usage policy.";
+        }
+        if (status == .servicesDisabled){
+            AlertHelper.showAlert(title: "Location Not Found", message: "Location Not Found Please Turn On Your Location Settings")
+            return "Error: Location services are turned off for all apps on this device.";
+        }
+         return "An unknown error occurred.\n(Are you using iOS Simulator with location set to 'None'?)";
+    
+    }
+    
+    func startLocationUpdateSubscription(){
+    
+        guard let locReq = self.locationRequestID, locReq != NSNotFound else{
+         
+            let locMgr = INTULocationManager.sharedInstance()
+            
+            self.locationRequestID = locMgr.subscribeToLocationUpdates({(currentLocation:CLLocation?, achievedAccuracy : INTULocationAccuracy, status : INTULocationStatus) in
+                
+                if let currentLocation = currentLocation,status == INTULocationStatus.success{
+                    let result = ["lat":NSNumber(value: currentLocation.coordinate.latitude),"lng":NSNumber(value: currentLocation.coordinate.longitude)]
+                    UserManager.saveCurrentCoordinate(dic: result as NSDictionary?)
+                }
+                else{
+                    let error = self.getLocationErrorDescription(status: status)
+                    print ("ERROR LOCATION \n \(error)")
+                }
+                
+               }
+            )
+           return
+        }
+    }
+    
+    func cancelLocationRequest(){
+        if let locationReq = self.locationRequestID, locationReq != NSNotFound {
+        INTULocationManager.sharedInstance().cancelLocationRequest(locationReq)
+        self.locationRequestID = NSNotFound
+        }
+    }
+    
+
+}
+
 

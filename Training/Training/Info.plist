@@ -61,5 +61,11 @@
         <key>NSAllowsArbitraryLoads</key>
         <true/>
     </dict>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>We will use it to get you to our nearest merchant/promotion location</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>We will use it to get you to our nearest merchant/promotion location</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>For Update Your Avatar Picture and Share you moment with your friends</string>
 </dict>
 </plist>
