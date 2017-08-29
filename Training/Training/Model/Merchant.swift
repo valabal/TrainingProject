@@ -124,10 +124,10 @@ class MerchantDetail : EVObject{
     var descriptions: String?
     var images : [String]?
     var additional_details : NSDictionary?
-    var additional_features : [NSDictionary]?
+    var additional_feature : [NSDictionary]?
     var open_hour : String?
     var close_hour : String?
-    
+    var price_rating : String?
 
     override func propertyMapping() -> [(keyInObject: String?, keyInResource: String?)] {
         return[("descriptions","description")];

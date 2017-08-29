@@ -460,7 +460,10 @@ extension DetailVC{
     }
     
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        super.scrollViewDidScroll(scrollView)
+        
         if let tableView = self.tableView, scrollView == tableView{
             if let paralax = self.tableView?.tableHeaderView as? ParallaxHeaderView{
                 paralax.layoutHeaderView(forScrollOffset: scrollView.contentOffset)
@@ -491,9 +494,6 @@ extension DetailVC{
         }
         
     }
-    
-    
-    
     
 }
 

@@ -11,6 +11,8 @@ import UIKit
 class MainVC: BasicViewController{
 
     var content : NSMutableArray = NSMutableArray()
+    var currentPage : Int = 0
+    var isInSession : Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,8 +21,11 @@ class MainVC: BasicViewController{
         self.settingRightNavButtonWithView(arrayOfUIView: [BasicViewController.generateMenuButtonViewWithImage(image: UIImage.init(named: "shutdown"), action:#selector(logOff), target: self)!])
     
         self.tableView?.estimatedRowHeight = 100.0
+       
+        self.showIndicator = true
         
         self.getRestaurantList()
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,33 +39,83 @@ class MainVC: BasicViewController{
         delegate.resetAllViews(modalVC: nil)
     }
     
-    func getRestaurantList(){
+    override func tableResetPaginationBlock() {
+        getRestaurantList(false,needReset : true)
+    }
     
-        FunctionHelper.showHUD()
+    override func tablePaginationBlock() {
+        getRestaurantList(false,needReset : false)
+    }
+    
+    func getRestaurantList(){
+      self.getRestaurantList(true,needReset : true)
+    }
+    
+    func getRestaurantList(_ isShowHUD:Bool, needReset:Bool){
+   
+        if(isInSession){return}
+        
+        if(isShowHUD){
+          FunctionHelper.showHUD()
+        }
         
         let request = ListMerchantRequest()
         request.search_type = "all";
         request.order_alphabetically = true
         
-        APIManager.MerchantList(request: request , callback: {(result : NSDictionary?) in
-            FunctionHelper.hideHUD()
+        if(needReset){
+           currentPage = 0
+        }
         
+        request.page = NSNumber(value: currentPage)
+        isInSession = true
+        
+        APIManager.MerchantList(request: request , callback: {(result : NSDictionary?) in
+            if(isShowHUD){
+              FunctionHelper.hideHUD()
+            }
             guard let merchants = result?["results"] as? [NSDictionary] else {
                return
             }
             
-            self.content = NSMutableArray()
+            if(needReset){
+              self.content = NSMutableArray()
+            }
             
             for dic in merchants{
                let merchant = Merchant(dictionary: dic)
                self.content.add(merchant)
             }
           
+            self.currentPage += 1;
+            
+            if(needReset){
+                self.tableView?.setContentOffset(CGPoint.zero, animated: true)
+            }
+            
             self.tableView?.reloadData()
+            self.activityTopView?.endRefreshing()
+            
+            if let pagination = result?["pagination"] as? NSDictionary, let nextPages = pagination["next_page"]{
+                self.showBottomTableIndicator = true
+            }
+            else{
+                self.showBottomTableIndicator = false
+            }
+            
+            self.isInSession = false
             
          }
             , failure: {(error : Error?) in
-            FunctionHelper.hideHUD()
+
+            if(isShowHUD){
+                FunctionHelper.hideHUD()
+            }
+            
+            self.activityTopView?.endRefreshing()
+            self.showBottomTableIndicator = false
+            self.isInSession = false
+        
         })
         
     }
