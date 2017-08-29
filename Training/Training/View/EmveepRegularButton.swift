@@ -8,7 +8,26 @@
 
 import UIKit
 
-class EmveepRegularButton: UIButton {
+public typealias ActionBlock = () -> Swift.Void
+
+class ActionButton:UIButton{
+    
+    var actionBlock : ActionBlock?
+    
+    func handleControlEvent(event:UIControlEvents,block: @escaping ActionBlock){
+        
+        self.actionBlock = block
+        self.addTarget(self, action: #selector(callActionBlock(sender:)), for: event)
+        
+    }
+    
+    func callActionBlock(sender:Any){
+        self.actionBlock?()
+    }
+    
+}
+
+class EmveepRegularButton: ActionButton {
     
     @IBInspectable
     var isBold: Bool = false{

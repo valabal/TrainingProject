@@ -8,7 +8,7 @@
 
 import UIKit
 
-class IndexButton: UIButton {
+class IndexButton: EmveepRegularButton {
 
     var indexPath : NSIndexPath?
     var tagNumber : NSNumber?
@@ -16,3 +16,5 @@ class IndexButton: UIButton {
     var textField : UITextField?
     
 }
+
+
