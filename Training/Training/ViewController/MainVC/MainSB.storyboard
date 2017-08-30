@@ -115,12 +115,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wdq-Ha-FRo">
+                                                <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wdq-Ha-FRo" customClass="EmveepRegularButton" customModule="Training" customModuleProvider="target">
                                                     <rect key="frame" x="19" y="8" width="125" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="Your Privilages"/>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dcq-kE-s2B">
+                                                <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dcq-kE-s2B" customClass="EmveepRegularButton" customModule="Training" customModuleProvider="target">
                                                     <rect key="frame" x="203" y="8" width="125" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="Monthly Specials"/>
@@ -163,7 +163,79 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RrO-gb-2YY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="736.79999999999995" y="223.53823088455775"/>
+            <point key="canvasLocation" x="722" y="193"/>
+        </scene>
+        <!--Detail Modal-->
+        <scene sceneID="C8k-SJ-k0D">
+            <objects>
+                <viewController storyboardIdentifier="DetailModal" id="gJs-VP-zkb" customClass="DetailModal" customModule="Training" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="b5O-cz-DFq"/>
+                        <viewControllerLayoutGuide type="bottom" id="LI9-4R-6gC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="n2t-EZ-ACO">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0d5-Eg-e55">
+                                <rect key="frame" x="20" y="40" width="335" height="607"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YTf-Wa-562">
+                                        <rect key="frame" x="0.0" y="50" width="335" height="557"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="gJs-VP-zkb" id="HG9-9h-meB"/>
+                                            <outlet property="delegate" destination="gJs-VP-zkb" id="vJw-us-uge"/>
+                                        </connections>
+                                    </tableView>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H1F-rx-een">
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="54"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Wg-ll-CZ7">
+                                                <rect key="frame" x="281" y="12" width="46" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                                <state key="normal" title="X"/>
+                                                <connections>
+                                                    <action selector="closeDidTapped" destination="gJs-VP-zkb" eventType="touchUpInside" id="mzf-Oa-M1M"/>
+                                                </connections>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Restaurant Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rl2-Pi-qK2">
+                                                <rect key="frame" x="14" y="17" width="137" height="21"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="YTf-Wa-562" secondAttribute="bottom" id="6NX-cO-wO2"/>
+                                    <constraint firstAttribute="trailing" secondItem="YTf-Wa-562" secondAttribute="trailing" id="94e-7w-cFa"/>
+                                    <constraint firstItem="YTf-Wa-562" firstAttribute="top" secondItem="0d5-Eg-e55" secondAttribute="top" constant="50" id="9o3-3f-LSN"/>
+                                    <constraint firstItem="YTf-Wa-562" firstAttribute="leading" secondItem="0d5-Eg-e55" secondAttribute="leading" id="nuc-uo-mqY"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.29618727989999999" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="0d5-Eg-e55" firstAttribute="top" secondItem="b5O-cz-DFq" secondAttribute="bottom" constant="20" id="3CS-3l-h7p"/>
+                            <constraint firstAttribute="trailing" secondItem="0d5-Eg-e55" secondAttribute="trailing" constant="20" id="VDh-8y-UBp"/>
+                            <constraint firstItem="LI9-4R-6gC" firstAttribute="top" secondItem="0d5-Eg-e55" secondAttribute="bottom" constant="20" id="aW8-LQ-HMF"/>
+                            <constraint firstItem="0d5-Eg-e55" firstAttribute="leading" secondItem="n2t-EZ-ACO" secondAttribute="leading" constant="20" id="h2l-lj-SN9"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="YTf-Wa-562" id="aaJ-Vk-Y2Q"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ezI-uG-HAp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1437.5999999999999" y="189.3553223388306"/>
         </scene>
     </scenes>
 </document>

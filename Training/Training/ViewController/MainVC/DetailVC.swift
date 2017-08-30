@@ -27,12 +27,15 @@ class DetailVC: BasicViewController{
         super.viewDidLoad()
         self.settingNavBackBarWithTitle(title: "Merchant Detail")
         
+        
+        if let infoBut = BasicViewController.generateMenuButtonViewWithImage(image: UIImage(named:"info_whte"), action:#selector(goToModalDetail), target: self)
+        {self.settingRightNavButtonWithView(arrayOfUIView: [infoBut])}
+        
         self.refreshView()
         
         self.getRestaurantDetail()
         
         self.tableView?.estimatedRowHeight = 100.0
-        
         
     }
     
@@ -57,10 +60,27 @@ class DetailVC: BasicViewController{
         
     }
     
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    func goToModalDetail(){
+    
+        if let detailModal = self.storyboard?.instantiateViewController(withIdentifier: "DetailModal") as? DetailModal{
+            detailModal.merchant = self.current_merchant
+            detailModal.providesPresentationContextTransitionStyle = true
+            detailModal.definesPresentationContext = true
+            detailModal.modalPresentationStyle = .overCurrentContext
+            detailModal.modalTransitionStyle = .crossDissolve
+            self.navigationController?.present(detailModal, animated: true, completion: nil)
+        }
+        
+    }
+    
     
     func refreshView(){
         if let url = self.current_merchant?.logo_url{
@@ -91,6 +111,7 @@ class DetailVC: BasicViewController{
             }
             
             self.current_merchant = Merchant(dictionary: merchants)
+            self.current_merchant?.products = result?["products"] as? NSDictionary
             
             self.createHeaderView()
             self.tableView?.reloadData()
@@ -191,8 +212,8 @@ extension DetailVC:UITableViewDelegate,UITableViewDataSource{
         }
         else if (indexPath.row == 0){
             cell = tableView.dequeueReusableCell(withIdentifier: "buttonsCell")!
-            var view = cell.viewWithTag(1)
             
+            var view = cell.viewWithTag(1)
             if (view == nil){
                 view = self.createSocialButtonView(cell: cell)
             }
@@ -200,6 +221,29 @@ extension DetailVC:UITableViewDelegate,UITableViewDataSource{
         }
         else if (indexPath.row == 2){
             cell = tableView.dequeueReusableCell(withIdentifier: "segmentCell")!
+            
+            if let offerBut = cell.viewWithTag(1) as? EmveepRegularButton,let monthBut = cell.viewWithTag(2) as? EmveepRegularButton{
+             
+                offerBut.handleControlEvent(event: .touchUpInside, block: {() in
+                    self.state = .NORMAL
+                    self.tableView?.reloadData()
+                })
+                
+                monthBut.handleControlEvent(event: .touchUpInside, block: {() in
+                    self.state = .MONTHLY
+                    self.tableView?.reloadData()
+                })
+                
+                if (self.state == .NORMAL){
+                     offerBut.setTitleColor(UIColor.black, for: .normal)
+                     monthBut.setTitleColor(UIColor.blue, for: .normal)
+                }
+                else{
+                    offerBut.setTitleColor(UIColor.blue, for: .normal)
+                    monthBut.setTitleColor(UIColor.black, for: .normal)
+                }
+            }
+            
         }
         else{
             
@@ -300,14 +344,14 @@ extension DetailVC{
             })
             
             rightButtons.append(phoneButton)
-
+            
         }
         
         let locButton = EmveepRegularButton()
         locButton.setImage(UIImage(named: "pin"), for: .normal)
         locButton.contentEdgeInsets = buttonInset
         locButton.handleControlEvent(event: .touchUpInside, block: {() in
-           
+            
             if let lat = self.current_merchant?.place?.coordinate?["lat"], let long = self.current_merchant?.place?.coordinate?["lng"]{
                 let urlString = "https://maps.google.com/?daddr=\(lat),\(long)&directionsmode=driving"
                 self.openLink(urlString)
@@ -460,9 +504,7 @@ extension DetailVC{
     }
     
     
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
-        super.scrollViewDidScroll(scrollView)
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         if let tableView = self.tableView, scrollView == tableView{
             if let paralax = self.tableView?.tableHeaderView as? ParallaxHeaderView{

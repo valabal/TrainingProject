@@ -19,12 +19,17 @@ class MainVC: BasicViewController{
         self.settingBarWithTitle(title:"Merchant List")
     
         self.settingRightNavButtonWithView(arrayOfUIView: [BasicViewController.generateMenuButtonViewWithImage(image: UIImage.init(named: "shutdown"), action:#selector(logOff), target: self)!])
-    
-        self.tableView?.estimatedRowHeight = 100.0
-       
-        self.showIndicator = true
-        
+
         self.getRestaurantList()
+
+        //add Pull To Refresh
+        self.tableView?.addPullToRefreshWithActionHandler { () -> Void in
+            self.tableResetPaginationBlock()
+        }
+        
+        self.tableView?.addInfiniteScrollingWithActionHandler {
+            self.tablePaginationBlock()
+        }
 
     }
 
@@ -39,11 +44,11 @@ class MainVC: BasicViewController{
         delegate.resetAllViews(modalVC: nil)
     }
     
-    override func tableResetPaginationBlock() {
+    func tableResetPaginationBlock() {
         getRestaurantList(false,needReset : true)
     }
     
-    override func tablePaginationBlock() {
+    func tablePaginationBlock() {
         getRestaurantList(false,needReset : false)
     }
     
@@ -94,13 +99,14 @@ class MainVC: BasicViewController{
             }
             
             self.tableView?.reloadData()
-            self.activityTopView?.endRefreshing()
+            self.tableView?.stopPullToRefresh()
             
             if let pagination = result?["pagination"] as? NSDictionary, let nextPages = pagination["next_page"]{
-                self.showBottomTableIndicator = true
+                self.tableView?.showsInfiniteScrolling = true
+                self.tableView?.infiniteScrollingView.stopAnimating()
             }
             else{
-                self.showBottomTableIndicator = false
+                self.tableView?.showsInfiniteScrolling = false
             }
             
             self.isInSession = false
@@ -112,8 +118,9 @@ class MainVC: BasicViewController{
                 FunctionHelper.hideHUD()
             }
             
-            self.activityTopView?.endRefreshing()
-            self.showBottomTableIndicator = false
+            self.tableView?.stopPullToRefresh()
+            self.tableView?.showsInfiniteScrolling = false
+                
             self.isInSession = false
         
         })

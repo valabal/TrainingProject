@@ -32,6 +32,9 @@ extension UILabel{
         if let title = text {
             self.text = title
         }
+        else{
+          self.text = ""
+        }
     }
 
 }

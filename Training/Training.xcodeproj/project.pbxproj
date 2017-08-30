@@ -33,6 +33,9 @@
 		AF02D23D1F4A8F2000B7F852 /* ProximaNova-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = AF02D2391F4A8F2000B7F852 /* ProximaNova-Light.otf */; };
 		AF02D23E1F4A8F2000B7F852 /* ProximaNova-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = AF02D23A1F4A8F2000B7F852 /* ProximaNova-Regular.otf */; };
 		AF02D23F1F4A8F2000B7F852 /* ProximaNova-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = AF02D23B1F4A8F2000B7F852 /* ProximaNova-Semibold.otf */; };
+		AF15D4D31F566C5000921A69 /* HWPullToInfinity.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF15D4D21F566C5000921A69 /* HWPullToInfinity.swift */; };
+		AF15D4D51F5679B900921A69 /* DetailModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF15D4D41F5679B900921A69 /* DetailModal.swift */; };
+		AF15D4D71F56820600921A69 /* info_whte.png in Resources */ = {isa = PBXBuildFile; fileRef = AF15D4D61F56820600921A69 /* info_whte.png */; };
 		AF22D94F1F4C36D0001DCA42 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF22D94E1F4C36D0001DCA42 /* APIManager.swift */; };
 		AF22D9511F4C3A58001DCA42 /* APIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF22D9501F4C3A58001DCA42 /* APIModel.swift */; };
 		AF29E5DF1F4D467100DF3C27 /* LoginSB.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF29E5DE1F4D467100DF3C27 /* LoginSB.storyboard */; };
@@ -94,6 +97,9 @@
 		AF02D2391F4A8F2000B7F852 /* ProximaNova-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Light.otf"; sourceTree = "<group>"; };
 		AF02D23A1F4A8F2000B7F852 /* ProximaNova-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Regular.otf"; sourceTree = "<group>"; };
 		AF02D23B1F4A8F2000B7F852 /* ProximaNova-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Semibold.otf"; sourceTree = "<group>"; };
+		AF15D4D21F566C5000921A69 /* HWPullToInfinity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HWPullToInfinity.swift; sourceTree = "<group>"; };
+		AF15D4D41F5679B900921A69 /* DetailModal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailModal.swift; sourceTree = "<group>"; };
+		AF15D4D61F56820600921A69 /* info_whte.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info_whte.png; sourceTree = "<group>"; };
 		AF22D94E1F4C36D0001DCA42 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		AF22D9501F4C3A58001DCA42 /* APIModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIModel.swift; sourceTree = "<group>"; };
 		AF29E5DE1F4D467100DF3C27 /* LoginSB.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoginSB.storyboard; sourceTree = "<group>"; };
@@ -226,6 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				AFF59AE91F54255600C68C32 /* instagram.png */,
+				AF15D4D61F56820600921A69 /* info_whte.png */,
 				AFF59AE51F54254A00C68C32 /* instagram@2x.png */,
 				AFF59AE61F54254A00C68C32 /* instagram@3x.png */,
 				AFF59AFD1F54258D00C68C32 /* facebook.png */,
@@ -307,6 +314,7 @@
 				AF02D2331F4A8E1000B7F852 /* MainSB.storyboard */,
 				AF02D2351F4A8E6A00B7F852 /* MainVC.swift */,
 				AF2ABFDA1F53F1C400D1449E /* DetailVC.swift */,
+				AF15D4D41F5679B900921A69 /* DetailModal.swift */,
 			);
 			path = MainVC;
 			sourceTree = "<group>";
@@ -320,6 +328,14 @@
 				AF02D23B1F4A8F2000B7F852 /* ProximaNova-Semibold.otf */,
 			);
 			name = Font;
+			sourceTree = "<group>";
+		};
+		AF15D4D11F566C3100921A69 /* PullRefresh+InfiniteScroll */ = {
+			isa = PBXGroup;
+			children = (
+				AF15D4D21F566C5000921A69 /* HWPullToInfinity.swift */,
+			);
+			name = "PullRefresh+InfiniteScroll";
 			sourceTree = "<group>";
 		};
 		AF29E5DD1F4D465C00DF3C27 /* LoginVC */ = {
@@ -352,6 +368,7 @@
 		AF2ABFE11F541ACD00D1449E /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				AF15D4D11F566C3100921A69 /* PullRefresh+InfiniteScroll */,
 				AF2ABFE91F541B2000D1449E /* paralaxView */,
 				AF2ABFE21F541AED00D1449E /* Training-Bridging-Header.h */,
 			);
@@ -433,6 +450,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF15D4D71F56820600921A69 /* info_whte.png in Resources */,
 				AFF59AFC1F54257E00C68C32 /* web@3x.png in Resources */,
 				AFF59B001F54258D00C68C32 /* facebook.png in Resources */,
 				AFF59AFA1F54257E00C68C32 /* web.png in Resources */,
@@ -534,12 +552,14 @@
 				AF29E5EF1F4D668C00DF3C27 /* Merchant.swift in Sources */,
 				AF02D1D91F4A858C00B7F852 /* AppDelegate.swift in Sources */,
 				AF2ABFE81F541B1700D1449E /* UIImage+ImageEffects.m in Sources */,
+				AF15D4D31F566C5000921A69 /* HWPullToInfinity.swift in Sources */,
 				AF29E5E41F4D53CF00DF3C27 /* BasicViewController.swift in Sources */,
 				AF02D2271F4A8A2400B7F852 /* EmveepRegularButton.swift in Sources */,
 				AF02D1FC1F4A88F600B7F852 /* FunctionHelper.swift in Sources */,
 				AF02D22A1F4A8A2400B7F852 /* IndexButton.swift in Sources */,
 				AF02D1FF1F4A88F600B7F852 /* AlertHelper.swift in Sources */,
 				AF02D22E1F4A8A2400B7F852 /* EmveepAlertView.swift in Sources */,
+				AF15D4D51F5679B900921A69 /* DetailModal.swift in Sources */,
 				AF02D22B1F4A8A2400B7F852 /* UIDatePicker+Toolbar.swift in Sources */,
 				AF02D1F91F4A88F600B7F852 /* ColorHelper.swift in Sources */,
 				AF02D22D1F4A8A2400B7F852 /* EmveepNavigationController.swift in Sources */,

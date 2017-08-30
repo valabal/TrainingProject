@@ -22,6 +22,7 @@ class BasicViewController: UIViewController {
         
         self.tableView?.register(UINib(nibName: "BasicViewCell", bundle: nil), forCellReuseIdentifier: "basicCell")
         self.tableView?.separatorStyle = .none
+        self.tableView?.estimatedRowHeight = 100.0
     }
 
     override func didReceiveMemoryWarning() {
@@ -272,132 +273,6 @@ class BasicViewController: UIViewController {
     
     }
     
-    
-    var showIndicator : Bool = false{
-        didSet{
-            self.showBottomTableIndicator = showIndicator
-            
-            if let activityTopView = activityTopView{
-                if (showIndicator == true)
-                {self.tableView?.addSubview(activityTopView)}
-                else
-                {activityTopView.removeFromSuperview()}
-            }
-        }
-    }
-    
-    
-    var showBottomTableIndicator : Bool = false{
-        didSet{
-            if (showBottomTableIndicator == false){
-                self.tableView?.tableFooterView = nil
-            }
-        }
-    }
-    
-    var tableFooterView : UIView?
-    var tableTopView : UIView?
-    
 }
 
-//MARK: untuk nambahin activity indicator
-/*
-     untuk nambahin activity indicator ke dalam tableview
-     jika ingin tambahin cukup set showIndicator menjadi true
-     overide fungsi table Reset Pagination (reset Data untuk pull to refresh)
-     dan fungsi table PaginationBlok untuk melanjutkan pagination (untuk pagination)
-     jika tak ada pagination/sudah finish set showBottomIndication menjadi false (buar ga muncul si indicatornya)
-     co bisa diliat di MainVC.swift
-*/
-
-
-extension BasicViewController : UIScrollViewDelegate{
-
-    var activityTopView : UIRefreshControl? {
-    
-      guard let tableView = self.tableView else {return nil}
-    
-      if let activityTopView = self.tableTopView as? UIRefreshControl {
-         return activityTopView
-      }
-        
-      let refreshControl = UIRefreshControl()
-      refreshControl.backgroundColor = tableView.backgroundColor
-      refreshControl.addTarget(self, action:#selector(tableResetPaginationBlock) , for: UIControlEvents.valueChanged)
-      self.tableTopView = refreshControl
-        
-      return refreshControl
-    
-    }
-    
-    var activityFooterView : UIView? {
-        
-        guard let tableView = self.tableView, showBottomTableIndicator == true else {return nil}
-        
-        if let activityFooterView = self.tableFooterView {
-          return activityFooterView
-        }
-        
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
-        
-        let actInd  = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
-        actInd.tag = 10
-        actInd.hidesWhenStopped = true
-        view.addSubview(actInd)
-        
-        actInd.snp.makeConstraints({ (make) -> Void in
-            make.centerX.equalTo(view)
-            make.centerY.equalTo(view)
-            make.width.equalTo(20)
-            make.height.equalTo(20)
-        })
-        
-        self.tableFooterView = view
-        
-        return view;
-        
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        self.tableViewDidScroll(scrollView)
-    }
-    
-    func tableViewDidScroll(_ scrollView: UIScrollView){
-       
-        guard let tableView = self.tableView, showBottomTableIndicator == true, scrollView == tableView else{
-           return
-        }
-        
-        if(tableView.contentOffset.y > 0){
-           let reload_distance : CGFloat = -50
-           let contentHegihtDifferences = tableView.contentSize.height - tableView.bounds.size.height + reload_distance
-            
-            if(tableView.contentOffset.y >= contentHegihtDifferences && contentHegihtDifferences > 0){
-                
-                if let footerView = self.activityFooterView{
-                    //running some Pagination Block
-                    self.tablePaginationBlock()
-                    tableView.tableFooterView = footerView
-                    let activityIndicator : UIActivityIndicatorView = footerView.viewWithTag(10) as! UIActivityIndicatorView
-                    
-                    activityIndicator.startAnimating()
-                }
-                
-            }
-            
-        }
-    
-    }
-    
-    func tableResetPaginationBlock(){
-    
-    }
-    
-    func tablePaginationBlock(){
-    
-    
-    }
-    
-    
-}
 

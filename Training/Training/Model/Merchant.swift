@@ -29,7 +29,7 @@ class Merchant : EVObject{
     var logo_url : String?
     var name : String?
     var type : String?
-    var sub_type : [String]?
+    var subType : [String]?
     var price_rating : String?
     var offer_exclusion : String?
     var place : Place?
@@ -124,7 +124,7 @@ class MerchantDetail : EVObject{
     var descriptions: String?
     var images : [String]?
     var additional_details : NSDictionary?
-    var additional_feature : [NSDictionary]?
+    var additional_features : [NSDictionary]?
     var open_hour : String?
     var close_hour : String?
     var price_rating : String?

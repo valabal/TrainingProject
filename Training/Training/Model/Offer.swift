@@ -13,8 +13,10 @@ class Offer : EVObject{
     
     var offer_id : NSNumber?
     var title: String?
+    var currency: String?
     var estimated_saving : NSDictionary?
     var valid_date : Date?
+    var valid_until : Date?
     var status : String?
     var date_taken: Date?
     var reference_code : String?
@@ -40,6 +42,14 @@ class Offer : EVObject{
             }
                 , encodeConverter: { return self.date_taken != nil ? Date.stringFromDate(dateInput: self.date_taken!, dateFormat: "yyyy-MM-dd'T'HH:mm:ss"): nil}
             ),
+              (   key: "valid_until"
+                , decodeConverter: {
+                    if let dateString = $0 as? String{
+                        self.valid_until = Date.dateFromString(dateString: dateString, dateFormat: "yyyy-MM-dd'T'HH:mm:ss")
+                    }
+              }
+                , encodeConverter: { return self.valid_until != nil ? Date.stringFromDate(dateInput: self.valid_until!, dateFormat: "yyyy-MM-dd'T'HH:mm:ss"): nil}
+            )
         ]
     }
     
