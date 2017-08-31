@@ -36,6 +36,12 @@
 		AF15D4D91F56C17C00921A69 /* next.png in Resources */ = {isa = PBXBuildFile; fileRef = AF15D4D81F56C17C00921A69 /* next.png */; };
 		AF2151E11F57C5B2005B5A43 /* DumpSB.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF2151E01F57C5B2005B5A43 /* DumpSB.storyboard */; };
 		AF2151E31F57C8CC005B5A43 /* search.png in Resources */ = {isa = PBXBuildFile; fileRef = AF2151E21F57C8CC005B5A43 /* search.png */; };
+		AF2151E51F57E986005B5A43 /* like.png in Resources */ = {isa = PBXBuildFile; fileRef = AF2151E41F57E986005B5A43 /* like.png */; };
+		AF2151EB1F57EB22005B5A43 /* sample1.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AF2151E61F57EB22005B5A43 /* sample1.jpeg */; };
+		AF2151EC1F57EB22005B5A43 /* sample2.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AF2151E71F57EB22005B5A43 /* sample2.jpeg */; };
+		AF2151ED1F57EB22005B5A43 /* sample3.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AF2151E81F57EB22005B5A43 /* sample3.jpeg */; };
+		AF2151EE1F57EB22005B5A43 /* sample4.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AF2151E91F57EB22005B5A43 /* sample4.jpeg */; };
+		AF2151EF1F57EB22005B5A43 /* sample5.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = AF2151EA1F57EB22005B5A43 /* sample5.jpeg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +77,12 @@
 		AF15D4D81F56C17C00921A69 /* next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = next.png; sourceTree = "<group>"; };
 		AF2151E01F57C5B2005B5A43 /* DumpSB.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DumpSB.storyboard; sourceTree = "<group>"; };
 		AF2151E21F57C8CC005B5A43 /* search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search.png; sourceTree = "<group>"; };
+		AF2151E41F57E986005B5A43 /* like.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = like.png; sourceTree = "<group>"; };
+		AF2151E61F57EB22005B5A43 /* sample1.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample1.jpeg; sourceTree = "<group>"; };
+		AF2151E71F57EB22005B5A43 /* sample2.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample2.jpeg; sourceTree = "<group>"; };
+		AF2151E81F57EB22005B5A43 /* sample3.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample3.jpeg; sourceTree = "<group>"; };
+		AF2151E91F57EB22005B5A43 /* sample4.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample4.jpeg; sourceTree = "<group>"; };
+		AF2151EA1F57EB22005B5A43 /* sample5.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample5.jpeg; sourceTree = "<group>"; };
 		B9ACD457026462C379EF5734 /* Pods-Training.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Training.release.xcconfig"; path = "Pods/Target Support Files/Pods-Training/Pods-Training.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -169,6 +181,12 @@
 		AF02D1EE1F4A888D00B7F852 /* Asset */ = {
 			isa = PBXGroup;
 			children = (
+				AF2151E41F57E986005B5A43 /* like.png */,
+				AF2151E61F57EB22005B5A43 /* sample1.jpeg */,
+				AF2151E71F57EB22005B5A43 /* sample2.jpeg */,
+				AF2151E81F57EB22005B5A43 /* sample3.jpeg */,
+				AF2151E91F57EB22005B5A43 /* sample4.jpeg */,
+				AF2151EA1F57EB22005B5A43 /* sample5.jpeg */,
 				AF2151E21F57C8CC005B5A43 /* search.png */,
 				AF15D4D81F56C17C00921A69 /* next.png */,
 				AF02D2371F4A8F0200B7F852 /* Font */,
@@ -315,9 +333,15 @@
 				AF02D1E21F4A858C00B7F852 /* Assets.xcassets in Resources */,
 				AF2151E31F57C8CC005B5A43 /* search.png in Resources */,
 				AF2151E11F57C5B2005B5A43 /* DumpSB.storyboard in Resources */,
+				AF2151EF1F57EB22005B5A43 /* sample5.jpeg in Resources */,
+				AF2151EC1F57EB22005B5A43 /* sample2.jpeg in Resources */,
+				AF2151EE1F57EB22005B5A43 /* sample4.jpeg in Resources */,
 				AF02D23C1F4A8F2000B7F852 /* ProximaNova-Bold.otf in Resources */,
+				AF2151ED1F57EB22005B5A43 /* sample3.jpeg in Resources */,
 				AF02D23D1F4A8F2000B7F852 /* ProximaNova-Light.otf in Resources */,
 				AF02D23F1F4A8F2000B7F852 /* ProximaNova-Semibold.otf in Resources */,
+				AF2151E51F57E986005B5A43 /* like.png in Resources */,
+				AF2151EB1F57EB22005B5A43 /* sample1.jpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,13 +22,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="3ZL-1o-Ulk">
-                                <rect key="frame" x="10" y="30" width="355" height="82"/>
+                                <rect key="frame" x="10" y="30" width="355" height="72.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="jHw-Jv-1ff">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="82"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="72.5"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" image="search.png" translatesAutoresizingMaskIntoConstraints="NO" id="nFh-EN-25C">
-                                                <rect key="frame" x="0.0" y="0.0" width="50" height="50.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="CRe-xl-NTK"/>
                                                     <constraint firstAttribute="width" constant="50" id="FEQ-CE-2R8"/>
@@ -36,24 +36,24 @@
                                             </imageView>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="VFT-e4-130">
-                                        <rect key="frame" x="60" y="0.0" width="261" height="82"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="VFT-e4-130">
+                                        <rect key="frame" x="60" y="0.0" width="261" height="72.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="254" verticalCompressionResistancePriority="754" text="Google.Inc" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K5M-NW-wlM">
-                                                <rect key="frame" x="0.0" y="0.0" width="82.5" height="20.5"/>
-                                                <color key="backgroundColor" red="1" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="254" verticalCompressionResistancePriority="754" text="Mario Bross" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K5M-NW-wlM">
+                                                <rect key="frame" x="0.0" y="0.0" width="95" height="20.5"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Google is an  Google is an  Google is an  Google is an " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="urS-rL-6Aa">
-                                                <rect key="frame" x="0.0" y="20.5" width="246.5" height="31.5"/>
+                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="a minute ago" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="urS-rL-6Aa">
+                                                <rect key="frame" x="0.0" y="23.5" width="78.5" height="16"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" red="0.64313725489999995" green="0.64313725489999995" blue="0.64313725489999995" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ON1-R9-W8K">
-                                                <rect key="frame" x="0.0" y="52" width="151" height="30"/>
+                                                <rect key="frame" x="0.0" y="42.5" width="151" height="30"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="255" verticalCompressionResistancePriority="755" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5GE-D1-Bv9">
                                                         <rect key="frame" x="0.0" y="0.0" width="34" height="30"/>
@@ -71,17 +71,17 @@
                                         <color key="backgroundColor" red="1" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="q0h-XD-efV">
-                                        <rect key="frame" x="331" y="0.0" width="24" height="82"/>
+                                        <rect key="frame" x="331" y="0.0" width="24" height="72.5"/>
                                         <subviews>
                                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" image="next.png" translatesAutoresizingMaskIntoConstraints="NO" id="vg3-Rh-nFr">
-                                                <rect key="frame" x="0.0" y="29" width="24" height="24"/>
+                                                <rect key="frame" x="0.0" y="24.5" width="24" height="24"/>
                                             </imageView>
                                         </subviews>
                                     </stackView>
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bri-km-TwY">
-                                <rect key="frame" x="10" y="128" width="355" height="83.5"/>
+                                <rect key="frame" x="10" y="118.5" width="355" height="83.5"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search.png" translatesAutoresizingMaskIntoConstraints="NO" id="EzX-3y-i14">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
@@ -92,7 +92,7 @@
                                         </constraints>
                                     </imageView>
                                     <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" horizontalHuggingPriority="260" image="next.png" translatesAutoresizingMaskIntoConstraints="NO" id="2zl-YX-Jln">
-                                        <rect key="frame" x="331" y="30.5" width="24" height="24"/>
+                                        <rect key="frame" x="331" y="30" width="24" height="24"/>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mHl-NE-hFx">
                                         <rect key="frame" x="60" y="0.0" width="261" height="83.5"/>
@@ -223,7 +223,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z2s-Wn-Ft6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2158" y="193"/>
+            <point key="canvasLocation" x="769" y="193"/>
         </scene>
     </scenes>
     <resources>
