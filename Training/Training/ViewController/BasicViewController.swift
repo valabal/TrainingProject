@@ -163,7 +163,14 @@ class BasicViewController: UIViewController {
     
     func goBack(){
         self.view.endEditing(true)
-        self.navigationController?.popViewController(animated: true)
+        
+        if let delegate = UIApplication.shared.delegate as? AppDelegate{
+            delegate.sceneCoordinator?.pop(animated: true)
+        }
+        else{
+          self.navigationController?.popViewController(animated: true)
+        }
+        
     }
     
     

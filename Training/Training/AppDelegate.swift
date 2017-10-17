@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     var window: UIWindow? = UIWindow(frame: UIScreen.main.bounds)
     var HUD : MBProgressHUD?
     var locationRequestID : INTULocationRequestID?
+    var sceneCoordinator : SceneCoordinator? = nil
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -71,20 +72,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     
     func setUpRootViewController(){
         
-        var storyboard = UIStoryboard.init(name: "MainSB", bundle: Bundle.main)
-        var viewController = storyboard.instantiateViewController(withIdentifier: "MainVC")
+        sceneCoordinator = SceneCoordinator(window: window!)
         
-        if(UserManager.accessToken() == nil)
-        {
-            storyboard = UIStoryboard.init(name: "LoginSB", bundle: Bundle.main)
-            viewController = storyboard.instantiateViewController(withIdentifier: "LoginVC")
+        if(UserManager.accessToken() == nil){
+            let firstScene = Scene.login()
+            sceneCoordinator!.transition(to: firstScene, type: .root)
         }
-        
-        let navController : UINavigationController = UINavigationController.init(rootViewController: viewController)
-        self.window?.rootViewController = navController;
-        navController.setNavigationBarHidden(true, animated: false)
-        
-        self.window?.makeKeyAndVisible()
+        else{
+            let viewModel = MainVM(coordinator: sceneCoordinator!)
+            let firstScene = Scene.mainVC(viewModel)
+            sceneCoordinator!.transition(to: firstScene, type: .root)
+        }
         
         self.HUD = nil;
         

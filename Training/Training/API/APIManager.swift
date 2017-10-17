@@ -148,6 +148,11 @@ class APIManager: NSObject {
         }
     }
     
+    
+    static func hardProcessingWithString(input: String, completion: (_ result: String) -> Void) {
+            completion("we finished!")
+    }
+    
 }
 
 //MARK: helper function

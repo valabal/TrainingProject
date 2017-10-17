@@ -8,6 +8,8 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 class DetailVC: BasicViewController{
     
@@ -18,24 +20,23 @@ class DetailVC: BasicViewController{
     
     var imageScrollView : UIScrollView?
     var timer : Timer? = nil
+    var merchant : Merchant = Merchant()
     
-    var current_merchant : Merchant?
+    var viewModel : DetailVM!
     var state : ProductType = .NORMAL
-    
+    private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
+
         super.viewDidLoad()
         self.settingNavBackBarWithTitle(title: "Merchant Detail")
-        
         
         if let infoBut = BasicViewController.generateMenuButtonViewWithImage(image: UIImage(named:"info_whte"), action:#selector(goToModalDetail), target: self)
         {self.settingRightNavButtonWithView(arrayOfUIView: [infoBut])}
         
-        self.refreshView()
-        
-        self.getRestaurantDetail()
-        
         self.tableView?.estimatedRowHeight = 100.0
+        
+        self.bindingViews()
         
     }
     
@@ -61,68 +62,64 @@ class DetailVC: BasicViewController{
     }
     
     
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     
-    func goToModalDetail(){
+    func bindingViews(){
     
-        if let detailModal = self.storyboard?.instantiateViewController(withIdentifier: "DetailModal") as? DetailModal{
-            detailModal.merchant = self.current_merchant
-            detailModal.providesPresentationContextTransitionStyle = true
-            detailModal.definesPresentationContext = true
-            detailModal.modalPresentationStyle = .overCurrentContext
-            detailModal.modalTransitionStyle = .crossDissolve
-            self.navigationController?.present(detailModal, animated: true, completion: nil)
-        }
+        let refreshMerchant:PublishSubject<Void> = PublishSubject<Void>()
+
+        //input
+        refreshMerchant.bind(to: self.viewModel.inputs.loadMerchantDetail).disposed(by: disposeBag)
         
-    }
-    
-    
-    func refreshView(){
-        if let url = self.current_merchant?.logo_url{
-            self.iconView?.sd_setImage(with: URL(string: url))
-        }
+        //output
+        let response = self.viewModel.outputs.current_merchant.asDriver().asObservable()
         
-        self.restaurantNameLbl?.text = self.current_merchant?.name
-        self.restaurantTypeLbl?.text = self.current_merchant?.type
-        
-        self.tableView?.reloadData()
-    }
-    
-    
-    func getRestaurantDetail(){
-        
-        guard let merchant_id = self.current_merchant?.merchant_id else{
-            return
-        }
-        
-        FunctionHelper.showHUD()
-        
-        APIManager.MerchantDetail(merchantID:merchant_id , callback: {(result : NSDictionary?) in
+        response.subscribe(onNext:{
+          [weak self] merchant in
             
-            FunctionHelper.hideHUD()
+            self?.merchant = merchant
             
-            guard let merchants = result?["merchant"] as? NSDictionary else {
-                return
+            if let url = merchant.logo_url{
+                self?.iconView?.sd_setImage(with: URL(string: url))
             }
             
-            self.current_merchant = Merchant(dictionary: merchants)
-            self.current_merchant?.products = result?["products"] as? NSDictionary
-            
-            self.createHeaderView()
-            self.tableView?.reloadData()
-            
-        }
-            , failure: {(error : Error?) in
-                FunctionHelper.hideHUD()
-        })
+            self?.restaurantNameLbl?.text = merchant.name
+            self?.restaurantTypeLbl?.text = merchant.type
+
+            self?.tableView?.reloadData()
+        
+        }).disposed(by: disposeBag)
+        
+        response.skip(1).subscribe(onNext:{[weak self] _ in
+            self?.createHeaderView()
+        }).disposed(by: disposeBag)
+        
+        
+       let loadingState = self.viewModel.outputs.isLoading.asObservable()
+            .distinctUntilChanged()
+        
+        loadingState.subscribe(onNext:{
+          isLoading in
+            if(isLoading){
+              FunctionHelper.showHUD()
+            }
+            else{
+              FunctionHelper.hideHUD()
+            }
+        }).disposed(by: disposeBag)
+        
+        //fetch merchant Detail
+        refreshMerchant.onNext()
         
     }
     
+    func goToModalDetail(){
+        self.viewModel.goToDetailModal()
+    }
     
     func openLink(_ link:String){
         
@@ -142,9 +139,9 @@ extension DetailVC:UITableViewDelegate,UITableViewDataSource{
         return 1
     }
     
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (self.current_merchant?.merchant_detail) != nil {
+     
+        if (self.viewModel.current_merchant.value.merchant_detail) != nil {
             return self.getRowNumber()
         }
         
@@ -156,11 +153,11 @@ extension DetailVC:UITableViewDelegate,UITableViewDataSource{
         
         var numberOfCell = 2
         
-        if (self.current_merchant?.products) != nil {
+        if (self.merchant.products) != nil {
             
             var counter = 1
             
-            if let products = self.current_merchant?.getProductType(state: self.state){
+            if let products = self.viewModel.current_merchant.value.getProductType(state: self.state){
                 counter = products.count == 0 ? 1 : products.count
             }
             
@@ -184,9 +181,9 @@ extension DetailVC:UITableViewDelegate,UITableViewDataSource{
             return 40;
         }
         
-        if (self.current_merchant?.products) != nil{
+        if (self.viewModel.current_merchant.value.products) != nil{
             
-            if let products = self.current_merchant?.getProductType(state: state), products.count == 0{
+            if let products = self.merchant.getProductType(state: state), products.count == 0{
                 //empty cell
                 var sisaTinggi = tableView.frame.size.height - (45 + 60 + 40)
                 sisaTinggi = sisaTinggi - tableView.frame.size.width*6/14 //headerView
@@ -207,8 +204,8 @@ extension DetailVC:UITableViewDelegate,UITableViewDataSource{
             let addressLbl = cell.viewWithTag(1) as? UILabel
             let cityLbl = cell.viewWithTag(2) as? UILabel
             
-            addressLbl?.text = self.current_merchant?.place?.address
-            cityLbl?.text = "\(self.current_merchant?.location_id)"
+            addressLbl?.text = self.merchant.place?.address
+            cityLbl?.text = "\(self.merchant.location_id)"
         }
         else if (indexPath.row == 0){
             cell = tableView.dequeueReusableCell(withIdentifier: "buttonsCell")!
@@ -247,7 +244,7 @@ extension DetailVC:UITableViewDelegate,UITableViewDataSource{
         }
         else{
             
-            guard let product = self.current_merchant?.getProductType(state: self.state), product.count > 0 else{
+            guard let product = self.viewModel.current_merchant.value.getProductType(state: self.state), product.count > 0 else{
                 cell = tableView.dequeueReusableCell(withIdentifier: "redeemEmptyCell")!
                 return cell
             }
@@ -289,17 +286,19 @@ extension DetailVC{
         
         var socialButtons : [[String:Any]] = []
         
-        if let url = self.current_merchant?.merchant_detail?.additional_details?["instagram"]{
+        let merchant = self.merchant
+        
+        if let url = merchant.merchant_detail?.additional_details?["instagram"]{
             let dic = ["type":"instagram","image":"instagram","link":url]
             socialButtons.append(dic)
         }
         
-        if let url = self.current_merchant?.merchant_detail?.additional_details?["facebook"]{
+        if let url = merchant.merchant_detail?.additional_details?["facebook"]{
             let dic = ["type":"facebook","image":"facebook","link":url]
             socialButtons.append(dic)
         }
         
-        if let url = self.current_merchant?.merchant_detail?.additional_details?["web"]{
+        if let url = merchant.merchant_detail?.additional_details?["web"]{
             let dic = ["type":"web","image":"web","link":url]
             socialButtons.append(dic)
         }
@@ -326,7 +325,7 @@ extension DetailVC{
         
         var rightButtons : [UIButton] = []
         
-        if let phones = self.current_merchant?.merchant_detail?.additional_details?["phone"]{
+        if let phones = merchant.merchant_detail?.additional_details?["phone"]{
             let phoneButton = EmveepRegularButton()
             phoneButton.setImage(UIImage(named: "phone"), for: .normal)
             phoneButton.contentEdgeInsets = buttonInset
@@ -352,7 +351,7 @@ extension DetailVC{
         locButton.contentEdgeInsets = buttonInset
         locButton.handleControlEvent(event: .touchUpInside, block: {() in
             
-            if let lat = self.current_merchant?.place?.coordinate?["lat"], let long = self.current_merchant?.place?.coordinate?["lng"]{
+            if let lat = merchant.place?.coordinate?["lat"], let long = merchant.place?.coordinate?["lng"]{
                 let urlString = "https://maps.google.com/?daddr=\(lat),\(long)&directionsmode=driving"
                 self.openLink(urlString)
             }
@@ -361,7 +360,7 @@ extension DetailVC{
         
         rightButtons.append(locButton)
         
-        if let menus = self.current_merchant?.merchant_detail?.additional_details?["menu"]{
+        if let menus = merchant.merchant_detail?.additional_details?["menu"]{
             let menuButton = EmveepRegularButton()
             menuButton.setImage(UIImage(named: "menu"), for: .normal)
             menuButton.contentEdgeInsets = buttonInset
@@ -402,14 +401,14 @@ extension DetailVC{
     
     func createHeaderView(){
         
-        if (self.tableView?.tableHeaderView) != nil{
-            return
-        }
-        
         guard let tableView = self.tableView else{
             return
         }
         
+        if (tableView.tableHeaderView) != nil{
+            return
+        }
+
         let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: tableView.frame.size.width*6/14))
         
         let scrollView = UIScrollView()
@@ -425,8 +424,9 @@ extension DetailVC{
             make.bottom.equalTo(view)
         })
         
+        let merchant = self.merchant
         
-        let images = self.current_merchant?.merchant_detail?.images
+        let images = merchant.merchant_detail?.images
         var prevContent : UIView? = nil
         
         var count = 0
@@ -485,6 +485,7 @@ extension DetailVC{
         }
         
         let headerView = ParallaxHeaderView.parallaxHeaderView(withSubView: view)
+        
         self.tableView?.tableHeaderView = headerView as! UIView?
         
     }
@@ -518,7 +519,7 @@ extension DetailVC{
     
     func slideShow(){
         
-        if let images = self.current_merchant?.merchant_detail?.images, images.count > 1,let pageControl = pageControl{
+        if let images = self.merchant.merchant_detail?.images, images.count > 1,let pageControl = pageControl{
             
             var currentPage = pageControl.currentPage
             currentPage = currentPage+1

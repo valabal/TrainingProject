@@ -50,6 +50,15 @@
 		AF2ABFDF1F54095300D1449E /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2ABFDE1F54095300D1449E /* Offer.swift */; };
 		AF2ABFE51F541AEE00D1449E /* ParallaxHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF2ABFE41F541AEE00D1449E /* ParallaxHeaderView.m */; };
 		AF2ABFE81F541B1700D1449E /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = AF2ABFE71F541B1700D1449E /* UIImage+ImageEffects.m */; };
+		AF3686441F95A4060066A07A /* DetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3686431F95A4060066A07A /* DetailVM.swift */; };
+		AFBF1D531F94631900326B0D /* MainVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBF1D521F94631900326B0D /* MainVM.swift */; };
+		AFBF1D551F946A8A00326B0D /* APIManager2.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBF1D541F946A8A00326B0D /* APIManager2.swift */; };
+		AFBF1D571F94843000326B0D /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBF1D561F94843000326B0D /* ActivityIndicator.swift */; };
+		AFBF1D5E1F94B75700326B0D /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBF1D591F94B75700326B0D /* Scene.swift */; };
+		AFBF1D5F1F94B75700326B0D /* SceneCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBF1D5A1F94B75700326B0D /* SceneCoordinatorType.swift */; };
+		AFBF1D601F94B75700326B0D /* SceneCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBF1D5B1F94B75700326B0D /* SceneCoordinator.swift */; };
+		AFBF1D611F94B75700326B0D /* Scene+ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBF1D5C1F94B75700326B0D /* Scene+ViewController.swift */; };
+		AFBF1D621F94B75700326B0D /* SceneTransitionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBF1D5D1F94B75700326B0D /* SceneTransitionType.swift */; };
 		AFF59AE71F54254A00C68C32 /* instagram@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AFF59AE51F54254A00C68C32 /* instagram@2x.png */; };
 		AFF59AE81F54254A00C68C32 /* instagram@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AFF59AE61F54254A00C68C32 /* instagram@3x.png */; };
 		AFF59AEA1F54255600C68C32 /* instagram.png in Resources */ = {isa = PBXBuildFile; fileRef = AFF59AE91F54255600C68C32 /* instagram.png */; };
@@ -117,6 +126,15 @@
 		AF2ABFE41F541AEE00D1449E /* ParallaxHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParallaxHeaderView.m; sourceTree = "<group>"; };
 		AF2ABFE61F541B1700D1449E /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		AF2ABFE71F541B1700D1449E /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
+		AF3686431F95A4060066A07A /* DetailVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailVM.swift; sourceTree = "<group>"; };
+		AFBF1D521F94631900326B0D /* MainVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainVM.swift; sourceTree = "<group>"; };
+		AFBF1D541F946A8A00326B0D /* APIManager2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager2.swift; sourceTree = "<group>"; };
+		AFBF1D561F94843000326B0D /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
+		AFBF1D591F94B75700326B0D /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
+		AFBF1D5A1F94B75700326B0D /* SceneCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneCoordinatorType.swift; sourceTree = "<group>"; };
+		AFBF1D5B1F94B75700326B0D /* SceneCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneCoordinator.swift; sourceTree = "<group>"; };
+		AFBF1D5C1F94B75700326B0D /* Scene+ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Scene+ViewController.swift"; sourceTree = "<group>"; };
+		AFBF1D5D1F94B75700326B0D /* SceneTransitionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneTransitionType.swift; sourceTree = "<group>"; };
 		AFF59AE51F54254A00C68C32 /* instagram@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instagram@2x.png"; sourceTree = "<group>"; };
 		AFF59AE61F54254A00C68C32 /* instagram@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instagram@3x.png"; sourceTree = "<group>"; };
 		AFF59AE91F54255600C68C32 /* instagram.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = instagram.png; sourceTree = "<group>"; };
@@ -185,6 +203,7 @@
 		AF02D1D71F4A858C00B7F852 /* Training */ = {
 			isa = PBXGroup;
 			children = (
+				AFBF1D581F94B74000326B0D /* Scene */,
 				AF2ABFE11F541ACD00D1449E /* Library */,
 				AF02D1F11F4A88B300B7F852 /* ViewController */,
 				AF02D1EF1F4A889500B7F852 /* Model */,
@@ -267,7 +286,9 @@
 		AF02D1F01F4A889E00B7F852 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				AFBF1D561F94843000326B0D /* ActivityIndicator.swift */,
 				AF22D94E1F4C36D0001DCA42 /* APIManager.swift */,
+				AFBF1D541F946A8A00326B0D /* APIManager2.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -311,9 +332,9 @@
 		AF02D2321F4A8DFB00B7F852 /* MainVC */ = {
 			isa = PBXGroup;
 			children = (
+				AF3686421F95A3ED0066A07A /* DetailVC */,
+				AFBF1D511F9462FF00326B0D /* MainVC */,
 				AF02D2331F4A8E1000B7F852 /* MainSB.storyboard */,
-				AF02D2351F4A8E6A00B7F852 /* MainVC.swift */,
-				AF2ABFDA1F53F1C400D1449E /* DetailVC.swift */,
 				AF15D4D41F5679B900921A69 /* DetailModal.swift */,
 			);
 			path = MainVC;
@@ -384,6 +405,36 @@
 				AF2ABFE41F541AEE00D1449E /* ParallaxHeaderView.m */,
 			);
 			name = paralaxView;
+			sourceTree = "<group>";
+		};
+		AF3686421F95A3ED0066A07A /* DetailVC */ = {
+			isa = PBXGroup;
+			children = (
+				AF2ABFDA1F53F1C400D1449E /* DetailVC.swift */,
+				AF3686431F95A4060066A07A /* DetailVM.swift */,
+			);
+			name = DetailVC;
+			sourceTree = "<group>";
+		};
+		AFBF1D511F9462FF00326B0D /* MainVC */ = {
+			isa = PBXGroup;
+			children = (
+				AF02D2351F4A8E6A00B7F852 /* MainVC.swift */,
+				AFBF1D521F94631900326B0D /* MainVM.swift */,
+			);
+			name = MainVC;
+			sourceTree = "<group>";
+		};
+		AFBF1D581F94B74000326B0D /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				AFBF1D591F94B75700326B0D /* Scene.swift */,
+				AFBF1D5A1F94B75700326B0D /* SceneCoordinatorType.swift */,
+				AFBF1D5B1F94B75700326B0D /* SceneCoordinator.swift */,
+				AFBF1D5C1F94B75700326B0D /* Scene+ViewController.swift */,
+				AFBF1D5D1F94B75700326B0D /* SceneTransitionType.swift */,
+			);
+			path = Scene;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -536,6 +587,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF2ABFE51F541AEE00D1449E /* ParallaxHeaderView.m in Sources */,
+				AFBF1D621F94B75700326B0D /* SceneTransitionType.swift in Sources */,
 				AF02D1FE1F4A88F600B7F852 /* UserManager.swift in Sources */,
 				AF22D94F1F4C36D0001DCA42 /* APIManager.swift in Sources */,
 				AF2ABFDF1F54095300D1449E /* Offer.swift in Sources */,
@@ -545,24 +597,32 @@
 				AF2ABFDB1F53F1C400D1449E /* DetailVC.swift in Sources */,
 				AF22D9511F4C3A58001DCA42 /* APIModel.swift in Sources */,
 				AF02D1FA1F4A88F600B7F852 /* DateHelper.swift in Sources */,
+				AFBF1D5E1F94B75700326B0D /* Scene.swift in Sources */,
 				AF02D2261F4A8A2400B7F852 /* EmveepRegularLabel.swift in Sources */,
 				AF02D1FD1F4A88F600B7F852 /* FontHelper.swift in Sources */,
 				AF02D2291F4A8A2400B7F852 /* EmveepTextView.swift in Sources */,
 				AF02D22C1F4A8A2400B7F852 /* UIPickerView+MenuBar.swift in Sources */,
+				AF3686441F95A4060066A07A /* DetailVM.swift in Sources */,
 				AF29E5EF1F4D668C00DF3C27 /* Merchant.swift in Sources */,
 				AF02D1D91F4A858C00B7F852 /* AppDelegate.swift in Sources */,
+				AFBF1D571F94843000326B0D /* ActivityIndicator.swift in Sources */,
 				AF2ABFE81F541B1700D1449E /* UIImage+ImageEffects.m in Sources */,
 				AF15D4D31F566C5000921A69 /* HWPullToInfinity.swift in Sources */,
 				AF29E5E41F4D53CF00DF3C27 /* BasicViewController.swift in Sources */,
+				AFBF1D551F946A8A00326B0D /* APIManager2.swift in Sources */,
+				AFBF1D5F1F94B75700326B0D /* SceneCoordinatorType.swift in Sources */,
 				AF02D2271F4A8A2400B7F852 /* EmveepRegularButton.swift in Sources */,
 				AF02D1FC1F4A88F600B7F852 /* FunctionHelper.swift in Sources */,
 				AF02D22A1F4A8A2400B7F852 /* IndexButton.swift in Sources */,
 				AF02D1FF1F4A88F600B7F852 /* AlertHelper.swift in Sources */,
+				AFBF1D601F94B75700326B0D /* SceneCoordinator.swift in Sources */,
 				AF02D22E1F4A8A2400B7F852 /* EmveepAlertView.swift in Sources */,
 				AF15D4D51F5679B900921A69 /* DetailModal.swift in Sources */,
+				AFBF1D531F94631900326B0D /* MainVM.swift in Sources */,
 				AF02D22B1F4A8A2400B7F852 /* UIDatePicker+Toolbar.swift in Sources */,
 				AF02D1F91F4A88F600B7F852 /* ColorHelper.swift in Sources */,
 				AF02D22D1F4A8A2400B7F852 /* EmveepNavigationController.swift in Sources */,
+				AFBF1D611F94B75700326B0D /* Scene+ViewController.swift in Sources */,
 				AF02D2281F4A8A2400B7F852 /* EmveepTextField.swift in Sources */,
 				AF29E5EB1F4D5C7700DF3C27 /* BasicViewCell.swift in Sources */,
 			);
