@@ -18,9 +18,8 @@ class DetailModal: BasicViewController{
     }
     
     @IBAction func closeDidTapped(){
-       self.dismiss(animated: true, completion: nil)
+       self.goBack()
     }
-
 
 }
 
@@ -47,7 +46,6 @@ extension DetailModal:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell : BasicViewCell  = tableView.dequeueReusableCell(withIdentifier: "basicCell")! as! BasicViewCell
-        
       
         if(indexPath.row == 0){
             
@@ -66,9 +64,7 @@ extension DetailModal:UITableViewDelegate,UITableViewDataSource{
             
             }
             
-            
             basicObj.imageURL = self.merchant.logo_url
-            
             cell.fillCellWithObject(object: basicObj)
             
         }

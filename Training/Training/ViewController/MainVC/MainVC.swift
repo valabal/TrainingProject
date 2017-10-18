@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class MainVC: BasicViewController{
 
-    var content : NSMutableArray = NSMutableArray()
-    var currentPage : Int = 0
-    var isInSession : Bool = false
+    var viewModel : MainVM!
+    
+    private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,17 +22,9 @@ class MainVC: BasicViewController{
     
         self.settingRightNavButtonWithView(arrayOfUIView: [BasicViewController.generateMenuButtonViewWithImage(image: UIImage.init(named: "shutdown"), action:#selector(logOff), target: self)!])
 
-        self.getRestaurantList()
-
-        //add Pull To Refresh
-        self.tableView?.addPullToRefreshWithActionHandler { () -> Void in
-            self.tableResetPaginationBlock()
-        }
         
-        self.tableView?.addInfiniteScrollingWithActionHandler {
-            self.tablePaginationBlock()
-        }
-
+        self.bindingViews()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -44,91 +38,62 @@ class MainVC: BasicViewController{
         delegate.resetAllViews(modalVC: nil)
     }
     
-    func tableResetPaginationBlock() {
-        getRestaurantList(false,needReset : true)
-    }
     
-    func tablePaginationBlock() {
-        getRestaurantList(false,needReset : false)
-    }
-    
-    func getRestaurantList(){
-      self.getRestaurantList(true,needReset : true)
-    }
-    
-    func getRestaurantList(_ isShowHUD:Bool, needReset:Bool){
-   
-        if(isInSession){return}
+    func bindingViews(){
         
-        if(isShowHUD){
-          FunctionHelper.showHUD()
+        let loadPage:PublishSubject<Void> = PublishSubject<Void>()
+        let loadNextPage:PublishSubject<Void> = PublishSubject<Void>()
+    
+        self.tableView?.addPullToRefreshWithActionHandler { () -> Void in
+            loadPage.onNext()
         }
         
-        let request = ListMerchantRequest()
-        request.search_type = "all";
-        request.order_alphabetically = true
-        
-        if(needReset){
-           currentPage = 0
+        self.tableView?.addInfiniteScrollingWithActionHandler {
+           loadNextPage.onNext()
         }
         
-        request.page = NSNumber(value: currentPage)
-        isInSession = true
+        //input
+        loadPage.bind(to: self.viewModel.inputs.loadPageTrigger).addDisposableTo(disposeBag)
+        loadNextPage.bind(to: self.viewModel.inputs.loadNextPageTrigger).addDisposableTo(disposeBag)
         
-        APIManager.MerchantList(request: request , callback: {(result : NSDictionary?) in
-            if(isShowHUD){
-              FunctionHelper.hideHUD()
+        self.viewModel.loadHUDTrigger.onNext()
+                
+        //output
+        self.viewModel.outputs.isLoading.asObservable().subscribe(onNext:{[weak self] isLoading in
+            if (!isLoading) {
+                  self?.tableView?.stopPullToRefresh()
+                  self?.tableView?.infiniteScrollingView.stopAnimating()
             }
-            guard let merchants = result?["results"] as? [NSDictionary] else {
-               return
-            }
-            
-            if(needReset){
-              self.content = NSMutableArray()
-            }
-            
-            for dic in merchants{
-               let merchant = Merchant(dictionary: dic)
-               self.content.add(merchant)
-            }
-          
-            self.currentPage += 1;
-            
-            if(needReset){
-                self.tableView?.setContentOffset(CGPoint.zero, animated: true)
-            }
-            
-            self.tableView?.reloadData()
-            self.tableView?.stopPullToRefresh()
-            
-            if let pagination = result?["pagination"] as? NSDictionary, let nextPages = pagination["next_page"]{
-                self.tableView?.showsInfiniteScrolling = true
-                self.tableView?.infiniteScrollingView.stopAnimating()
+        }).addDisposableTo(disposeBag)
+        
+        self.viewModel.outputs.isHUDLoading.asObservable().subscribe(onNext:{isLoading in
+            if(isLoading){
+                FunctionHelper.showHUD()
             }
             else{
-                self.tableView?.showsInfiniteScrolling = false
+               FunctionHelper.hideHUD()
             }
-            
-            self.isInSession = false
-            
-         }
-            , failure: {(error : Error?) in
+        }).addDisposableTo(disposeBag)
+        
+        self.viewModel.outputs.contents.asDriver().asObservable().subscribe(onNext:{[weak self] _ in
+            self?.tableView?.reloadData()
+        }).addDisposableTo(disposeBag)
+ 
+        self.viewModel.outputs.isComplete.asDriver().asObservable().distinctUntilChanged().skip(1)
+        .subscribe(onNext:{[weak self] isComplete in
+            self?.tableView?.showsInfiniteScrolling = !isComplete
+        }).addDisposableTo(disposeBag)
+        
+        self.tableView?.rx.itemSelected
+            .subscribe(onNext: { [weak self]indexPath in
+                self?.viewModel.inputs.tapped(row : indexPath.row)
+            }).addDisposableTo(disposeBag)
 
-            if(isShowHUD){
-                FunctionHelper.hideHUD()
-            }
-            
-            self.tableView?.stopPullToRefresh()
-            self.tableView?.showsInfiniteScrolling = false
-                
-            self.isInSession = false
-        
-        })
-        
+    
     }
     
-    
 }
+
 
 
 extension MainVC:UITableViewDelegate,UITableViewDataSource{
@@ -138,7 +103,7 @@ extension MainVC:UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return content.count
+        return self.viewModel.contents.value.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -149,7 +114,7 @@ extension MainVC:UITableViewDelegate,UITableViewDataSource{
         
         let cell : BasicViewCell  = tableView.dequeueReusableCell(withIdentifier: "basicCell")! as! BasicViewCell
         
-        if let merchant = self.content[indexPath.row] as? Merchant{
+        if let merchant = self.viewModel.contents.value[indexPath.row] as? Merchant{
             let object = merchant.convertToCellObject()
             cell.fillCellWithObject(object: object)
         }
@@ -160,19 +125,6 @@ extension MainVC:UITableViewDelegate,UITableViewDataSource{
         
     }
     
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-     
-        if let merchant = self.content[indexPath.row] as? Merchant{
-
-            if let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailVC") as? DetailVC{
-                detailVC.current_merchant = merchant
-                self.navigationController?.pushViewController(detailVC, animated: true)
-            }
-         
-        }
-        
-    }
     
     
 }

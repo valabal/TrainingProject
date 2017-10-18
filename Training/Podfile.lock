@@ -84,6 +84,14 @@ PODS:
   - nanopb/encode (0.3.8)
   - Protobuf (3.3.0)
   - PXAlertView (0.1.1)
+  - RxAlamofire (3.0.3):
+    - RxAlamofire/Core (= 3.0.3)
+  - RxAlamofire/Core (3.0.3):
+    - Alamofire (~> 4.0)
+    - RxSwift (~> 3.0)
+  - RxCocoa (3.6.1):
+    - RxSwift (~> 3.6)
+  - RxSwift (3.6.1)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
@@ -112,6 +120,9 @@ DEPENDENCIES:
   - Masonry
   - MBProgressHUD
   - PXAlertView (from `https://github.com/valabal/PXAlertView.git`)
+  - RxAlamofire
+  - RxCocoa
+  - RxSwift
   - SDWebImage
   - SnapKit (~> 3.2.0)
   - TPKeyboardAvoiding
@@ -159,12 +170,15 @@ SPEC CHECKSUMS:
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: d582fecf68201eac3d79ed61369ef45734394b9c
   PXAlertView: bb8a7e6bb95f73fe3fe091cacd279b683460f084
+  RxAlamofire: 5eb39188c4917ad98127c0ecb4878a61b7517003
+  RxCocoa: 84a08739ab186248c7f31ce4ee92d6f8a947d690
+  RxSwift: f9de85ea20cd2f7716ee5409fc13523dc638e4e4
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   TPKeyboardAvoiding: 0d6af20e95e2850f4c621841225b59ec7d8dd852
   TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
   UIActivityIndicator-for-SDWebImage: 7bf7ebbf0ed1747dedc0d6e949c4603a6d0f9e0c
 
-PODFILE CHECKSUM: 4f4370229ecebd1493ce3cb13462932e0cb21cb1
+PODFILE CHECKSUM: 533e64b5ad7ed70e1cff0fd7da38690e15485106
 
 COCOAPODS: 1.1.1
