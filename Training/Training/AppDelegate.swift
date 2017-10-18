@@ -75,7 +75,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         sceneCoordinator = SceneCoordinator(window: window!)
         
         if(UserManager.accessToken() == nil){
-            let firstScene = Scene.login()
+            let viewModel = LoginVM(coordinator: sceneCoordinator!)
+            let firstScene = Scene.login(viewModel)
             sceneCoordinator!.transition(to: firstScene, type: .root)
         }
         else{
@@ -89,7 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
     
     
-    func resetAllViews(modalVC:UIViewController?){
+    func resetAllViews(){
         // Create new Intro
         self.setUpRootViewController()
         

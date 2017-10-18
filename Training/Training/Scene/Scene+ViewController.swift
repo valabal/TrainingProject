@@ -23,29 +23,28 @@
 import UIKit
 
 extension Scene {
-  func viewController() -> UIViewController {
-    let storyboard = UIStoryboard(name: "MainSB", bundle: nil)
-    switch self {
-    case .login():
-        let storyboard = UIStoryboard.init(name: "LoginSB", bundle: Bundle.main)
-        let viewController = storyboard.instantiateViewController(withIdentifier: "LoginVC")
-        let nc = UINavigationController.init(rootViewController: viewController)
-        return nc
-    case .mainVC(let viewModel):
-      let vc = storyboard.instantiateViewController(withIdentifier: "MainVC") as! MainVC
-      vc.viewModel = viewModel
-      let nc = UINavigationController.init(rootViewController: vc)
-      return nc
-    case .detailVC(let viewModel):
-      let vc = storyboard.instantiateViewController(withIdentifier: "DetailVC") as! DetailVC
-      vc.viewModel = viewModel
-     return vc
-    case .detailModal(let merchant):
-      let vc = storyboard.instantiateViewController(withIdentifier: "DetailModal") as! DetailModal
-      vc.merchant = merchant
-      return vc
-   }
-  }
+    func viewController() -> UIViewController {
+        let storyboard = UIStoryboard(name: "MainSB", bundle: nil)
+        switch self {
+        case .login(let viewModel):
+            let storyboard = UIStoryboard.init(name: "LoginSB", bundle: Bundle.main)
+            let vc = storyboard.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
+            vc.viewModel = viewModel
+            return vc
+        case .mainVC(let viewModel):
+            let vc = storyboard.instantiateViewController(withIdentifier: "MainVC") as! MainVC
+            vc.viewModel = viewModel
+            return vc
+        case .detailVC(let viewModel):
+            let vc = storyboard.instantiateViewController(withIdentifier: "DetailVC") as! DetailVC
+            vc.viewModel = viewModel
+            return vc
+        case .detailModal(let merchant):
+            let vc = storyboard.instantiateViewController(withIdentifier: "DetailModal") as! DetailModal
+            vc.merchant = merchant
+            return vc
+        }
+    }
 }
 
 extension UIViewController{
