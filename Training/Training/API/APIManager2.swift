@@ -11,6 +11,7 @@ import Alamofire
 import RxCocoa
 import RxSwift
 import RxAlamofire
+import Moya
 
 struct MerchantResponse{
    
@@ -25,15 +26,10 @@ struct MerchantResponse{
 }
 
 class APIManager2: NSObject {
-
     
     static func MerchantList (request:ListMerchantRequest) -> Observable<MerchantResponse>{
         
-        let URL = ROOT_URL+"merchants/search"
-        
-        let param = request.toDictionary() as? Parameters
-        
-        let request = json(.post, URL, parameters: param).flatMap{ json -> Observable<MerchantResponse> in
+        return Provider.requestJSON(.merchantList(request:request)).flatMap{ json -> Observable<MerchantResponse> in
             
             guard let json = json as? [String: AnyObject],let merchants = json["results"] as? [NSDictionary] else {
                 return Observable.empty()
@@ -45,9 +41,19 @@ class APIManager2: NSObject {
             
             return Observable.just(MerchantResponse.init(element,pagination:pagination))
             
-        }
+            }
+            /*
+            .do(onError:{error in
+                if let err = error as? Moya.MoyaError {
+                    switch(err){
+                    case .statusCode(let response) :
+                         let data = try response.mapJSON()
+                        break
+                    default : break
+                    }
+                }
+            })*/
         
-        return request
 
     }
     
@@ -74,6 +80,29 @@ class APIManager2: NSObject {
         return request
         
     }
+    
+    
+    static func MerchantDetail2 (merchantID:NSNumber) -> Observable<Merchant>{
+        
+        
+        return Provider.requestJSON(.merchantDetail(merchantID: merchantID)).flatMap{ jsonResult -> Observable<Merchant> in
+            
+            guard let json = jsonResult as? [String: AnyObject],let merchant = json["merchant"] as? NSDictionary else {
+                return Observable.empty()
+            }
+            
+            let element = Merchant(dictionary: merchant)
+            
+            if let products = json["products"] as? NSDictionary {
+                element.products = products
+            }
+            
+            return Observable.just(element)
+            
+        }
+        
+    }
+    
     
     
 }

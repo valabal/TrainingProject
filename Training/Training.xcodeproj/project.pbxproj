@@ -51,6 +51,9 @@
 		AF2ABFE51F541AEE00D1449E /* ParallaxHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF2ABFE41F541AEE00D1449E /* ParallaxHeaderView.m */; };
 		AF2ABFE81F541B1700D1449E /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = AF2ABFE71F541B1700D1449E /* UIImage+ImageEffects.m */; };
 		AF3686441F95A4060066A07A /* DetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3686431F95A4060066A07A /* DetailVM.swift */; };
+		AF3686531F95F7CD0066A07A /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3686521F95F7CD0066A07A /* APIService.swift */; };
+		AF3686551F95FC180066A07A /* EmveepPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3686541F95FC180066A07A /* EmveepPlugin.swift */; };
+		AF3686571F96067F0066A07A /* MoyaExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3686561F96067F0066A07A /* MoyaExtension.swift */; };
 		AFBF1D531F94631900326B0D /* MainVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBF1D521F94631900326B0D /* MainVM.swift */; };
 		AFBF1D551F946A8A00326B0D /* APIManager2.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBF1D541F946A8A00326B0D /* APIManager2.swift */; };
 		AFBF1D571F94843000326B0D /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBF1D561F94843000326B0D /* ActivityIndicator.swift */; };
@@ -127,6 +130,9 @@
 		AF2ABFE61F541B1700D1449E /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		AF2ABFE71F541B1700D1449E /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		AF3686431F95A4060066A07A /* DetailVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailVM.swift; sourceTree = "<group>"; };
+		AF3686521F95F7CD0066A07A /* APIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		AF3686541F95FC180066A07A /* EmveepPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmveepPlugin.swift; sourceTree = "<group>"; };
+		AF3686561F96067F0066A07A /* MoyaExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoyaExtension.swift; sourceTree = "<group>"; };
 		AFBF1D521F94631900326B0D /* MainVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainVM.swift; sourceTree = "<group>"; };
 		AFBF1D541F946A8A00326B0D /* APIManager2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager2.swift; sourceTree = "<group>"; };
 		AFBF1D561F94843000326B0D /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
@@ -286,6 +292,7 @@
 		AF02D1F01F4A889E00B7F852 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				AF3686511F95F7AA0066A07A /* Moya */,
 				AFBF1D561F94843000326B0D /* ActivityIndicator.swift */,
 				AF22D94E1F4C36D0001DCA42 /* APIManager.swift */,
 				AFBF1D541F946A8A00326B0D /* APIManager2.swift */,
@@ -414,6 +421,16 @@
 				AF3686431F95A4060066A07A /* DetailVM.swift */,
 			);
 			name = DetailVC;
+			sourceTree = "<group>";
+		};
+		AF3686511F95F7AA0066A07A /* Moya */ = {
+			isa = PBXGroup;
+			children = (
+				AF3686521F95F7CD0066A07A /* APIService.swift */,
+				AF3686541F95FC180066A07A /* EmveepPlugin.swift */,
+				AF3686561F96067F0066A07A /* MoyaExtension.swift */,
+			);
+			name = Moya;
 			sourceTree = "<group>";
 		};
 		AFBF1D511F9462FF00326B0D /* MainVC */ = {
@@ -590,8 +607,10 @@
 				AFBF1D621F94B75700326B0D /* SceneTransitionType.swift in Sources */,
 				AF02D1FE1F4A88F600B7F852 /* UserManager.swift in Sources */,
 				AF22D94F1F4C36D0001DCA42 /* APIManager.swift in Sources */,
+				AF3686551F95FC180066A07A /* EmveepPlugin.swift in Sources */,
 				AF2ABFDF1F54095300D1449E /* Offer.swift in Sources */,
 				AF29E5E11F4D46D000DF3C27 /* LoginVC.swift in Sources */,
+				AF3686531F95F7CD0066A07A /* APIService.swift in Sources */,
 				AF02D2361F4A8E6A00B7F852 /* MainVC.swift in Sources */,
 				AF02D1FB1F4A88F600B7F852 /* StringHelper.swift in Sources */,
 				AF2ABFDB1F53F1C400D1449E /* DetailVC.swift in Sources */,
@@ -611,6 +630,7 @@
 				AF29E5E41F4D53CF00DF3C27 /* BasicViewController.swift in Sources */,
 				AFBF1D551F946A8A00326B0D /* APIManager2.swift in Sources */,
 				AFBF1D5F1F94B75700326B0D /* SceneCoordinatorType.swift in Sources */,
+				AF3686571F96067F0066A07A /* MoyaExtension.swift in Sources */,
 				AF02D2271F4A8A2400B7F852 /* EmveepRegularButton.swift in Sources */,
 				AF02D1FC1F4A88F600B7F852 /* FunctionHelper.swift in Sources */,
 				AF02D22A1F4A8A2400B7F852 /* IndexButton.swift in Sources */,

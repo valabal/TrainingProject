@@ -9,6 +9,7 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import Moya
 
 protocol DetailVMInputs {
     var loadMerchantDetail:PublishSubject<Void>{ get }
@@ -52,7 +53,7 @@ class DetailVM : DetailVMType, DetailVMInputs, DetailVMOutputs {
         isLoading = Loading.asDriver()
         
         let request = loadMerchantDetail.flatMap{ _ in
-            return APIManager2.MerchantDetail(merchantID: merchantID!).trackActivity(Loading)
+            return APIManager2.MerchantDetail2(merchantID: merchantID!).trackActivity(Loading)
         }.shareReplay(1)
         
         let response = request
@@ -63,6 +64,7 @@ class DetailVM : DetailVMType, DetailVMInputs, DetailVMOutputs {
             }).shareReplay(1)
         
         response.bind(to: self.current_merchant).disposed(by: disposeBag)
+        
         
     }
     

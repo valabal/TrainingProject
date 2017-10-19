@@ -77,6 +77,12 @@ PODS:
   - JVFloatLabeledTextField (1.1.1)
   - Masonry (1.0.2)
   - MBProgressHUD (1.0.0)
+  - Moya/Core (8.0.5):
+    - Alamofire (~> 4.1)
+    - Result (~> 3.0)
+  - Moya/RxSwift (8.0.5):
+    - Moya/Core
+    - RxSwift (~> 3.0)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
     - nanopb/encode (= 0.3.8)
@@ -84,6 +90,7 @@ PODS:
   - nanopb/encode (0.3.8)
   - Protobuf (3.3.0)
   - PXAlertView (0.1.1)
+  - Result (3.2.3)
   - RxAlamofire (3.0.3):
     - RxAlamofire/Core (= 3.0.3)
   - RxAlamofire/Core (3.0.3):
@@ -119,6 +126,7 @@ DEPENDENCIES:
   - JVFloatLabeledTextField (from `https://github.com/valabal/JVFloatLabeledTextField.git`)
   - Masonry
   - MBProgressHUD
+  - Moya/RxSwift (~> 8.0.0)
   - PXAlertView (from `https://github.com/valabal/PXAlertView.git`)
   - RxAlamofire
   - RxCocoa
@@ -167,9 +175,11 @@ SPEC CHECKSUMS:
   JVFloatLabeledTextField: 0e5524b097f102036214dd8279edc8ecf08b5e18
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  Moya: c37eec09a098ba9991b5a963b291fc5704bdb9ef
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: d582fecf68201eac3d79ed61369ef45734394b9c
   PXAlertView: bb8a7e6bb95f73fe3fe091cacd279b683460f084
+  Result: 128640a6347e8d2ae48b142556739a2d13f90ce6
   RxAlamofire: 5eb39188c4917ad98127c0ecb4878a61b7517003
   RxCocoa: 84a08739ab186248c7f31ce4ee92d6f8a947d690
   RxSwift: f9de85ea20cd2f7716ee5409fc13523dc638e4e4
@@ -179,6 +189,6 @@ SPEC CHECKSUMS:
   TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
   UIActivityIndicator-for-SDWebImage: 7bf7ebbf0ed1747dedc0d6e949c4603a6d0f9e0c
 
-PODFILE CHECKSUM: 533e64b5ad7ed70e1cff0fd7da38690e15485106
+PODFILE CHECKSUM: dbf4c863bb1664f9cc701c19c62d905cdaca7e4f
 
 COCOAPODS: 1.1.1
