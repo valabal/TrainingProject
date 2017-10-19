@@ -23,7 +23,7 @@
 import Foundation
 
 enum Scene {
-  case login()
+  case login(LoginVM)
   case mainVC(MainVM)
   case detailVC(DetailVM)
   case detailModal(Merchant)

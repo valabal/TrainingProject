@@ -1,41 +1,19 @@
 //
-//  BasicViewController.swift
-//  EmveepApp
+//  ViewControllerExtension.swift
+//  Training
 //
-//  Created by Valbal on 1/13/17.
+//  Created by Fransky on 10/18/17.
 //  Copyright © 2017 Emveep. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import SnapKit
 
-class BasicViewController: UIViewController {
 
-    var isFirstTimeLoad : Bool?
-    @IBOutlet var tableView : UITableView?
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-        self.settingNavMenuBarWithTitle(title:nil)
-        self.settingRightNavButtonWithView(arrayOfUIView:nil)
-        
-        self.tableView?.register(UINib(nibName: "BasicViewCell", bundle: nil), forCellReuseIdentifier: "basicCell")
-        self.tableView?.separatorStyle = .none
-        self.tableView?.estimatedRowHeight = 100.0
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
+extension UIViewController{
     
     func settingNavBar(){
-       
+        
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.navigationBackground
         self.navigationController?.navigationBar.barTintColor = UIColor.navigationBackground
@@ -46,61 +24,64 @@ class BasicViewController: UIViewController {
         self.navigationController?.navigationBar.layer.shadowOpacity = 1.0
         
     }
-
-    func settingNavMenuBarWithTitle(title : NSString?){
-      
-        self.settingNavBar()
-        self.settingBarWithTitle(title: title)
-        let leftView = BasicViewController.generateMenuButtonViewWithImage(image: UIImage(named: "more_icon"), action: #selector(showMenu), target: self)
-        
-        let negativeSpacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.fixedSpace, target: nil, action: nil)
-        negativeSpacer.width = -15
-
-        self.navigationItem.setLeftBarButtonItems([negativeSpacer,UIBarButtonItem(customView: leftView!)], animated: false)
-        
-    }
     
-    func settingNavBackBarWithTitle(title:NSString?){
+    func settingNavBarWithTitle(_ title : String? = nil){
+        
         self.settingNavBar()
-        self.settingBarWithTitle(title: title)
         
-        let leftView = BasicViewController.generateMenuButtonViewWithImage(image: UIImage(named: "back"), action: #selector(goBack), target: self)
-        
-        let negativeSpacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.fixedSpace, target: nil, action: nil)
-        negativeSpacer.width = -15
-        
-        self.navigationItem.setLeftBarButtonItems([negativeSpacer,UIBarButtonItem(customView: leftView!)], animated: false)
-        
-    }
-    
-    func settingBarWithTitle(title : NSString?){
-        
-        if title != nil{
-           self.navigationItem.title = title as String?
+        if let judul = title{
+            self.navigationItem.title = judul
         }
         else{
             self.navigationItem.title = "Home"
         }
-        
+    
     }
     
     
-    func settingRightNavButtonWithView(arrayOfUIView : [UIView]?){
-       
-        if(arrayOfUIView == nil){
-            self.navigationItem .setRightBarButtonItems(nil,animated:false)
+    func settingNavMenuBarWithTitle(_ title : String? = nil){
+        self.settingButtonBarWithTitle(title,button:{return
+            UIViewController.generateMenuButtonViewWithImage(image: UIImage(named: "more_icon"), action: #selector(showMenu), target: self)
+        })
+    }
+
+    func settingNavBackBarWithTitle(_ title:String? = nil){
+        self.settingButtonBarWithTitle(title,button:{return
+             UIViewController.generateMenuButtonViewWithImage(image: UIImage(named: "back"), action: #selector(goBack), target: self)
+        })
+    }
+    
+    
+    func settingButtonBarWithTitle(_ title : String? = nil,button:()->UIView){
+        
+        self.settingNavBarWithTitle(title)
+        
+        let leftView = button()
+        
+        let negativeSpacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.fixedSpace, target: nil, action: nil)
+        negativeSpacer.width = -15
+        
+        self.navigationItem.setLeftBarButtonItems([negativeSpacer,UIBarButtonItem(customView: leftView)], animated: false)
+        
+    }
+
+    
+    func  settingNavButtonWithView(arrayOfUIView : [UIView]?, layoutFunc:(_ items: [UIBarButtonItem]?, _ animated: Bool)->()){
+    
+        guard let arrayOfUIView = arrayOfUIView else{
+            layoutFunc(nil,false)
             return;
         }
         
         var width : CGFloat = 0.0
         var originX : CGFloat = 0.0
         let rightView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 40))
-    
         
-        for view in arrayOfUIView!{
-         
+        
+        for view in arrayOfUIView {
+            
             if(!view.frame.equalTo(CGRect.zero)){
-              
+                
                 view.frame = CGRect(x: Double(originX), y: 0.0, width: Double(view.frame.size.width), height: 40.0)
                 rightView.addSubview(view)
                 
@@ -116,45 +97,18 @@ class BasicViewController: UIViewController {
         let negativeSpacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.fixedSpace, target: nil, action: nil)
         negativeSpacer.width = -10
         
-        self.navigationItem.setRightBarButtonItems([negativeSpacer,UIBarButtonItem(customView: rightView)], animated: false)
+        layoutFunc([negativeSpacer,UIBarButtonItem(customView: rightView)],false)
         
     }
     
     
+    func settingRightNavButtonWithView(arrayOfUIView : [UIView]?){
+        self.settingNavButtonWithView(arrayOfUIView: arrayOfUIView, layoutFunc: self.navigationItem.setRightBarButtonItems)
+    }
+    
+    
     func settingLeftNavButtonWithView(arrayOfUIView : [UIView]?){
-      
-        
-        if(arrayOfUIView == nil){
-            self.navigationItem .setLeftBarButtonItems(nil,animated:false)
-            return;
-        }
-        
-        var width : CGFloat = 0.0
-        var originX : CGFloat = 0.0
-        let rightView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 40))
-        
-        
-        for view in arrayOfUIView!{
-            
-            if(!view.frame.equalTo(CGRect.zero)){
-                
-                view.frame = CGRect(x: Double(originX), y: 0.0, width: Double(view.frame.size.width), height: 40.0)
-                rightView.addSubview(view)
-                
-                width = CGFloat(view.frame.size.width) + CGFloat(view.frame.origin.x)
-                originX = width
-                
-            }
-            
-        }
-        
-        rightView.frame = CGRect(x: 0, y: 0, width: width, height: 40)
-        
-        let negativeSpacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.fixedSpace, target: nil, action: nil)
-        negativeSpacer.width = -5
-        
-        self.navigationItem.setLeftBarButtonItems([negativeSpacer,UIBarButtonItem(customView: rightView)], animated: false)
-        
+        self.settingNavButtonWithView(arrayOfUIView: arrayOfUIView, layoutFunc: self.navigationItem.setLeftBarButtonItems)
     }
     
     func showMenu(){
@@ -162,22 +116,21 @@ class BasicViewController: UIViewController {
     }
     
     func goBack(){
+        
         self.view.endEditing(true)
         
         if let delegate = UIApplication.shared.delegate as? AppDelegate{
             delegate.sceneCoordinator?.pop(animated: true)
         }
         else{
-          self.navigationController?.popViewController(animated: true)
+            self.navigationController?.popViewController(animated: true)
         }
         
     }
     
-    
-    static func generateMenuButtonViewWithImage(image : UIImage?, action: Selector, target : Any?) -> UIView?{
-      
-        let leftView : UIView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40)
-        )
+    static func generateMenuButtonViewWithImage(image : UIImage?, action: Selector, target : Any?) -> UIView{
+        
+        let leftView : UIView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         
         let imageView : UIImageView = UIImageView(image: image)
         imageView.frame = CGRect(x: 5, y: 5, width: 30, height: 30)
@@ -188,16 +141,14 @@ class BasicViewController: UIViewController {
         button.frame =  CGRect(x: 0, y: 0, width: 40, height: 40)
         button.addTarget(target, action: action, for: UIControlEvents.touchUpInside)
         leftView.addSubview(button)
-    
+        
         return leftView
         
     }
     
-    static func generateMenuButtonViewWithTitle(title : String?, action: Selector, target : Any?) -> UIView?{
+    static func generateMenuButtonViewWithTitle(title : String?, action: Selector, target : Any?) -> UIView{
         
-        
-        let leftView : UIView = UIView(frame: CGRect(x: 0, y: 0, width: 55, height: 40)
-        )
+        let leftView : UIView = UIView(frame: CGRect(x: 0, y: 0, width: 55, height: 40))
         
         let button : UIButton = UIButton(type: UIButtonType.custom)
         button.titleLabel?.font = UIFont.regularFontWithSize(size: 16.0)
@@ -210,10 +161,9 @@ class BasicViewController: UIViewController {
         
     }
     
-    static func generateMenuButtonViewWithImageLitter(image : UIImage?, action: Selector, target : Any?) -> UIView?{
+    static func generateMenuButtonViewWithImageLitter(image : UIImage?, action: Selector, target : Any?) -> UIView{
         
-        let leftView : UIView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40)
-        )
+        let leftView : UIView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         
         let imageView : UIImageView = UIImageView(image: image)
         imageView.frame = CGRect(x: 8, y: 8, width: 24, height: 24)
@@ -231,28 +181,28 @@ class BasicViewController: UIViewController {
     
     
     func createViewFromButtonArray(_ array : [UIView])->UIView{
-       
+        
         let container = UIView()
         var prevButton : UIView? = nil
         var counter = 0
         
         for button:UIView in array {
-          container.addSubview(button)
+            container.addSubview(button)
             
-          var isButtonImage = true
+            var isButtonImage = true
             
             if let but = button as? UIButton{
                 isButtonImage = but.image(for: .normal) != nil ? true : false
                 let edge = but.contentEdgeInsets
                 if(UIEdgeInsetsEqualToEdgeInsets(edge, UIEdgeInsetsMake(0, 0, 0, 0))){
-                  but.contentEdgeInsets = UIEdgeInsetsMake(2, 2, 2, 2)
+                    but.contentEdgeInsets = UIEdgeInsetsMake(2, 2, 2, 2)
                 }
             }
             
             button.snp.makeConstraints({ (make) -> Void in
                 make.top.equalTo(container)
                 make.bottom.equalTo(container)
-
+                
                 if(isButtonImage){
                     make.width.equalTo(40)
                 }
@@ -260,26 +210,26 @@ class BasicViewController: UIViewController {
                 make.height.equalTo(40)
                 
                 if(prevButton == nil){
-                  make.leading.equalTo(container)
+                    make.leading.equalTo(container)
                 }
                 else{
-                  make.leading.equalTo(prevButton!.snp.trailing)
+                    make.leading.equalTo(prevButton!.snp.trailing)
                 }
                 
                 if(counter == array.count-1){
-                  make.trailing.equalTo(container)
+                    make.trailing.equalTo(container)
                 }
             })
-
+            
             prevButton = button
             counter += 1
             
         }
-     
+        
         return container
-    
+        
     }
+
+    
     
 }
-
-

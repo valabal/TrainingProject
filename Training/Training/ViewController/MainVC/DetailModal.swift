@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-class DetailModal: BasicViewController{
+class DetailModal: BasicVC{
     
     var merchant : Merchant!
     

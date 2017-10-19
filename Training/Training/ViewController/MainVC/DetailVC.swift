@@ -11,7 +11,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-class DetailVC: BasicViewController{
+class DetailVC: BasicVC{
     
     @IBOutlet var iconView : UIImageView?
     @IBOutlet var restaurantTypeLbl : UILabel?
@@ -24,19 +24,18 @@ class DetailVC: BasicViewController{
     
     var viewModel : DetailVM!
     var state : ProductType = .NORMAL
-    private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
 
         super.viewDidLoad()
-        self.settingNavBackBarWithTitle(title: "Merchant Detail")
+        self.settingNavBackBarWithTitle("Merchant Detail")
         
-        if let infoBut = BasicViewController.generateMenuButtonViewWithImage(image: UIImage(named:"info_whte"), action:#selector(goToModalDetail), target: self)
-        {self.settingRightNavButtonWithView(arrayOfUIView: [infoBut])}
+        let infoBut = UIViewController.generateMenuButtonViewWithImage(image: UIImage(named:"info_whte"), action:#selector(goToModalDetail), target: self)
+        
+        self.settingRightNavButtonWithView(arrayOfUIView: [infoBut])
         
         self.tableView?.estimatedRowHeight = 100.0
         
-        self.bindingViews()
         
     }
     
@@ -68,7 +67,7 @@ class DetailVC: BasicViewController{
     }
     
     
-    func bindingViews(){
+    override func bindingViews(){
     
         let refreshMerchant:PublishSubject<Void> = PublishSubject<Void>()
 

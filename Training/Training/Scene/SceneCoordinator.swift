@@ -49,7 +49,7 @@ class SceneCoordinator: SceneCoordinatorType {
     switch type {
       case .root:
         currentViewController = SceneCoordinator.actualViewController(for: viewController)
-        window.rootViewController = viewController
+        window.rootViewController = UINavigationController.init(rootViewController: viewController)
         subject.onCompleted()
 
       case .push:

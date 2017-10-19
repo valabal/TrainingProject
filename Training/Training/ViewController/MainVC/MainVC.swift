@@ -10,20 +10,18 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class MainVC: BasicViewController{
+class MainVC: BasicVC{
 
     var viewModel : MainVM!
     
-    private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.settingBarWithTitle(title:"Merchant List")
-    
-        self.settingRightNavButtonWithView(arrayOfUIView: [BasicViewController.generateMenuButtonViewWithImage(image: UIImage.init(named: "shutdown"), action:#selector(logOff), target: self)!])
-
         
-        self.bindingViews()
+        self.navigationController?.navigationBar.isHidden = false
+        self.settingNavBarWithTitle("Merchant List")
+    
+        self.settingRightNavButtonWithView(arrayOfUIView: [UIViewController.generateMenuButtonViewWithImage(image: UIImage.init(named: "shutdown"), action:#selector(logOff), target: self)])
         
     }
 
@@ -35,11 +33,11 @@ class MainVC: BasicViewController{
     func logOff(){
         UserManager.saveAccessToken(token: nil)
         let delegate = UIApplication.shared.delegate as! AppDelegate
-        delegate.resetAllViews(modalVC: nil)
+        delegate.resetAllViews()
     }
     
     
-    func bindingViews(){
+    override func bindingViews(){
         
         let loadPage:PublishSubject<Void> = PublishSubject<Void>()
         let loadNextPage:PublishSubject<Void> = PublishSubject<Void>()

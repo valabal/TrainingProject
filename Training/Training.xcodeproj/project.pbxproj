@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0DC36DE86E27026B500F2037 /* Pods_Training.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68736A72664C85563A3F9858 /* Pods_Training.framework */; };
+		92ECA19E1F9704F100E9780E /* LoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92ECA19D1F9704F100E9780E /* LoginVM.swift */; };
+		92ECA1A11F973FE900E9780E /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92ECA1A01F973FE900E9780E /* ViewControllerExtension.swift */; };
 		AF02D1D91F4A858C00B7F852 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF02D1D81F4A858C00B7F852 /* AppDelegate.swift */; };
 		AF02D1E21F4A858C00B7F852 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF02D1E11F4A858C00B7F852 /* Assets.xcassets */; };
 		AF02D1E51F4A858D00B7F852 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF02D1E31F4A858D00B7F852 /* LaunchScreen.storyboard */; };
@@ -40,7 +42,7 @@
 		AF22D9511F4C3A58001DCA42 /* APIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF22D9501F4C3A58001DCA42 /* APIModel.swift */; };
 		AF29E5DF1F4D467100DF3C27 /* LoginSB.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF29E5DE1F4D467100DF3C27 /* LoginSB.storyboard */; };
 		AF29E5E11F4D46D000DF3C27 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29E5E01F4D46D000DF3C27 /* LoginVC.swift */; };
-		AF29E5E41F4D53CF00DF3C27 /* BasicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29E5E31F4D53CF00DF3C27 /* BasicViewController.swift */; };
+		AF29E5E41F4D53CF00DF3C27 /* BasicVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29E5E31F4D53CF00DF3C27 /* BasicVC.swift */; };
 		AF29E5E81F4D5A3C00DF3C27 /* shutdown.png in Resources */ = {isa = PBXBuildFile; fileRef = AF29E5E71F4D5A3C00DF3C27 /* shutdown.png */; };
 		AF29E5EB1F4D5C7700DF3C27 /* BasicViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29E5EA1F4D5C7700DF3C27 /* BasicViewCell.swift */; };
 		AF29E5ED1F4D5CA700DF3C27 /* BasicViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF29E5EC1F4D5CA700DF3C27 /* BasicViewCell.xib */; };
@@ -82,6 +84,8 @@
 /* Begin PBXFileReference section */
 		11B774A568B7510B2F293504 /* Pods-Training.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Training.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Training/Pods-Training.debug.xcconfig"; sourceTree = "<group>"; };
 		68736A72664C85563A3F9858 /* Pods_Training.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Training.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		92ECA19D1F9704F100E9780E /* LoginVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVM.swift; sourceTree = "<group>"; };
+		92ECA1A01F973FE900E9780E /* ViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
 		AF02D1D51F4A858C00B7F852 /* Training.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Training.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF02D1D81F4A858C00B7F852 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AF02D1E11F4A858C00B7F852 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -116,7 +120,7 @@
 		AF22D9501F4C3A58001DCA42 /* APIModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIModel.swift; sourceTree = "<group>"; };
 		AF29E5DE1F4D467100DF3C27 /* LoginSB.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoginSB.storyboard; sourceTree = "<group>"; };
 		AF29E5E01F4D46D000DF3C27 /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
-		AF29E5E31F4D53CF00DF3C27 /* BasicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicViewController.swift; sourceTree = "<group>"; };
+		AF29E5E31F4D53CF00DF3C27 /* BasicVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicVC.swift; sourceTree = "<group>"; };
 		AF29E5E71F4D5A3C00DF3C27 /* shutdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shutdown.png; sourceTree = "<group>"; };
 		AF29E5EA1F4D5C7700DF3C27 /* BasicViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicViewCell.swift; sourceTree = "<group>"; };
 		AF29E5EC1F4D5CA700DF3C27 /* BasicViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BasicViewCell.xib; sourceTree = "<group>"; };
@@ -188,6 +192,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		92ECA19F1F973FD900E9780E /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				92ECA1A01F973FE900E9780E /* ViewControllerExtension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		AF02D1CC1F4A858C00B7F852 = {
 			isa = PBXGroup;
 			children = (
@@ -209,6 +221,7 @@
 		AF02D1D71F4A858C00B7F852 /* Training */ = {
 			isa = PBXGroup;
 			children = (
+				92ECA19F1F973FD900E9780E /* Extension */,
 				AFBF1D581F94B74000326B0D /* Scene */,
 				AF2ABFE11F541ACD00D1449E /* Library */,
 				AF02D1F11F4A88B300B7F852 /* ViewController */,
@@ -371,6 +384,7 @@
 			children = (
 				AF29E5DE1F4D467100DF3C27 /* LoginSB.storyboard */,
 				AF29E5E01F4D46D000DF3C27 /* LoginVC.swift */,
+				92ECA19D1F9704F100E9780E /* LoginVM.swift */,
 			);
 			path = LoginVC;
 			sourceTree = "<group>";
@@ -379,7 +393,7 @@
 			isa = PBXGroup;
 			children = (
 				AF29E5E91F4D5C5E00DF3C27 /* BasicCell */,
-				AF29E5E31F4D53CF00DF3C27 /* BasicViewController.swift */,
+				AF29E5E31F4D53CF00DF3C27 /* BasicVC.swift */,
 			);
 			name = BasicVC;
 			sourceTree = "<group>";
@@ -608,6 +622,7 @@
 				AF02D1FE1F4A88F600B7F852 /* UserManager.swift in Sources */,
 				AF22D94F1F4C36D0001DCA42 /* APIManager.swift in Sources */,
 				AF3686551F95FC180066A07A /* EmveepPlugin.swift in Sources */,
+				92ECA19E1F9704F100E9780E /* LoginVM.swift in Sources */,
 				AF2ABFDF1F54095300D1449E /* Offer.swift in Sources */,
 				AF29E5E11F4D46D000DF3C27 /* LoginVC.swift in Sources */,
 				AF3686531F95F7CD0066A07A /* APIService.swift in Sources */,
@@ -627,7 +642,7 @@
 				AFBF1D571F94843000326B0D /* ActivityIndicator.swift in Sources */,
 				AF2ABFE81F541B1700D1449E /* UIImage+ImageEffects.m in Sources */,
 				AF15D4D31F566C5000921A69 /* HWPullToInfinity.swift in Sources */,
-				AF29E5E41F4D53CF00DF3C27 /* BasicViewController.swift in Sources */,
+				AF29E5E41F4D53CF00DF3C27 /* BasicVC.swift in Sources */,
 				AFBF1D551F946A8A00326B0D /* APIManager2.swift in Sources */,
 				AFBF1D5F1F94B75700326B0D /* SceneCoordinatorType.swift in Sources */,
 				AF3686571F96067F0066A07A /* MoyaExtension.swift in Sources */,
@@ -637,6 +652,7 @@
 				AF02D1FF1F4A88F600B7F852 /* AlertHelper.swift in Sources */,
 				AFBF1D601F94B75700326B0D /* SceneCoordinator.swift in Sources */,
 				AF02D22E1F4A8A2400B7F852 /* EmveepAlertView.swift in Sources */,
+				92ECA1A11F973FE900E9780E /* ViewControllerExtension.swift in Sources */,
 				AF15D4D51F5679B900921A69 /* DetailModal.swift in Sources */,
 				AFBF1D531F94631900326B0D /* MainVM.swift in Sources */,
 				AF02D22B1F4A8A2400B7F852 /* UIDatePicker+Toolbar.swift in Sources */,
