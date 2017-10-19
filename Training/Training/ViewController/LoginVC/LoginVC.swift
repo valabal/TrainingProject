@@ -29,10 +29,16 @@ class LoginVC : UIViewController{
     func bindingViews(){
        
         //input
-        self.userTF?.rx.text.bind(to: self.viewModel.email).disposed(by: disposeBag)
-        self.passTF?.rx.text.bind(to: self.viewModel.password).disposed(by: disposeBag)
-        self.buttonLogin?.rx.tap.bind(to: self.viewModel.inputs.loginProcess).disposed(by: disposeBag)
+        self.userTF?.rx.text
+            .bind(to: self.viewModel.email)
+            .disposed(by: disposeBag)
         
+        self.passTF?.rx.text
+            .bind(to: self.viewModel.password).disposed(by: disposeBag)
+        
+        self.buttonLogin?.rx.tap
+            .bind(to: self.viewModel.inputs.loginProcess)
+            .disposed(by: disposeBag)
         
         //output
         self.viewModel.isLoading.asObservable().subscribe(onNext:{isLoading in

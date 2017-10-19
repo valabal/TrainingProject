@@ -60,7 +60,6 @@ class DetailVC: BasicVC{
         
     }
     
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -117,7 +116,7 @@ class DetailVC: BasicVC{
     }
     
     func goToModalDetail(){
-        self.viewModel.goToDetailModal()
+        self.viewModel.detailModalTrigger.onNext(self.merchant)
     }
     
     func openLink(_ link:String){
@@ -140,7 +139,7 @@ extension DetailVC:UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
      
-        if (self.viewModel.current_merchant.value.merchant_detail) != nil {
+        if (self.merchant.merchant_detail) != nil {
             return self.getRowNumber()
         }
         
@@ -156,7 +155,7 @@ extension DetailVC:UITableViewDelegate,UITableViewDataSource{
             
             var counter = 1
             
-            if let products = self.viewModel.current_merchant.value.getProductType(state: self.state){
+            if let products = self.merchant.getProductType(state: self.state){
                 counter = products.count == 0 ? 1 : products.count
             }
             
@@ -180,7 +179,7 @@ extension DetailVC:UITableViewDelegate,UITableViewDataSource{
             return 40;
         }
         
-        if (self.viewModel.current_merchant.value.products) != nil{
+        if (self.merchant.products) != nil{
             
             if let products = self.merchant.getProductType(state: state), products.count == 0{
                 //empty cell
@@ -243,7 +242,7 @@ extension DetailVC:UITableViewDelegate,UITableViewDataSource{
         }
         else{
             
-            guard let product = self.viewModel.current_merchant.value.getProductType(state: self.state), product.count > 0 else{
+            guard let product = self.merchant.getProductType(state: self.state), product.count > 0 else{
                 cell = tableView.dequeueReusableCell(withIdentifier: "redeemEmptyCell")!
                 return cell
             }

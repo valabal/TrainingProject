@@ -14,7 +14,6 @@ class MainVC: BasicVC{
 
     var viewModel : MainVM!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,6 +30,7 @@ class MainVC: BasicVC{
     }
     
     func logOff(){
+        
         UserManager.saveAccessToken(token: nil)
         let delegate = UIApplication.shared.delegate as! AppDelegate
         delegate.resetAllViews()
@@ -51,18 +51,18 @@ class MainVC: BasicVC{
         }
         
         //input
-        loadPage.bind(to: self.viewModel.inputs.loadPageTrigger).addDisposableTo(disposeBag)
-        loadNextPage.bind(to: self.viewModel.inputs.loadNextPageTrigger).addDisposableTo(disposeBag)
+        loadPage.bind(to: self.viewModel.inputs.loadPageTrigger).disposed(by:disposeBag)
+        loadNextPage.bind(to: self.viewModel.inputs.loadNextPageTrigger).disposed(by:disposeBag)
+        self.rx.viewWillAppear.bind(to: self.viewModel.inputs.viewWillAppearTrigger).disposed(by:disposeBag)
         
-        self.viewModel.loadHUDTrigger.onNext()
-                
+        
         //output
         self.viewModel.outputs.isLoading.asObservable().subscribe(onNext:{[weak self] isLoading in
             if (!isLoading) {
                   self?.tableView?.stopPullToRefresh()
                   self?.tableView?.infiniteScrollingView.stopAnimating()
             }
-        }).addDisposableTo(disposeBag)
+        }).disposed(by:disposeBag)
         
         self.viewModel.outputs.isHUDLoading.asObservable().subscribe(onNext:{isLoading in
             if(isLoading){
@@ -71,22 +71,24 @@ class MainVC: BasicVC{
             else{
                FunctionHelper.hideHUD()
             }
-        }).addDisposableTo(disposeBag)
+        }).disposed(by:disposeBag)
         
         self.viewModel.outputs.contents.asDriver().asObservable().subscribe(onNext:{[weak self] _ in
             self?.tableView?.reloadData()
-        }).addDisposableTo(disposeBag)
+        }).disposed(by:disposeBag)
  
-        self.viewModel.outputs.isComplete.asDriver().asObservable().distinctUntilChanged().skip(1)
+       self.viewModel.outputs.isComplete.asDriver().asObservable().distinctUntilChanged().skip(1)
         .subscribe(onNext:{[weak self] isComplete in
             self?.tableView?.showsInfiniteScrolling = !isComplete
-        }).addDisposableTo(disposeBag)
+        }).disposed(by:disposeBag)
         
         self.tableView?.rx.itemSelected
             .subscribe(onNext: { [weak self]indexPath in
                 self?.viewModel.inputs.tapped(row : indexPath.row)
-            }).addDisposableTo(disposeBag)
-
+            }).disposed(by:disposeBag)
+        
+        
+        self.viewModel.loadHUDTrigger.onNext()
     
     }
     

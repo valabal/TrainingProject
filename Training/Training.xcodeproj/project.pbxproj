@@ -56,6 +56,7 @@
 		AF3686531F95F7CD0066A07A /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3686521F95F7CD0066A07A /* APIService.swift */; };
 		AF3686551F95FC180066A07A /* EmveepPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3686541F95FC180066A07A /* EmveepPlugin.swift */; };
 		AF3686571F96067F0066A07A /* MoyaExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3686561F96067F0066A07A /* MoyaExtension.swift */; };
+		AFACB8321F98526E00AEB7E7 /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFACB8311F98526E00AEB7E7 /* UIViewController+Rx.swift */; };
 		AFBF1D531F94631900326B0D /* MainVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBF1D521F94631900326B0D /* MainVM.swift */; };
 		AFBF1D551F946A8A00326B0D /* APIManager2.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBF1D541F946A8A00326B0D /* APIManager2.swift */; };
 		AFBF1D571F94843000326B0D /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBF1D561F94843000326B0D /* ActivityIndicator.swift */; };
@@ -137,6 +138,7 @@
 		AF3686521F95F7CD0066A07A /* APIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		AF3686541F95FC180066A07A /* EmveepPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmveepPlugin.swift; sourceTree = "<group>"; };
 		AF3686561F96067F0066A07A /* MoyaExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoyaExtension.swift; sourceTree = "<group>"; };
+		AFACB8311F98526E00AEB7E7 /* UIViewController+Rx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIViewController+Rx.swift"; path = "../UIViewController+Rx.swift"; sourceTree = "<group>"; };
 		AFBF1D521F94631900326B0D /* MainVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainVM.swift; sourceTree = "<group>"; };
 		AFBF1D541F946A8A00326B0D /* APIManager2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager2.swift; sourceTree = "<group>"; };
 		AFBF1D561F94843000326B0D /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
@@ -410,6 +412,7 @@
 		AF2ABFE11F541ACD00D1449E /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				AFACB8331F98529700AEB7E7 /* RxSwiftExtension */,
 				AF15D4D11F566C3100921A69 /* PullRefresh+InfiniteScroll */,
 				AF2ABFE91F541B2000D1449E /* paralaxView */,
 				AF2ABFE21F541AED00D1449E /* Training-Bridging-Header.h */,
@@ -445,6 +448,14 @@
 				AF3686561F96067F0066A07A /* MoyaExtension.swift */,
 			);
 			name = Moya;
+			sourceTree = "<group>";
+		};
+		AFACB8331F98529700AEB7E7 /* RxSwiftExtension */ = {
+			isa = PBXGroup;
+			children = (
+				AFACB8311F98526E00AEB7E7 /* UIViewController+Rx.swift */,
+			);
+			path = RxSwiftExtension;
 			sourceTree = "<group>";
 		};
 		AFBF1D511F9462FF00326B0D /* MainVC */ = {
@@ -657,6 +668,7 @@
 				AFBF1D531F94631900326B0D /* MainVM.swift in Sources */,
 				AF02D22B1F4A8A2400B7F852 /* UIDatePicker+Toolbar.swift in Sources */,
 				AF02D1F91F4A88F600B7F852 /* ColorHelper.swift in Sources */,
+				AFACB8321F98526E00AEB7E7 /* UIViewController+Rx.swift in Sources */,
 				AF02D22D1F4A8A2400B7F852 /* EmveepNavigationController.swift in Sources */,
 				AFBF1D611F94B75700326B0D /* Scene+ViewController.swift in Sources */,
 				AF02D2281F4A8A2400B7F852 /* EmveepTextField.swift in Sources */,

@@ -23,7 +23,17 @@ class ListMerchantRequest : EVObject{
     var page : NSNumber?
     var per_page: NSNumber = 8
     var order_alphabetically: NSNumber?
-        
+    
+    override func skipPropertyValue(_ value: Any, key: String) -> Bool {
+        if let value = value as? String, value.characters.count == 0 || value == "null" {
+            return true
+        } else if let value = value as? NSArray, value.count == 0 {
+            return true
+        } else if value is NSNull {
+            return true
+        }
+        return false
+    }
     
 }
 

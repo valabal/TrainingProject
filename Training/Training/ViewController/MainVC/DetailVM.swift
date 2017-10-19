@@ -13,7 +13,7 @@ import Moya
 
 protocol DetailVMInputs {
     var loadMerchantDetail:PublishSubject<Void>{ get }
-    func goToDetailModal()
+    var detailModalTrigger:PublishSubject<Merchant>{ get }
 }
 
 protocol DetailVMOutputs {
@@ -32,20 +32,23 @@ class DetailVM : DetailVMType, DetailVMInputs, DetailVMOutputs {
     public let sceneCoordinator: SceneCoordinatorType
     
     public var loadMerchantDetail: PublishSubject<Void>
+    public var detailModalTrigger: PublishSubject<Merchant>
     public var current_merchant: Variable<Merchant>
     public var isLoading : Driver<Bool>
     
     public var inputs: DetailVMInputs { return self}
     public var outputs: DetailVMOutputs { return self}
     
-    private let disposeBag = DisposeBag()
+    public let disposeBag = DisposeBag()
     private let error = PublishSubject<Swift.Error>()
 
     init(coordinator: SceneCoordinatorType, merchant : Merchant) {
+       
         self.sceneCoordinator = coordinator
         self.current_merchant = Variable<Merchant>(merchant)
     
         loadMerchantDetail = PublishSubject<Void>()
+        detailModalTrigger = PublishSubject<Merchant>()
      
         let merchantID = self.current_merchant.value.merchant_id
         
@@ -65,16 +68,12 @@ class DetailVM : DetailVMType, DetailVMInputs, DetailVMOutputs {
         
         response.bind(to: self.current_merchant).disposed(by: disposeBag)
         
-        
+        detailModalTrigger.subscribe(onNext:{merchant in
+            self.sceneCoordinator.transition(to: Scene.detailModal(merchant), type: .modal(transparent:true))
+        }).disposed(by: disposeBag)
+    
     }
     
-    func goToDetailModal() {
-        
-        let merchant = self.current_merchant.value
-                
-        self.sceneCoordinator.transition(to: Scene.detailModal(merchant), type: .modal(transparent:true))
-        
-    }
     
     
     

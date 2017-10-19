@@ -29,11 +29,8 @@ class APIManager2: NSObject {
     
     static func Login (email:String,password:String) -> Observable<NSDictionary>{
         
-        let URL = ROOT_URL+"login/"
-        
-        let param = ["email":email,"password":password]
-        
-        let request = json(.post, URL, parameters: param).flatMap{ json -> Observable<NSDictionary> in
+        return Provider.requestJSON(.login(email: email, password: password)).flatMap{
+            json -> Observable<NSDictionary> in
             
             guard let JSONDic = json as? [String:Any] ,let result = JSONDic["user"] as? NSDictionary, let token = result["token"] as? NSString else{
                 return Observable.empty()
@@ -43,8 +40,6 @@ class APIManager2: NSObject {
             return Observable.just(JSONDic as NSDictionary)
             
         }
-        
-        return request
         
     }
 

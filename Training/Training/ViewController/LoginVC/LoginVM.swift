@@ -62,8 +62,9 @@ class LoginVM : LoginVMType, LoginVMInputs, LoginVMOutputs {
                     return mail.characters.count > 0 && pass.characters.count > 0
                     }
             .flatMapLatest{ email,password in
-                      return APIManager2.Login(email: email!, password: password!).trackActivity(Loader)
-                    }.shareReplay(1)
+                return APIManager2.Login(email: email!, password: password!).trackActivity(Loader).catchError({ error -> Observable<NSDictionary> in Observable.empty()
+                })
+            }.shareReplay(1)
         
         let response = request
             .do(onError: { error in

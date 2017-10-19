@@ -10,7 +10,7 @@ import Foundation
 
 import Moya
 
-let Provider = RxMoyaProvider<APIService>(plugins: [CurlPlugin()])
+let Provider = RxMoyaProvider<APIService>(plugins: [EmveepPlugin(),CurlPlugin()])
 
 
 private extension String {
@@ -24,6 +24,7 @@ private extension String {
 }
 
 enum APIService {
+    case login(email:String,password:String)
     case merchantList(request:ListMerchantRequest)
     case merchantDetail(merchantID:NSNumber)
 }
@@ -35,6 +36,8 @@ extension APIService: TargetType {
     
     var path: String {
         switch self {
+        case .login:
+            return "auth/login/"
         case .merchantList:
             return "merchants/search"
         case .merchantDetail(let merchantID):
@@ -44,7 +47,7 @@ extension APIService: TargetType {
     
     var method: Moya.Method {
         switch self {
-        case .merchantList :
+        case .login, .merchantList :
             return .post
         case .merchantDetail :
             return .get
@@ -57,8 +60,11 @@ extension APIService: TargetType {
     
     var parameters:[String:Any]?{
         switch self {
+        case .login(let email, let password):
+            return ["email":email,"password":password]
         case .merchantList(let request):
-            return request.toDictionary() as? [String:Any]
+            let dic = request.toDictionary()
+            return dic as? [String:Any]
         case .merchantDetail :
             return nil
         }

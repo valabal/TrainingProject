@@ -10,6 +10,11 @@ import UIKit
 import MBProgressHUD
 import INTULocationManager
 
+extension Notification.Name {
+    static let forceLogout = Notification.Name("Logout")
+}
+
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
 
@@ -24,8 +29,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         self.initHUDNotif()
         self.startLocationUpdateSubscription()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(logOff), name: .forceLogout, object: nil)
+        
         return true
-    
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -95,6 +101,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         self.setUpRootViewController()
         
     }
+    
+    func logOff(){
+        UserManager.saveAccessToken(token: nil)
+        self.resetAllViews()
+    }
+    
     
     func showHUD(notification:NSNotification?){
         

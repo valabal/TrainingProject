@@ -11,11 +11,15 @@ import RxSwift
 import RxCocoa
 
 protocol MainVMInputs {
+ 
     var loadPageTrigger:PublishSubject<Void> { get }
     var loadNextPageTrigger:PublishSubject<Void> { get }
     var loadHUDTrigger:PublishSubject<Void>{ get }
+    var viewWillAppearTrigger:PublishSubject<Bool>{ get }
+
     func refresh()
     func tapped(row:NSInteger)
+
 }
 
 protocol MainVMOutputs {
@@ -38,6 +42,7 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
     public var loadPageTrigger:PublishSubject<Void>
     public var loadNextPageTrigger:PublishSubject<Void>
     public var loadHUDTrigger:PublishSubject<Void>
+    public var viewWillAppearTrigger:PublishSubject<Bool>
     
     public var isLoading: Driver<Bool>
     public var isHUDLoading: Driver<Bool>
@@ -61,6 +66,7 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
         self.loadPageTrigger = PublishSubject<Void>()
         self.loadNextPageTrigger = PublishSubject<Void>()
         self.loadHUDTrigger = PublishSubject<Void>()
+        self.viewWillAppearTrigger = PublishSubject<Bool>()
         
         //output
         self.contents = Variable<[Merchant]>([])
@@ -151,8 +157,17 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
     
     func tapped(row: NSInteger) {
         
+        //ceritanya setiap dia mencet tombol info maka otomatis bakal refresh home..
+        
         let merchant = self.contents.value[row]
         let detailVM = DetailVM(coordinator: self.sceneCoordinator, merchant: merchant)
+        
+        self.viewWillAppearTrigger.withLatestFrom(detailVM.detailModalTrigger)
+            .take(1).subscribe(onNext:{
+              [weak self] _ in
+                self?.loadHUDTrigger.onNext()
+            }).disposed(by: disposeBag)
+        
         let scene = Scene.detailVC(detailVM)
         sceneCoordinator.transition(to: scene, type: .push)
         
