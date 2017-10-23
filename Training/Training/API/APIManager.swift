@@ -16,7 +16,7 @@ enum API_ENVIRONTMENT{
    case PRODUCTION
 }
 
-let CURRENT_ENV : API_ENVIRONTMENT = API_ENVIRONTMENT.APIARY
+let CURRENT_ENV : API_ENVIRONTMENT = API_ENVIRONTMENT.PRODUCTION
 
 var ROOT_URL : String {
     
@@ -26,7 +26,7 @@ var ROOT_URL : String {
     case .STAGING :
         return "http://alacarte.stagingapps.net/api/v1/"
     case .PRODUCTION :
-        return "http://alacarte.stagingapps.net/api/v1/"
+        return "http://clubalacarte.com/api/v1/"
     }
     
 }

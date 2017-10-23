@@ -43,9 +43,10 @@ extension Scene {
             let vc = storyboard.instantiateViewController(withIdentifier: "DetailModal") as! DetailModal
             vc.merchant = merchant
             return vc
-        }
     }
+  }
 }
+
 
 extension UIViewController{
    

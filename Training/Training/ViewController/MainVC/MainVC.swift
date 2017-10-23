@@ -11,43 +11,40 @@ import RxSwift
 import RxCocoa
 
 class MainVC: BasicVC{
-
+    
     var viewModel : MainVM!
+    
+    @IBOutlet var topButton : UIButton?
+    @IBOutlet var newButton : UIButton?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.isHidden = false
-        self.settingNavBarWithTitle("Merchant List")
-    
         self.settingRightNavButtonWithView(arrayOfUIView: [UIViewController.generateMenuButtonViewWithImage(image: UIImage.init(named: "shutdown"), action:#selector(logOff), target: self)])
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    func logOff(){
-        
-        UserManager.saveAccessToken(token: nil)
-        let delegate = UIApplication.shared.delegate as! AppDelegate
-        delegate.resetAllViews()
+    override func settingNavigationMenu() {
+        self.navigationController?.navigationBar.isHidden = false
+        self.settingNavBarWithTitle("Merchant List")
     }
-    
     
     override func bindingViews(){
         
         let loadPage:PublishSubject<Void> = PublishSubject<Void>()
         let loadNextPage:PublishSubject<Void> = PublishSubject<Void>()
-    
+        
         self.tableView?.addPullToRefreshWithActionHandler { () -> Void in
             loadPage.onNext()
         }
         
         self.tableView?.addInfiniteScrollingWithActionHandler {
-           loadNextPage.onNext()
+            loadNextPage.onNext()
         }
         
         //input
@@ -55,12 +52,16 @@ class MainVC: BasicVC{
         loadNextPage.bind(to: self.viewModel.inputs.loadNextPageTrigger).disposed(by:disposeBag)
         self.rx.viewWillAppear.bind(to: self.viewModel.inputs.viewWillAppearTrigger).disposed(by:disposeBag)
         
+        self.topButton?.rx.tap.bind(to: self.viewModel.inputs.loadTopTrigger).disposed(by: disposeBag)
+        
+        self.newButton?.rx.tap.bind(to: self.viewModel.inputs.loadNewTrigger).disposed(by: disposeBag)
+        
         
         //output
         self.viewModel.outputs.isLoading.asObservable().subscribe(onNext:{[weak self] isLoading in
             if (!isLoading) {
-                  self?.tableView?.stopPullToRefresh()
-                  self?.tableView?.infiniteScrollingView.stopAnimating()
+                self?.tableView?.stopPullToRefresh()
+                self?.tableView?.infiniteScrollingView.stopAnimating()
             }
         }).disposed(by:disposeBag)
         
@@ -69,18 +70,18 @@ class MainVC: BasicVC{
                 FunctionHelper.showHUD()
             }
             else{
-               FunctionHelper.hideHUD()
+                FunctionHelper.hideHUD()
             }
         }).disposed(by:disposeBag)
         
         self.viewModel.outputs.contents.asDriver().asObservable().subscribe(onNext:{[weak self] _ in
             self?.tableView?.reloadData()
         }).disposed(by:disposeBag)
- 
-       self.viewModel.outputs.isComplete.asDriver().asObservable().distinctUntilChanged().skip(1)
-        .subscribe(onNext:{[weak self] isComplete in
-            self?.tableView?.showsInfiniteScrolling = !isComplete
-        }).disposed(by:disposeBag)
+        
+        self.viewModel.outputs.isComplete.asDriver().asObservable().distinctUntilChanged().skip(1)
+            .subscribe(onNext:{[weak self] isComplete in
+                self?.tableView?.showsInfiniteScrolling = !isComplete
+            }).disposed(by:disposeBag)
         
         self.tableView?.rx.itemSelected
             .subscribe(onNext: { [weak self]indexPath in
@@ -89,7 +90,11 @@ class MainVC: BasicVC{
         
         
         self.viewModel.loadHUDTrigger.onNext()
+        
+    }
     
+    func logOff(){
+        NotificationCenter.default.post(name: .forceLogout, object: nil)
     }
     
 }
@@ -97,7 +102,7 @@ class MainVC: BasicVC{
 
 
 extension MainVC:UITableViewDelegate,UITableViewDataSource{
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -114,10 +119,9 @@ extension MainVC:UITableViewDelegate,UITableViewDataSource{
         
         let cell : BasicViewCell  = tableView.dequeueReusableCell(withIdentifier: "basicCell")! as! BasicViewCell
         
-        if let merchant = self.viewModel.contents.value[indexPath.row] as? Merchant{
-            let object = merchant.convertToCellObject()
-            cell.fillCellWithObject(object: object)
-        }
+        let merchant = self.viewModel.contents.value[indexPath.row]
+        let object = merchant.convertToCellObject()
+        cell.fillCellWithObject(object: object)
         
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         

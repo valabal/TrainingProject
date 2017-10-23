@@ -62,16 +62,19 @@ class LoginVM : LoginVMType, LoginVMInputs, LoginVMOutputs {
                     return mail.characters.count > 0 && pass.characters.count > 0
                     }
             .flatMapLatest{ email,password in
-                return APIManager2.Login(email: email!, password: password!).trackActivity(Loader).catchError({ error -> Observable<NSDictionary> in Observable.empty()
-                })
+                return APIManager2.Login(email: email!, password: password!)
+                    .trackActivity(Loader)
+                    .do(onError: { error in
+                        self.error.onNext(error)
+                    })
+                    .catchError({
+                        error -> Observable<NSDictionary> in Observable.empty()
+                     })
             }.shareReplay(1)
         
+        
+        //response digunakan untuk mapping hasil dari request.. kalo request ga dimaping apa apa ya di sama denganin aja
         let response = request
-            .do(onError: { error in
-                self.error.onNext(error)
-            }).catchError({ error -> Observable<NSDictionary> in
-                Observable.empty()
-            }).shareReplay(1)
         
         response.subscribe(onNext:{ userDic in
             let viewModel = MainVM(coordinator: self.sceneCoordinator)

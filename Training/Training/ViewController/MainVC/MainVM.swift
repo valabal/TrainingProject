@@ -17,6 +17,9 @@ protocol MainVMInputs {
     var loadHUDTrigger:PublishSubject<Void>{ get }
     var viewWillAppearTrigger:PublishSubject<Bool>{ get }
 
+    var loadTopTrigger:PublishSubject<Void> { get }
+    var loadNewTrigger:PublishSubject<Void> { get }
+
     func refresh()
     func tapped(row:NSInteger)
 
@@ -41,6 +44,8 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
     
     public var loadPageTrigger:PublishSubject<Void>
     public var loadNextPageTrigger:PublishSubject<Void>
+    public var loadTopTrigger:PublishSubject<Void>
+    public var loadNewTrigger:PublishSubject<Void>
     public var loadHUDTrigger:PublishSubject<Void>
     public var viewWillAppearTrigger:PublishSubject<Bool>
     
@@ -65,6 +70,10 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
         //input
         self.loadPageTrigger = PublishSubject<Void>()
         self.loadNextPageTrigger = PublishSubject<Void>()
+        
+        self.loadNewTrigger = PublishSubject<Void>()
+        self.loadTopTrigger = PublishSubject<Void>()
+        
         self.loadHUDTrigger = PublishSubject<Void>()
         self.viewWillAppearTrigger = PublishSubject<Bool>()
         
@@ -80,62 +89,81 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
         
         
         //binding process
-        
         let loadRequest = self.loadPageTrigger.do(onNext: {
             self.pageIndex = 1
         })
-        let nextRequest = self.loadNextPageTrigger.do(onNext: {self.pageIndex = self.nextIndex})
+        
+        let nextRequest = self.loadNextPageTrigger.do(onNext: {
+            self.pageIndex = self.nextIndex
+        })
+        
         let merge = Observable.of(loadRequest,nextRequest).merge()
         
         let mergerequest = self.isLoading.asObservable()
             .sample(merge).map{($0,Loading)}
         
-        
         let hudTriggerRequest = self.loadHUDTrigger.do(onNext: {
             self.pageIndex = 1
         })
+        
         let hudRequest = self.isHUDLoading.asObservable()
-            .sample(hudTriggerRequest).map{($0,HUDLoading)}
+            .sample(hudTriggerRequest)
+            .map{($0,HUDLoading)}
         
+        let allReq = self.loadTopTrigger.map{return "all"}
+        let newReq = self.loadNewTrigger.map{return "new"}
+        let mergeTypeReq = Observable.of(allReq,newReq).merge()
+            .startWith("all")
+            .distinctUntilChanged()
+            .do(onNext: {type in self.pageIndex = 1})
         
-        let request = Observable.of(mergerequest,hudRequest).merge()
-            .flatMap{ (isLoading,Loader) -> Observable<[Merchant]> in
+        //tiap kali all/new req kepencet dia bakal kerefresh+reset data pakai HUD
+        let hudAndType = Observable.combineLatest(hudRequest,mergeTypeReq).map{(tupple,string) in return tupple}
+        
+        let tiggerReq = Observable.of(mergerequest,hudAndType).merge()
+        let combinedReq = Observable.combineLatest(mergeTypeReq,tiggerReq)
+        
+        let request = tiggerReq.withLatestFrom(combinedReq)
+            .flatMap{(type,tupple)  -> Observable<MerchantResponse> in
+                
+                let isLoading = tupple.0
+                let Loader = tupple.1
                 
                 if(isLoading){
                     return Observable.empty()
                 }
                 
                 let request = ListMerchantRequest()
-                request.search_type = "all";
+                request.search_type = type;
                 request.order_alphabetically = true
                 request.page = NSNumber(value: self.pageIndex)
                 
-                return APIManager2.MerchantList(request: request).map{
-                    [weak self] merchantResponse in
-                    
-                    if let pagination = merchantResponse.pagination,let nextPages = pagination["next_page"] as? NSNumber{
-                        self?.nextIndex = nextPages.intValue
-                        self?.isComplete.value = false;
-                    }
-                    else{
-                        self?.isComplete.value = true;
-                    }
-                    
-                    return merchantResponse.result
-                    
-                    }.trackActivity(Loader)
-                
+                return APIManager2.MerchantList(request: request)
+                    .trackActivity(Loader)
+                    .do(onError: { _error in
+                        self.error.onNext(_error)
+                    })
+                    .catchError({ error -> Observable<MerchantResponse> in
+                        Observable.empty()
+                    })
+            
             }.shareReplay(1)
         
         
-        let response = request.flatMap { repositories -> Observable<[Merchant]> in
-            request
-                .do(onError: { _error in
-                    self.error.onNext(_error)
-                }).catchError({ error -> Observable<[Merchant]> in
-                    Observable.empty()
-                })
-            }.shareReplay(1)
+        let response = request.map{
+            [weak self] merchantResponse -> [Merchant] in
+            
+            if let pagination = merchantResponse.pagination,let nextPages = pagination["next_page"] as? NSNumber{
+                self?.nextIndex = nextPages.intValue
+                self?.isComplete.value = false;
+            }
+            else{
+                self?.isComplete.value = true;
+            }
+            
+            return merchantResponse.result
+        
+        }.shareReplay(1)
         
         
         //combine data when get more data by paging
@@ -158,14 +186,13 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
     func tapped(row: NSInteger) {
         
         //ceritanya setiap dia mencet tombol info maka otomatis bakal refresh home..
-        
         let merchant = self.contents.value[row]
         let detailVM = DetailVM(coordinator: self.sceneCoordinator, merchant: merchant)
         
         self.viewWillAppearTrigger.withLatestFrom(detailVM.detailModalTrigger)
             .take(1).subscribe(onNext:{
-              [weak self] _ in
-                self?.loadHUDTrigger.onNext()
+              [unowned self] _ in
+                self.loadHUDTrigger.onNext()
             }).disposed(by: disposeBag)
         
         let scene = Scene.detailVC(detailVM)

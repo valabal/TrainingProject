@@ -36,8 +36,8 @@ class DetailVM : DetailVMType, DetailVMInputs, DetailVMOutputs {
     public var current_merchant: Variable<Merchant>
     public var isLoading : Driver<Bool>
     
-    public var inputs: DetailVMInputs { return self}
-    public var outputs: DetailVMOutputs { return self}
+    public var inputs: DetailVMInputs {return self}
+    public var outputs: DetailVMOutputs {return self}
     
     public let disposeBag = DisposeBag()
     private let error = PublishSubject<Swift.Error>()
@@ -56,25 +56,25 @@ class DetailVM : DetailVMType, DetailVMInputs, DetailVMOutputs {
         isLoading = Loading.asDriver()
         
         let request = loadMerchantDetail.flatMap{ _ in
-            return APIManager2.MerchantDetail2(merchantID: merchantID!).trackActivity(Loading)
-        }.shareReplay(1)
+            return APIManager2.MerchantDetail2(merchantID: merchantID!)
+                .trackActivity(Loading)
+                .do(onError: { [unowned self] error in
+                   self.error.onNext(error)
+                 })
+                .catchError({ [unowned self] error -> Observable<Merchant> in
+                   Observable.just(self.current_merchant.value)
+                 })
+            }.shareReplay(1)
         
         let response = request
-            .do(onError: { error in
-                self.error.onNext(error)
-            }).catchError({ error -> Observable<Merchant> in
-                Observable.just(self.current_merchant.value)
-            }).shareReplay(1)
-        
+
         response.bind(to: self.current_merchant).disposed(by: disposeBag)
         
-        detailModalTrigger.subscribe(onNext:{merchant in
+        detailModalTrigger.subscribe(onNext:{[unowned self] merchant in
             self.sceneCoordinator.transition(to: Scene.detailModal(merchant), type: .modal(transparent:true))
         }).disposed(by: disposeBag)
     
     }
-    
-    
     
     
 }

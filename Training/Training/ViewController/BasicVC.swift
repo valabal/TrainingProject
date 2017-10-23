@@ -19,14 +19,12 @@ class BasicVC: UIViewController,BindingViews {
     var isFirstTimeLoad : Bool?
     @IBOutlet var tableView : UITableView?
 
-    let disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-        self.settingNavBarWithTitle()
-        self.settingRightNavButtonWithView(arrayOfUIView:nil)
+        self.settingNavigationMenu()
         
         self.tableView?.register(UINib(nibName: "BasicViewCell", bundle: nil), forCellReuseIdentifier: "basicCell")
         self.tableView?.separatorStyle = .none
@@ -35,7 +33,7 @@ class BasicVC: UIViewController,BindingViews {
         self.bindingViews()
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -44,8 +42,31 @@ class BasicVC: UIViewController,BindingViews {
         super.viewWillAppear(animated)
     }
     
+    deinit {
+        print(String(describing:type(of: self))+" DEINIT")
+    }
+    
+    
+    func settingNavigationMenu(){
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.settingNavBarWithTitle()
+        self.settingRightNavButtonWithView(arrayOfUIView:nil)
+    }
+    
     func bindingViews(){
     
+    }
+    
+}
+
+struct CellModel {
+    
+    var identifier : String
+    var content : AnyObject?
+    
+    init(_ identifier:String,content:AnyObject? = nil){
+        self.identifier = identifier
+        self.content = content
     }
     
 }
