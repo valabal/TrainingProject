@@ -39,8 +39,8 @@ class MainVC: BasicVC{
         let loadPage:PublishSubject<Void> = PublishSubject<Void>()
         let loadNextPage:PublishSubject<Void> = PublishSubject<Void>()
         
-        self.tableView?.addPullToRefreshWithActionHandler { () -> Void in
-            loadPage.onNext()
+        self.tableView?.addPullToRefreshWithActionHandler {
+             loadPage.onNext()
         }
         
         self.tableView?.addInfiniteScrollingWithActionHandler {
