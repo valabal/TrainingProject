@@ -37,6 +37,11 @@ protocol MainVMType {
     var outputs: MainVMOutputs { get }
 }
 
+enum FeedType:String {
+    case all
+    case new
+}
+
 
 class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
     
@@ -68,11 +73,11 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
     
     private var newPageIndex:Int = 1
     private var newNextIndex:Int = 1
-
+    
     let isTopComplete = Variable<Bool>(false)
     let isNewComplete = Variable<Bool>(false)
     
-    private var currentType = "all"
+    private var currentType : FeedType = .all
     
     private let error = PublishSubject<Swift.Error>()
     
@@ -104,26 +109,27 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
         let HUDLoading = ActivityIndicator()
         self.isHUDLoading = HUDLoading.asDriver()
         
-    
+        
         let changeContent = PublishSubject<Observable<[Merchant]>>()
         changeContent.switchLatest().bind(to: self.contents).disposed(by: disposeBag)
         changeContent.onNext(self.topContents.asObservable())
         
-       
-        let completeObserver = Observable.combineLatest(self.isTopComplete.asObservable(),self.isNewComplete.asObservable())
+        let completeObserver = Observable
+            .combineLatest(self.isTopComplete.asObservable(),
+                           self.isNewComplete.asObservable())
         
-        let allReq = self.loadTopTrigger.map{return "all"}
+        let allReq = self.loadTopTrigger.map{return FeedType.all}
             .do(onNext:
                 {[unowned self] type in
-                    self.currentType = "all"
+                    self.currentType = type
                     self.topPageIndex = 1
                     changeContent.onNext(self.topContents.asObservable())
             })
         
-        let newReq = self.loadNewTrigger.map{return "new"}
+        let newReq = self.loadNewTrigger.map{return FeedType.new}
             .do(onNext:
                 {[unowned self] type in
-                    self.currentType = "new"
+                    self.currentType = type
                     self.newPageIndex = 1
                     changeContent.onNext(self.newContents.asObservable())
             })
@@ -134,177 +140,179 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
             .share()
         
         //gabungkan mergeType dengan complete Observer
-        Observable.combineLatest(mergeTypeReq,completeObserver).withLatestFrom(completeObserver).map{[unowned self] isTopComplete,isNewComplete in
-            if self.currentType == "all" {
+        Observable.combineLatest(mergeTypeReq,completeObserver).withLatestFrom(completeObserver).map{[unowned self] isTopComplete,isNewComplete -> Bool in
+            
+            switch(self.currentType){
+            case .all :
                 return isTopComplete
-            }
-              return isNewComplete
-            }
+            case .new :
+                return isNewComplete
+            }}
             .bind(to: self.isComplete).disposed(by: disposeBag)
-        
+            
         let emptyReqContent = mergeTypeReq
-            .flatMap{[unowned self] type -> Observable<[Merchant]> in
-            if type == "all" {
-                return self.topContents.asObservable()
-            }
-            else{
-                return self.newContents.asObservable()
-            }
-        }.filter{$0.isEmpty}
-        
+                .flatMap{[unowned self] type -> Observable<[Merchant]> in
+                    if type == .all {
+                        return self.topContents.asObservable()
+                    }
+                    else{
+                        return self.newContents.asObservable()
+                    }
+                }.filter{$0.isEmpty}
+            
         emptyReqContent.map{_ in return Void()}.bind(to: self.loadHUDTrigger).disposed(by: disposeBag)
-        
+            
         let loadRequest = self.loadPageTrigger
-            .do(onNext: { [unowned self] in
-                if(self.currentType == "all"){
-                    self.topPageIndex = 1
-                }
-                else{
-                    self.newPageIndex = 1
-                }
-        })
-        
+                .do(onNext: { [unowned self] in
+                    if(self.currentType == .all){
+                        self.topPageIndex = 1
+                    }
+                    else{
+                        self.newPageIndex = 1
+                    }
+                })
+            
         let nextRequest = self.loadNextPageTrigger
-            .do(onNext: { [unowned self] in
-                if(self.currentType == "all"){
-                    self.topPageIndex = self.topNextIndex
-                }
-                else{
-                    self.newPageIndex = self.newNextIndex
-                }
-            })
-        
+                .do(onNext: { [unowned self] in
+                    if(self.currentType == .all){
+                        self.topPageIndex = self.topNextIndex
+                    }
+                    else{
+                        self.newPageIndex = self.newNextIndex
+                    }
+                })
+            
         let merge = Observable.of(loadRequest,nextRequest).merge()
         
         let mergerequest = self.isLoading.asObservable()
-            .sample(merge)
-            .map{($0,Loading)}
-        
+                .sample(merge)
+                .map{($0,Loading)}
+            
         let hudTriggerRequest = self.loadHUDTrigger
-            .do(onNext: { [unowned self] in
-                if(self.currentType == "all"){
-                    self.topPageIndex = 1
-                }
-                else{
-                    self.newPageIndex = 1
-                }
-            })
-        
+                .do(onNext: { [unowned self] in
+                    if(self.currentType == .all){
+                        self.topPageIndex = 1
+                    }
+                    else{
+                        self.newPageIndex = 1
+                    }
+                })
+            
         let hudRequest = self.isHUDLoading.asObservable()
-            .sample(hudTriggerRequest)
-            .map{($0,HUDLoading)}
-        
-        
+                .sample(hudTriggerRequest)
+                .map{($0,HUDLoading)}
+            
+            
         let triggerReq = Observable.of(mergerequest,hudRequest).merge()
-        
+            
         let request = triggerReq.withLatestFrom(triggerReq)
-            .flatMap{[unowned self] isLoading,Loader  -> Observable<(MerchantResponse,String)> in
+                .flatMap{[unowned self] isLoading,Loader  -> Observable<(MerchantResponse,FeedType)> in
+                    
+                    let type = self.currentType
+                    
+                    if(isLoading){
+                        return Observable.empty()
+                    }
+                    
+                    let request = ListMerchantRequest()
+                    request.search_type = type.rawValue;
+                    request.order_alphabetically = true
+                    
+                    if(type == .all){
+                        request.page = NSNumber(value: self.topPageIndex)
+                    }
+                    else{
+                        request.page = NSNumber(value: self.newPageIndex)
+                    }
+                    
+                    return APIManager2.MerchantList(request: request)
+                        .trackActivity(Loader)
+                        .do(onError: { _error in
+                            self.error.onNext(_error)
+                        })
+                        .map{return ($0,type)}
+                        .catchError({ error -> Observable<(MerchantResponse,FeedType)> in
+                            Observable.empty()
+                        })
+                    
+                }.shareReplay(1)
+            
+            
+            let response = request.map{
+                [weak self] merchantResponse,type -> ([Merchant],FeedType) in
                 
-                let type = self.currentType
-                
-                if(isLoading){
-                    return Observable.empty()
-                }
-                
-                let request = ListMerchantRequest()
-                request.search_type = type;
-                request.order_alphabetically = true
-                
-                if(type == "all"){
-                    request.page = NSNumber(value: self.topPageIndex)
+                if let pagination = merchantResponse.pagination,let nextPages = pagination["next_page"] as? NSNumber{
+                    
+                    if(type == .all){
+                        self?.topNextIndex = nextPages.intValue
+                        self?.isTopComplete.value = false
+                    }
+                    else{
+                        self?.newNextIndex = nextPages.intValue
+                        self?.isNewComplete.value = false
+                    }
                 }
                 else{
-                    request.page = NSNumber(value: self.newPageIndex)
+                    
+                    if(type == .all){
+                        self?.isTopComplete.value = true
+                    }
+                    else{
+                        self?.isNewComplete.value = true
+                    }
+                    
                 }
                 
-                return APIManager2.MerchantList(request: request)
-                    .trackActivity(Loader)
-                    .do(onError: { _error in
-                        self.error.onNext(_error)
-                    })
-                    .map{return ($0,type)}
-                    .catchError({ error -> Observable<(MerchantResponse,String)> in
-                        Observable.empty()
-                    })
+                return (merchantResponse.result,type)
                 
-            }.shareReplay(1)
-        
-        
-        let response = request.map{
-            [weak self] merchantResponse,type -> ([Merchant],String) in
+                }.shareReplay(1)
             
-            if let pagination = merchantResponse.pagination,let nextPages = pagination["next_page"] as? NSNumber{
-                
-                if(type == "all"){
-                    self?.topNextIndex = nextPages.intValue
-                    self?.isTopComplete.value = false
-                }
-                else{
-                    self?.newNextIndex = nextPages.intValue
-                    self?.isNewComplete.value = false
-                }
-            }
-            else{
-                
-                if(type == "all"){
-                    self?.isTopComplete.value = true
-                }
-                else{
-                    self?.isNewComplete.value = true
-                }
-                
-            }
             
-            return (merchantResponse.result,type)
+            Observable.combineLatest(request,response,topContents.asObservable()){reqTupple,respTuppe,array in
+                return (respTuppe.1,respTuppe.0,array)
+                }
+                .sample(request)
+                .filter{type,_,_ in type == .all}
+                .map{
+                    _,response,contents in
+                    return self.topPageIndex == 1 ? response : contents + response
+                }
+                .bind(to: topContents)
+                .addDisposableTo(disposeBag)
             
-            }.shareReplay(1)
+            
+            Observable.combineLatest(request,response,newContents.asObservable()){reqTupple,respTuppe,array in
+                return (respTuppe.1,respTuppe.0,array)
+                }.sample(request)
+                .filter{type,_,_ in type == .new}
+                .map{
+                    _,response,contents in
+                    return self.newPageIndex == 1 ? response : contents + response
+                }
+                .bind(to: newContents)
+                .addDisposableTo(disposeBag)
+            
+        }
         
+        func refresh() {
+            self.inputs.loadPageTrigger.onNext()
+        }
         
-        Observable.combineLatest(request,response,topContents.asObservable()){reqTupple,respTuppe,array in
-            return (respTuppe.1,respTuppe.0,array)
-            }
-            .sample(request)
-            .filter{type,_,_ in type == "all"}
-            .map{
-                _,response,contents in
-                return self.topPageIndex == 1 ? response : contents + response
-            }
-            .bind(to: topContents)
-            .addDisposableTo(disposeBag)
+        func tapped(row: NSInteger) {
+            
+            //ceritanya setiap dia mencet tombol info maka otomatis bakal refresh home..
+            let merchant = self.contents.value[row]
+            let detailVM = DetailVM(coordinator: self.sceneCoordinator, merchant: merchant)
+            
+            self.viewWillAppearTrigger.withLatestFrom(detailVM.detailModalTrigger)
+                .take(1).subscribe(onNext:{
+                    [unowned self] _ in
+                    self.loadHUDTrigger.onNext()
+                }).disposed(by: disposeBag)
+            
+            let scene = Scene.detailVC(detailVM)
+            sceneCoordinator.transition(to: scene, type: .push)
+            
+        }
         
-        
-        Observable.combineLatest(request,response,newContents.asObservable()){reqTupple,respTuppe,array in
-            return (respTuppe.1,respTuppe.0,array)
-            }.sample(request)
-            .filter{type,_,_ in type == "new"}
-            .map{
-                _,response,contents in
-                return self.newPageIndex == 1 ? response : contents + response
-            }
-            .bind(to: newContents)
-            .addDisposableTo(disposeBag)
-        
-    }
-    
-    func refresh() {
-        self.inputs.loadPageTrigger.onNext()
-    }
-    
-    func tapped(row: NSInteger) {
-        
-        //ceritanya setiap dia mencet tombol info maka otomatis bakal refresh home..
-        let merchant = self.contents.value[row]
-        let detailVM = DetailVM(coordinator: self.sceneCoordinator, merchant: merchant)
-        
-        self.viewWillAppearTrigger.withLatestFrom(detailVM.detailModalTrigger)
-            .take(1).subscribe(onNext:{
-                [unowned self] _ in
-                self.loadHUDTrigger.onNext()
-            }).disposed(by: disposeBag)
-        
-        let scene = Scene.detailVC(detailVM)
-        sceneCoordinator.transition(to: scene, type: .push)
-        
-    }
-    
 }
