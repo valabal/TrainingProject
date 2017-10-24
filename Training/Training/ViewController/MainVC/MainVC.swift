@@ -40,7 +40,7 @@ class MainVC: BasicVC{
         let loadNextPage:PublishSubject<Void> = PublishSubject<Void>()
         
         self.tableView?.addPullToRefreshWithActionHandler {
-             loadPage.onNext()
+            loadPage.onNext()
         }
         
         self.tableView?.addInfiniteScrollingWithActionHandler {
@@ -78,7 +78,8 @@ class MainVC: BasicVC{
             self?.tableView?.reloadData()
         }).disposed(by:disposeBag)
         
-        self.viewModel.outputs.isComplete.asDriver().asObservable().distinctUntilChanged().skip(1)
+        self.viewModel.outputs.isComplete.asDriver().asObservable()
+            .distinctUntilChanged().skip(1)
             .subscribe(onNext:{[weak self] isComplete in
                 self?.tableView?.showsInfiniteScrolling = !isComplete
             }).disposed(by:disposeBag)

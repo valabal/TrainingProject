@@ -58,7 +58,6 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
     public var topContents:Variable<[Merchant]>
     public var newContents:Variable<[Merchant]>
     
-    
     public var inputs: MainVMInputs { return self}
     public var outputs: MainVMOutputs { return self}
     
@@ -69,6 +68,11 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
     
     private var newPageIndex:Int = 1
     private var newNextIndex:Int = 1
+
+    let isTopComplete = Variable<Bool>(false)
+    let isNewComplete = Variable<Bool>(false)
+    
+    private var currentType = "all"
     
     private let error = PublishSubject<Swift.Error>()
     
@@ -100,22 +104,26 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
         let HUDLoading = ActivityIndicator()
         self.isHUDLoading = HUDLoading.asDriver()
         
-        
+    
         let changeContent = PublishSubject<Observable<[Merchant]>>()
         changeContent.switchLatest().bind(to: self.contents).disposed(by: disposeBag)
-        //untuk pertama kali load
         changeContent.onNext(self.topContents.asObservable())
+        
+       
+        let completeObserver = Observable.combineLatest(self.isTopComplete.asObservable(),self.isNewComplete.asObservable())
         
         let allReq = self.loadTopTrigger.map{return "all"}
             .do(onNext:
-                {type in
+                {[unowned self] type in
+                    self.currentType = "all"
                     self.topPageIndex = 1
                     changeContent.onNext(self.topContents.asObservable())
             })
         
         let newReq = self.loadNewTrigger.map{return "new"}
             .do(onNext:
-                {type in
+                {[unowned self] type in
+                    self.currentType = "new"
                     self.newPageIndex = 1
                     changeContent.onNext(self.newContents.asObservable())
             })
@@ -124,28 +132,41 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
             .merge()
             .distinctUntilChanged()
             .share()
-            .startWith("all")
         
-        let emptyReqContent = mergeTypeReq.withLatestFrom(Observable.combineLatest(self.topContents.asObservable(),self.newContents.asObservable())){req,contents in
-            return req == "all" ? contents.0 : contents.1
-            }.filter{$0.isEmpty}.do(onNext:{_ in print("EMPTY NOTIFIED")})
+        //gabungkan mergeType dengan complete Observer
+        Observable.combineLatest(mergeTypeReq,completeObserver).withLatestFrom(completeObserver).map{[unowned self] isTopComplete,isNewComplete in
+            if self.currentType == "all" {
+                return isTopComplete
+            }
+              return isNewComplete
+            }
+            .bind(to: self.isComplete).disposed(by: disposeBag)
         
-        emptyReqContent.delay(RxTimeInterval(0.2), scheduler:MainScheduler.instance).map{ _ in Void() }.bind(to: self.loadHUDTrigger).disposed(by: disposeBag)
+        let emptyReqContent = mergeTypeReq
+            .flatMap{[unowned self] type -> Observable<[Merchant]> in
+            if type == "all" {
+                return self.topContents.asObservable()
+            }
+            else{
+                return self.newContents.asObservable()
+            }
+        }.filter{$0.isEmpty}
         
+        emptyReqContent.map{_ in return Void()}.bind(to: self.loadHUDTrigger).disposed(by: disposeBag)
         
-        let loadRequest = self.loadPageTrigger.withLatestFrom(mergeTypeReq)
-            .do(onNext: { type in
-                if(type == "all"){
+        let loadRequest = self.loadPageTrigger
+            .do(onNext: { [unowned self] in
+                if(self.currentType == "all"){
                     self.topPageIndex = 1
                 }
                 else{
                     self.newPageIndex = 1
                 }
-            })
+        })
         
-        let nextRequest = self.loadNextPageTrigger.withLatestFrom(mergeTypeReq)
-            .do(onNext: { type in
-                if(type == "all"){
+        let nextRequest = self.loadNextPageTrigger
+            .do(onNext: { [unowned self] in
+                if(self.currentType == "all"){
                     self.topPageIndex = self.topNextIndex
                 }
                 else{
@@ -156,12 +177,12 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
         let merge = Observable.of(loadRequest,nextRequest).merge()
         
         let mergerequest = self.isLoading.asObservable()
-            .sample(merge).map{($0,Loading)}
+            .sample(merge)
+            .map{($0,Loading)}
         
-        
-        let hudTriggerRequest = self.loadHUDTrigger.withLatestFrom(mergeTypeReq)
-            .do(onNext: { type in
-                if(type == "all"){
+        let hudTriggerRequest = self.loadHUDTrigger
+            .do(onNext: { [unowned self] in
+                if(self.currentType == "all"){
                     self.topPageIndex = 1
                 }
                 else{
@@ -173,13 +194,13 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
             .sample(hudTriggerRequest)
             .map{($0,HUDLoading)}
         
+        
         let triggerReq = Observable.of(mergerequest,hudRequest).merge()
         
-        //combine value type dan triger Req
-        let combinedReq = Observable.combineLatest(mergeTypeReq,triggerReq){type,tupple in return (type,tupple.0,tupple.1)}
-        
-        let request = triggerReq.withLatestFrom(combinedReq)
-            .flatMap{type,isLoading,Loader  -> Observable<(MerchantResponse,String)> in
+        let request = triggerReq.withLatestFrom(triggerReq)
+            .flatMap{[unowned self] isLoading,Loader  -> Observable<(MerchantResponse,String)> in
+                
+                let type = self.currentType
                 
                 if(isLoading){
                     return Observable.empty()
@@ -216,16 +237,22 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
                 
                 if(type == "all"){
                     self?.topNextIndex = nextPages.intValue
+                    self?.isTopComplete.value = false
                 }
                 else{
                     self?.newNextIndex = nextPages.intValue
+                    self?.isNewComplete.value = false
                 }
-                
-                self?.isComplete.value = false;
-                
             }
             else{
-                self?.isComplete.value = true;
+                
+                if(type == "all"){
+                    self?.isTopComplete.value = true
+                }
+                else{
+                    self?.isNewComplete.value = true
+                }
+                
             }
             
             return (merchantResponse.result,type)
@@ -256,7 +283,6 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
             }
             .bind(to: newContents)
             .addDisposableTo(disposeBag)
-        
         
     }
     
