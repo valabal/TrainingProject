@@ -55,14 +55,14 @@ class DetailVM : DetailVMType, DetailVMInputs, DetailVMOutputs {
         let Loading = ActivityIndicator()
         isLoading = Loading.asDriver()
         
-        let request = loadMerchantDetail.flatMap{ _ in
+        let request = loadMerchantDetail.flatMap{[unowned self] _ in
             return APIManager2.MerchantDetail2(merchantID: merchantID!)
                 .trackActivity(Loading)
-                .do(onError: { [unowned self] error in
+                .do(onError: { error in
                    self.error.onNext(error)
                  })
-                .catchError({ [unowned self] error -> Observable<Merchant> in
-                   Observable.just(self.current_merchant.value)
+                .catchError({error -> Observable<Merchant> in
+                    return Observable.just(self.current_merchant.value)
                  })
             }.shareReplay(1)
         
@@ -76,5 +76,8 @@ class DetailVM : DetailVMType, DetailVMInputs, DetailVMOutputs {
     
     }
     
+    deinit {
+        print("DEINIT MODEL")
+    }
     
 }

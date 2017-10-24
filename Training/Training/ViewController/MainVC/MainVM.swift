@@ -53,6 +53,7 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
     public var loadNewTrigger:PublishSubject<Void>
     public var loadHUDTrigger:PublishSubject<Void>
     public var viewWillAppearTrigger:PublishSubject<Bool>
+    public var refreshDataTrigger:PublishSubject<Void>
     
     public var isLoading: Driver<Bool>
     public var isHUDLoading: Driver<Bool>
@@ -94,6 +95,7 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
         
         self.loadHUDTrigger = PublishSubject<Void>()
         self.viewWillAppearTrigger = PublishSubject<Bool>()
+        self.refreshDataTrigger = PublishSubject<Void>()
         
         //output
         self.contents = Variable<[Merchant]>([])
@@ -109,48 +111,53 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
         let HUDLoading = ActivityIndicator()
         self.isHUDLoading = HUDLoading.asDriver()
         
-        
+        //change the contents based on the selected state
         let changeContent = PublishSubject<Observable<[Merchant]>>()
         changeContent.switchLatest().bind(to: self.contents).disposed(by: disposeBag)
         changeContent.onNext(self.topContents.asObservable())
         
-        let completeObserver = Observable
-            .combineLatest(self.isTopComplete.asObservable(),
-                           self.isNewComplete.asObservable())
-        
+
         let allReq = self.loadTopTrigger.map{return FeedType.all}
-            .do(onNext:
-                {[unowned self] type in
-                    self.currentType = type
-                    self.topPageIndex = 1
-                    changeContent.onNext(self.topContents.asObservable())
-            })
-        
         let newReq = self.loadNewTrigger.map{return FeedType.new}
-            .do(onNext:
-                {[unowned self] type in
-                    self.currentType = type
-                    self.newPageIndex = 1
-                    changeContent.onNext(self.newContents.asObservable())
-            })
         
         let mergeTypeReq = Observable.of(allReq,newReq)
             .merge()
             .distinctUntilChanged()
+            .do(onNext:
+                {[unowned self] type in
+                    self.currentType = type
+                    switch(type){
+                    case .all :
+                        changeContent.onNext(self.topContents.asObservable())
+                    break
+                    case .new :
+                        changeContent.onNext(self.newContents.asObservable())
+                    break
+                    }
+             })
             .share()
+
         
-        //gabungkan mergeType dengan complete Observer
-        Observable.combineLatest(mergeTypeReq,completeObserver).withLatestFrom(completeObserver).map{[unowned self] isTopComplete,isNewComplete -> Bool in
-            
-            switch(self.currentType){
-            case .all :
+          //isComplete Observer
+          let completeObserver = Observable
+            .combineLatest(self.isTopComplete.asObservable(),
+                           self.isNewComplete.asObservable())
+        
+          Observable.combineLatest(mergeTypeReq,completeObserver)
+            .withLatestFrom(completeObserver)
+            .map{[unowned self] isTopComplete,isNewComplete -> Bool in
+              switch(self.currentType){
+              case .all :
                 return isTopComplete
-            case .new :
+              case .new :
                 return isNewComplete
-            }}
-            .bind(to: self.isComplete).disposed(by: disposeBag)
-            
-        let emptyReqContent = mergeTypeReq
+             }}
+            .bind(to: self.isComplete)
+            .disposed(by: disposeBag)
+        
+        
+          //Empty Page Observer (Each time page empty load the HUD)
+           let emptyReqContent = mergeTypeReq
                 .flatMap{[unowned self] type -> Observable<[Merchant]> in
                     if type == .all {
                         return self.topContents.asObservable()
@@ -158,55 +165,51 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
                     else{
                         return self.newContents.asObservable()
                     }
-                }.filter{$0.isEmpty}
+                 }
+                .filter{$0.isEmpty}
             
-        emptyReqContent.map{_ in return Void()}.bind(to: self.loadHUDTrigger).disposed(by: disposeBag)
-            
-        let loadRequest = self.loadPageTrigger
-                .do(onNext: { [unowned self] in
-                    if(self.currentType == .all){
-                        self.topPageIndex = 1
-                    }
-                    else{
-                        self.newPageIndex = 1
-                    }
-                })
-            
-        let nextRequest = self.loadNextPageTrigger
-                .do(onNext: { [unowned self] in
-                    if(self.currentType == .all){
-                        self.topPageIndex = self.topNextIndex
-                    }
-                    else{
-                        self.newPageIndex = self.newNextIndex
-                    }
-                })
-            
-        let merge = Observable.of(loadRequest,nextRequest).merge()
+           emptyReqContent.map{_ in return Void()}.bind(to: self.loadHUDTrigger).disposed(by: disposeBag)
         
-        let mergerequest = self.isLoading.asObservable()
+        //refresh data setiap kali ketriger (lewat hud trigger)
+          self.refreshDataTrigger.bind(to: self.loadHUDTrigger).disposed(by: disposeBag)
+        
+        //refresh data untuk button2 event lainnya (lewat hud trigger)
+          self.refreshDataTrigger.asObservable().sample(mergeTypeReq).bind(to: self.loadHUDTrigger).disposed(by: disposeBag)
+
+          let loadRequest = self.loadPageTrigger.map{return "reload"}
+          let nextRequest = self.loadNextPageTrigger.map{return "next"}
+        
+          let merge = Observable.of(loadRequest,nextRequest).merge()
+        
+          let mergerequest = Observable.combineLatest(self.isLoading.asObservable(),merge){load,action in return(load,action)}
                 .sample(merge)
-                .map{($0,Loading)}
+                .map{($0.0,$0.1,Loading)}
             
-        let hudTriggerRequest = self.loadHUDTrigger
-                .do(onNext: { [unowned self] in
-                    if(self.currentType == .all){
-                        self.topPageIndex = 1
-                    }
-                    else{
-                        self.newPageIndex = 1
-                    }
-                })
+          let hudTriggerRequest = self.loadHUDTrigger.map{return "reload"}
             
-        let hudRequest = self.isHUDLoading.asObservable()
+          let hudRequest =  Observable.combineLatest(self.isHUDLoading.asObservable(),hudTriggerRequest){load,action in return(load,action)}
                 .sample(hudTriggerRequest)
-                .map{($0,HUDLoading)}
+                .map{($0.0,$0.1,HUDLoading)}
+        
+          let triggerReq = Observable.of(mergerequest,hudRequest).merge()
+            .do(onNext: { [unowned self] _,action,_ in
+                var index = 1
+                if(self.currentType == .all){
+                    if(action == "next"){
+                        index = self.topNextIndex
+                    }
+                    self.topPageIndex = index
+                }
+                else{
+                    if(action == "next"){
+                        index = self.newNextIndex
+                    }
+                    self.newPageIndex = index
+                }
+            })
             
-            
-        let triggerReq = Observable.of(mergerequest,hudRequest).merge()
-            
-        let request = triggerReq.withLatestFrom(triggerReq)
-                .flatMap{[unowned self] isLoading,Loader  -> Observable<(MerchantResponse,FeedType)> in
+          let request = triggerReq
+                .flatMap{[unowned self] isLoading,_,Loader  -> Observable<(MerchantResponse,FeedType)> in
                     
                     let type = self.currentType
                     
@@ -283,7 +286,8 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
             
             Observable.combineLatest(request,response,newContents.asObservable()){reqTupple,respTuppe,array in
                 return (respTuppe.1,respTuppe.0,array)
-                }.sample(request)
+                }
+                .sample(request)
                 .filter{type,_,_ in type == .new}
                 .map{
                     _,response,contents in
@@ -300,15 +304,15 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
         
         func tapped(row: NSInteger) {
             
-            //ceritanya setiap dia mencet tombol info maka otomatis bakal refresh home..
+            //ceritanya setiap dia mencet tombol info maka otomatis bakal refresh ketika tombol requested..
             let merchant = self.contents.value[row]
             let detailVM = DetailVM(coordinator: self.sceneCoordinator, merchant: merchant)
             
-            self.viewWillAppearTrigger.withLatestFrom(detailVM.detailModalTrigger)
-                .take(1).subscribe(onNext:{
+            self.viewWillAppearTrigger.withLatestFrom(detailVM.detailModalTrigger).map{return $0.merchant_id}
+                .debug().subscribe(onNext:{
                     [unowned self] _ in
-                    self.loadHUDTrigger.onNext()
-                }).disposed(by: disposeBag)
+                    self.refreshDataTrigger.onNext()
+                }).disposed(by: detailVM.disposeBag)
             
             let scene = Scene.detailVC(detailVM)
             sceneCoordinator.transition(to: scene, type: .push)
