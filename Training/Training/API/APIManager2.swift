@@ -74,32 +74,8 @@ class APIManager2: NSObject {
 
     }
     
+    
     static func MerchantDetail (merchantID:NSNumber) -> Observable<Merchant>{
-       
-        let URL = ROOT_URL+"merchants/detail/\(merchantID)"
-        
-        let request = json(.get, URL).flatMap{ json -> Observable<Merchant> in
-            
-            guard let json = json as? [String: AnyObject],let merchant = json["merchant"] as? NSDictionary else {
-                return Observable.empty()
-            }
-            
-            let element = Merchant(dictionary: merchant)
-            
-            if let products = json["products"] as? NSDictionary {
-              element.products = products
-            }
-            
-            return Observable.just(element)
-
-            }
-        
-        return request
-        
-    }
-    
-    
-    static func MerchantDetail2 (merchantID:NSNumber) -> Observable<Merchant>{
         
         
         return Provider.requestJSON(.merchantDetail(merchantID: merchantID)).flatMap{ jsonResult -> Observable<Merchant> in

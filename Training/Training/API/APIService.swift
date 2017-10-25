@@ -12,6 +12,26 @@ import Moya
 
 let Provider = RxMoyaProvider<APIService>(plugins: [EmveepPlugin(),CurlPlugin()])
 
+enum API_ENVIRONTMENT{
+    case APIARY
+    case STAGING
+    case PRODUCTION
+}
+
+let CURRENT_ENV : API_ENVIRONTMENT = API_ENVIRONTMENT.PRODUCTION
+
+var ROOT_URL : String {
+    
+    switch CURRENT_ENV {
+    case .APIARY :
+        return "https://private-1aa5a-alacarteapiary.apiary-mock.com/"
+    case .STAGING :
+        return "http://alacarte.stagingapps.net/api/v1/"
+    case .PRODUCTION :
+        return "http://clubalacarte.com/api/v1/"
+    }
+    
+}
 
 private extension String {
     var urlEscaped: String {

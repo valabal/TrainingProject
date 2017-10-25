@@ -56,7 +56,7 @@ class DetailVM : DetailVMType, DetailVMInputs, DetailVMOutputs {
         isLoading = Loading.asDriver()
         
         let request = loadMerchantDetail.flatMap{[unowned self] _ in
-            return APIManager2.MerchantDetail2(merchantID: merchantID!)
+            return APIManager2.MerchantDetail(merchantID: merchantID!)
                 .trackActivity(Loading)
                 .do(onError: { error in
                    self.error.onNext(error)

@@ -39,6 +39,15 @@ protocol MainVMType {
 enum FeedType:String {
     case all
     case new
+    
+    static let allValues = [all,new]
+}
+
+class ContentModel{
+    var content:Variable<[Merchant]> = Variable<[Merchant]>([])
+    var pageIndex:Int = 1
+    var nextIndex:Int = 1
+    let isComplete = Variable<Bool>(false)
 }
 
 
@@ -66,17 +75,7 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
     public var loadHUDTrigger:PublishSubject<Void>
     public var refreshDataTrigger:PublishSubject<Void>
     
-    public var topContents:Variable<[Merchant]>
-    public var newContents:Variable<[Merchant]>
-    
-    private var topPageIndex:Int = 1
-    private var topNextIndex:Int = 1
-    
-    private var newPageIndex:Int = 1
-    private var newNextIndex:Int = 1
-    
-    let isTopComplete = Variable<Bool>(false)
-    let isNewComplete = Variable<Bool>(false)
+    private var contentArray:[FeedType:ContentModel]
     
     
     private var currentType : FeedType = .all
@@ -102,9 +101,12 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
         
         //output
         self.contents = Variable<[Merchant]>([])
+ 
+        self.contentArray = [FeedType:ContentModel]()
         
-        self.topContents = Variable<[Merchant]>([])
-        self.newContents = Variable<[Merchant]>([])
+        for feedType in FeedType.allValues{
+            self.contentArray[feedType] = ContentModel()
+        }
         
         self.isComplete = Variable<Bool>(false)
         
@@ -117,9 +119,10 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
         //change the contents based on the selected state
         let changeContent = PublishSubject<Observable<[Merchant]>>()
         changeContent.switchLatest().bind(to: self.contents).disposed(by: disposeBag)
-        changeContent.onNext(self.topContents.asObservable())
-        
 
+        let topContent = self.contentArray[.all]!.content
+        changeContent.onNext(topContent.asObservable())
+        
         let allReq = self.loadTopTrigger.map{return FeedType.all}
         let newReq = self.loadNewTrigger.map{return FeedType.new}
         
@@ -129,49 +132,49 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
             .do(onNext:
                 {[unowned self] type in
                     self.currentType = type
-                    switch(type){
-                    case .all :
-                        changeContent.onNext(self.topContents.asObservable())
-                    break
-                    case .new :
-                        changeContent.onNext(self.newContents.asObservable())
-                    break
-                    }
-             })
+                    let content = self.contentArray[type]!.content
+                    changeContent.onNext(content.asObservable())
+                }
+             )
             .share()
 
         
-          //isComplete Observer
-          let completeObserver = Observable
-            .combineLatest(self.isTopComplete.asObservable(),
-                           self.isNewComplete.asObservable())
+        //isComplete Observer
+        
+        var completeArray : [Observable<(Bool,FeedType)>] = []
+        
+        for types in self.contentArray.keys {
+            let contentModel = self.contentArray[types]
+            completeArray.append(contentModel!.isComplete.asObservable().map{($0,types)})
+        }
+        
+        
+        let completeObserver = Observable.combineLatest(completeArray)
         
           Observable.combineLatest(mergeTypeReq,completeObserver)
             .withLatestFrom(completeObserver)
-            .map{[unowned self] isTopComplete,isNewComplete -> Bool in
-              switch(self.currentType){
-              case .all :
-                return isTopComplete
-              case .new :
-                return isNewComplete
-             }}
-            .bind(to: self.isComplete)
+            .map{[unowned self] complet -> Bool in
+          
+            let isComplt = complet.filter{_,type in return type == self.currentType}.map{bool,_ in return bool}.first
+            if let complete = isComplt {
+               return complete
+            }
+                
+            return true
+                
+            }.bind(to: self.isComplete)
             .disposed(by: disposeBag)
         
         
           //Empty Page Observer (Each time page empty load the HUD)
            let emptyReqContent = mergeTypeReq
                 .flatMap{[unowned self] type -> Observable<[Merchant]> in
-                    if type == .all {
-                        return self.topContents.asObservable()
-                    }
-                    else{
-                        return self.newContents.asObservable()
-                    }
+                    let content = self.contentArray[type]!.content
+                    return content.asObservable()
                  }
                 .filter{$0.isEmpty}
             
-           emptyReqContent.map{_ in return Void()}.bind(to: self.loadHUDTrigger).disposed(by: disposeBag)
+          emptyReqContent.map{_ in return Void()}.bind(to: self.loadHUDTrigger).disposed(by: disposeBag)
         
         //refresh data setiap kali ketriger (lewat hud trigger)
           self.refreshDataTrigger.bind(to: self.loadHUDTrigger).disposed(by: disposeBag)
@@ -197,18 +200,13 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
           let triggerReq = Observable.of(mergerequest,hudRequest).merge()
             .do(onNext: { [unowned self] _,action,_ in
                 var index = 1
-                if(self.currentType == .all){
-                    if(action == "next"){
-                        index = self.topNextIndex
-                    }
-                    self.topPageIndex = index
+                let model = self.contentArray[self.currentType]
+                
+                if(action == "next"){
+                    index = model!.nextIndex
                 }
-                else{
-                    if(action == "next"){
-                        index = self.newNextIndex
-                    }
-                    self.newPageIndex = index
-                }
+                model?.pageIndex = index
+                
             })
             
           let request = triggerReq
@@ -224,12 +222,9 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
                     request.search_type = type.rawValue;
                     request.order_alphabetically = true
                     
-                    if(type == .all){
-                        request.page = NSNumber(value: self.topPageIndex)
-                    }
-                    else{
-                        request.page = NSNumber(value: self.newPageIndex)
-                    }
+                    let model = self.contentArray[type]
+                    
+                    request.page = NSNumber(value:model!.pageIndex)
                     
                     return APIManager2.MerchantList(request: request)
                         .trackActivity(Loader)
@@ -249,57 +244,45 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
                 
                 if let pagination = merchantResponse.pagination,let nextPages = pagination["next_page"] as? NSNumber{
                     
-                    if(type == .all){
-                        self?.topNextIndex = nextPages.intValue
-                        self?.isTopComplete.value = false
-                    }
-                    else{
-                        self?.newNextIndex = nextPages.intValue
-                        self?.isNewComplete.value = false
+                    if let model = self?.contentArray[type]{
+                       model.nextIndex = nextPages.intValue
+                       model.isComplete.value = false
                     }
                 }
                 else{
                     
-                    if(type == .all){
-                        self?.isTopComplete.value = true
+                    if let model = self?.contentArray[type]{
+                        model.isComplete.value = true
                     }
-                    else{
-                        self?.isNewComplete.value = true
-                    }
-                    
                 }
                 
                 return (merchantResponse.result,type)
                 
                 }.shareReplay(1)
             
+        
+           //binding the results
+        
+           for types in self.contentArray.keys {
+     
+              let contentModel = self.contentArray[types]
             
-            Observable.combineLatest(request,response,topContents.asObservable()){reqTupple,respTuppe,array in
-                return (respTuppe.1,respTuppe.0,array)
-                }
+              Observable.combineLatest(request,response,contentModel!.content.asObservable()){reqTupple,respTuppe,array in
+                return (respTuppe.1,respTuppe.0,array)}
                 .sample(request)
-                .filter{type,_,_ in type == .all}
-                .map{
-                    _,response,contents in
-                    return self.topPageIndex == 1 ? response : contents + response
+                .filter{type,_,_ in type == types}
+                .map{[unowned self]
+                    type,response,contents in
+                    let model = self.contentArray[type]
+                    return model!.pageIndex == 1 ? response : contents + response
                 }
-                .bind(to: topContents)
+                .bind(to: contentModel!.content)
                 .addDisposableTo(disposeBag)
             
-            
-            Observable.combineLatest(request,response,newContents.asObservable()){reqTupple,respTuppe,array in
-                return (respTuppe.1,respTuppe.0,array)
-                }
-                .sample(request)
-                .filter{type,_,_ in type == .new}
-                .map{
-                    _,response,contents in
-                    return self.newPageIndex == 1 ? response : contents + response
-                }
-                .bind(to: newContents)
-                .addDisposableTo(disposeBag)
-            
+           }
+        
         }
+
         
         func refresh() {
             self.refreshDataTrigger.onNext()
@@ -307,7 +290,8 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
         
         func tapped(row: NSInteger) {
             
-            //ceritanya setiap dia mencet tombol info maka otomatis bakal refresh ketika tombol requested..
+            //munculkan view detail merchant
+            //ceritanya setiap dia mencet tombol info di merchant detail maka otomatis bakal refresh ketika tombol requested..
             let merchant = self.contents.value[row]
             let detailVM = DetailVM(coordinator: self.sceneCoordinator, merchant: merchant)
             

@@ -18,12 +18,18 @@ class DetailVC: BasicVC{
     @IBOutlet var restaurantNameLbl : UILabel?
     @IBOutlet var pageControl : UIPageControl?
     
+    var scrViewDisposeBag = DisposeBag()
+    
     var imageScrollView : UIScrollView?{
+
         didSet{
-            self.imageScrollView?.rx.didScroll.subscribe(onNext:{[unowned self] _ in
+            scrViewDisposeBag = DisposeBag()
+             self.imageScrollView?.rx.didScroll.subscribe(onNext:{[unowned self] _ in
                 self.setPageControlCurrentPage()
-            }).disposed(by: disposeBag)
+                }
+            ).disposed(by: scrViewDisposeBag)
         }
+   
     }
     
     var merchant : Merchant = Merchant(){
@@ -473,11 +479,11 @@ extension DetailVC{
     
     func setPageControlCurrentPage(){
         
-        guard let imageScrollView = imageScrollView, let pageControl = pageControl else{
+        guard let imageScrollViews = imageScrollView, let pageControl = pageControl else{
             return
         }
         
-        let horizontalOffset = imageScrollView.contentOffset.x
+        let horizontalOffset = imageScrollViews.contentOffset.x
         let screenWidth = self.view.frame.size.width
         
         let page = horizontalOffset/screenWidth
@@ -501,7 +507,6 @@ extension DetailVC{
                 scrollViews.setContentOffset(CGPoint(x: CGFloat(currentPage)*scrollViews.frame.size.width, y: 0), animated: true)
             }
             
-            self.setPageControlCurrentPage()
             
         }
         
