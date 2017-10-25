@@ -14,9 +14,8 @@ protocol MainVMInputs {
     
     var loadPageTrigger:PublishSubject<Void> { get }
     var loadNextPageTrigger:PublishSubject<Void> { get }
-    var loadHUDTrigger:PublishSubject<Void>{ get }
+   
     var viewWillAppearTrigger:PublishSubject<Bool>{ get }
-    
     var loadTopTrigger:PublishSubject<Void> { get }
     var loadNewTrigger:PublishSubject<Void> { get }
     
@@ -47,27 +46,28 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
     
     public let sceneCoordinator: SceneCoordinatorType
     
+    public var inputs: MainVMInputs { return self}
+    public var outputs: MainVMOutputs { return self}
+    
+    //input
     public var loadPageTrigger:PublishSubject<Void>
     public var loadNextPageTrigger:PublishSubject<Void>
     public var loadTopTrigger:PublishSubject<Void>
     public var loadNewTrigger:PublishSubject<Void>
-    public var loadHUDTrigger:PublishSubject<Void>
     public var viewWillAppearTrigger:PublishSubject<Bool>
-    public var refreshDataTrigger:PublishSubject<Void>
-    
+
+    //output
     public var isLoading: Driver<Bool>
     public var isHUDLoading: Driver<Bool>
-    
     public var isComplete: Variable<Bool>
-    
     public var contents:Variable<[Merchant]>
+    
+    //local subject
+    public var loadHUDTrigger:PublishSubject<Void>
+    public var refreshDataTrigger:PublishSubject<Void>
+    
     public var topContents:Variable<[Merchant]>
     public var newContents:Variable<[Merchant]>
-    
-    public var inputs: MainVMInputs { return self}
-    public var outputs: MainVMOutputs { return self}
-    
-    private let disposeBag = DisposeBag()
     
     private var topPageIndex:Int = 1
     private var topNextIndex:Int = 1
@@ -78,9 +78,12 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
     let isTopComplete = Variable<Bool>(false)
     let isNewComplete = Variable<Bool>(false)
     
+    
     private var currentType : FeedType = .all
     
+    private let disposeBag = DisposeBag()
     private let error = PublishSubject<Swift.Error>()
+    
     
     init(coordinator: SceneCoordinatorType) {
         
@@ -299,7 +302,7 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
         }
         
         func refresh() {
-            self.inputs.loadPageTrigger.onNext()
+            self.refreshDataTrigger.onNext()
         }
         
         func tapped(row: NSInteger) {
@@ -311,7 +314,7 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
             self.viewWillAppearTrigger.withLatestFrom(detailVM.detailModalTrigger).map{return $0.merchant_id}
                 .debug().subscribe(onNext:{
                     [unowned self] _ in
-                    self.refreshDataTrigger.onNext()
+                    self.refresh()
                 }).disposed(by: detailVM.disposeBag)
             
             let scene = Scene.detailVC(detailVM)

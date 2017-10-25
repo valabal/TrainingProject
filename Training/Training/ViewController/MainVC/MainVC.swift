@@ -49,7 +49,9 @@ class MainVC: BasicVC{
         
         //input
         loadPage.bind(to: self.viewModel.inputs.loadPageTrigger).disposed(by:disposeBag)
+
         loadNextPage.bind(to: self.viewModel.inputs.loadNextPageTrigger).disposed(by:disposeBag)
+        
         self.rx.viewWillAppear.bind(to: self.viewModel.inputs.viewWillAppearTrigger).disposed(by:disposeBag)
         
         self.topButton?.rx.tap.bind(to: self.viewModel.inputs.loadTopTrigger).disposed(by: disposeBag)
@@ -58,10 +60,10 @@ class MainVC: BasicVC{
         
         
         //output
-        self.viewModel.outputs.isLoading.asObservable().subscribe(onNext:{[weak self] isLoading in
+        self.viewModel.outputs.isLoading.asObservable().subscribe(onNext:{[unowned self] isLoading in
             if (!isLoading) {
-                self?.tableView?.stopPullToRefresh()
-                self?.tableView?.infiniteScrollingView.stopAnimating()
+                self.tableView?.stopPullToRefresh()
+                self.tableView?.infiniteScrollingView.stopAnimating()
             }
         }).disposed(by:disposeBag)
         
@@ -74,23 +76,23 @@ class MainVC: BasicVC{
             }
         }).disposed(by:disposeBag)
         
-        self.viewModel.outputs.contents.asDriver().asObservable().subscribe(onNext:{[weak self] _ in
-            self?.tableView?.reloadData()
+        self.viewModel.outputs.contents.asDriver().asObservable().subscribe(onNext:{[unowned self] _ in
+            self.tableView?.reloadData()
         }).disposed(by:disposeBag)
         
         self.viewModel.outputs.isComplete.asDriver().asObservable()
             .distinctUntilChanged().skip(1)
-            .subscribe(onNext:{[weak self] isComplete in
-                self?.tableView?.showsInfiniteScrolling = !isComplete
+            .subscribe(onNext:{[unowned self] isComplete in
+                self.tableView?.showsInfiniteScrolling = !isComplete
             }).disposed(by:disposeBag)
         
         self.tableView?.rx.itemSelected
-            .subscribe(onNext: { [weak self]indexPath in
-                self?.viewModel.inputs.tapped(row : indexPath.row)
+            .subscribe(onNext: { [unowned self]indexPath in
+                self.viewModel.inputs.tapped(row : indexPath.row)
             }).disposed(by:disposeBag)
         
-        
-        self.viewModel.loadHUDTrigger.onNext()
+       //triger loader
+        self.viewModel.loadTopTrigger.onNext()
         
     }
     
