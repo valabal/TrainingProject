@@ -80,3 +80,28 @@ extension ObservableConvertibleType {
         return activityIndicator.trackActivityOfObservable(self)
     }
 }
+
+extension ActivityIndicator {
+    
+   static public func getHUDLoader(disposeBag:DisposeBag) -> ActivityIndicator {
+        
+        let Loading = ActivityIndicator()
+        
+        let loadingState = Loading.asDriver().asObservable()
+            .distinctUntilChanged()
+        
+        loadingState.subscribe(onNext:{
+            isLoading in
+            if(isLoading){
+                FunctionHelper.showHUD()
+            }
+            else{
+                FunctionHelper.hideHUD()
+            }
+        }).disposed(by: disposeBag)
+        
+        return Loading
+    }
+    
+}
+

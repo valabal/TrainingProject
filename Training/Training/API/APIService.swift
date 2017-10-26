@@ -47,6 +47,7 @@ enum APIService {
     case login(email:String,password:String)
     case merchantList(request:ListMerchantRequest)
     case merchantDetail(merchantID:NSNumber)
+    case merchantFavorite(merchantID:NSNumber,isFavorite:Bool)
 }
 
 
@@ -62,12 +63,14 @@ extension APIService: TargetType {
             return "merchants/search"
         case .merchantDetail(let merchantID):
             return "merchants/detail/\(merchantID)"
+        case .merchantFavorite(let merchantID,_):
+            return "merchants/favourite/\(merchantID)"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .login, .merchantList :
+        case .login, .merchantList, .merchantFavorite :
             return .post
         case .merchantDetail :
             return .get
@@ -85,6 +88,8 @@ extension APIService: TargetType {
         case .merchantList(let request):
             let dic = request.toDictionary()
             return dic as? [String:Any]
+        case .merchantFavorite(let merchantID,let isFavorite):
+            return ["merchant_id":merchantID, "is_favorite":NSNumber(value: isFavorite)]
         case .merchantDetail :
             return nil
         }

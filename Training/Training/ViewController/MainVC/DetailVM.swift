@@ -18,7 +18,6 @@ protocol DetailVMInputs {
 
 protocol DetailVMOutputs {
     var current_merchant : Variable<Merchant> { get }
-    var isLoading: Driver<Bool> { get }
 }
 
 protocol DetailVMType {
@@ -34,7 +33,6 @@ class DetailVM : DetailVMType, DetailVMInputs, DetailVMOutputs {
     public var loadMerchantDetail: PublishSubject<Void>
     public var detailModalTrigger: PublishSubject<Merchant>
     public var current_merchant: Variable<Merchant>
-    public var isLoading : Driver<Bool>
     
     public var inputs: DetailVMInputs {return self}
     public var outputs: DetailVMOutputs {return self}
@@ -51,9 +49,7 @@ class DetailVM : DetailVMType, DetailVMInputs, DetailVMOutputs {
         detailModalTrigger = PublishSubject<Merchant>()
      
         let merchantID = self.current_merchant.value.merchant_id
-        
-        let Loading = ActivityIndicator()
-        isLoading = Loading.asDriver()
+        let Loading = ActivityIndicator.getHUDLoader(disposeBag: disposeBag)
         
         let request = loadMerchantDetail.flatMap{[unowned self] _ in
             return APIManager2.MerchantDetail(merchantID: merchantID!)

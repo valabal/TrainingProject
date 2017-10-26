@@ -40,17 +40,6 @@ class LoginVC : UIViewController{
             .bind(to: self.viewModel.inputs.loginProcess)
             .disposed(by: disposeBag)
         
-        //output
-        self.viewModel.isLoading.asObservable().subscribe(onNext:{isLoading in
-            if(isLoading){
-              FunctionHelper.showHUD()
-            }
-            else{
-              FunctionHelper.hideHUD()
-            }
-            
-        }).disposed(by: disposeBag)
-    
     }
     
     

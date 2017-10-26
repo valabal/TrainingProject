@@ -16,9 +16,7 @@ protocol LoginVMInputs {
     var loginProcess:PublishSubject<Void>{ get }
 }
 
-protocol LoginVMOutputs {
-    var isLoading: Driver<Bool> { get }
-}
+protocol LoginVMOutputs {}
 
 protocol LoginVMType {
     var inputs: LoginVMInputs { get  }
@@ -31,8 +29,7 @@ class LoginVM : LoginVMType, LoginVMInputs, LoginVMOutputs {
     public var email: PublishSubject<String?>
     public var password: PublishSubject<String?>
     public var loginProcess:PublishSubject<Void>
-    public var isLoading : Driver<Bool>
-
+  
     public var inputs: LoginVMInputs { return self}
     public var outputs: LoginVMOutputs { return self}
     
@@ -49,9 +46,8 @@ class LoginVM : LoginVMType, LoginVMInputs, LoginVMOutputs {
         password = PublishSubject<String?>()
         loginProcess = PublishSubject<Void>()
         
-        let Loader = ActivityIndicator()
-        isLoading = Loader.asDriver()
-        
+        let Loader = ActivityIndicator.getHUDLoader(disposeBag: disposeBag)
+
         let combined = Observable.combineLatest(email,password)
         
         let action = loginProcess.withLatestFrom(combined).share()

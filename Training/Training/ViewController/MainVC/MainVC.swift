@@ -67,15 +67,6 @@ class MainVC: BasicVC{
             }
         }).disposed(by:disposeBag)
         
-        self.viewModel.outputs.isHUDLoading.asObservable().subscribe(onNext:{isLoading in
-            if(isLoading){
-                FunctionHelper.showHUD()
-            }
-            else{
-                FunctionHelper.hideHUD()
-            }
-        }).disposed(by:disposeBag)
-        
         self.viewModel.outputs.contents.asDriver().asObservable().subscribe(onNext:{[unowned self] _ in
             self.tableView?.reloadData()
         }).disposed(by:disposeBag)
@@ -119,17 +110,23 @@ extension MainVC:UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell : BasicViewCell  = tableView.dequeueReusableCell(withIdentifier: "basicCell")! as! BasicViewCell
+
+        let cell : MainVCCell  = tableView.dequeueReusableCell(withIdentifier: "MainVCCell")! as! MainVCCell
         
         let merchant = self.viewModel.contents.value[indexPath.row]
         let object = merchant.convertToCellObject()
         cell.fillCellWithObject(object: object)
         
+        cell.refreshMerchant?.asDriver(onErrorJustReturn: Merchant()).asObservable().subscribe(onNext:{
+            _ in tableView.reloadData()
+            self.viewModel.refresh(.partial)
+            
+        }).disposed(by: cell.disposeBag)
+        
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         
         return cell
-        
+
     }
     
     

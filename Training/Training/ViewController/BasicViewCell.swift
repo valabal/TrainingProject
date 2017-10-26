@@ -9,6 +9,7 @@
 import UIKit
 import EVReflection
 import SDWebImage
+import RxSwift
 
 
 protocol BasicCellObjectProtocol {
@@ -33,6 +34,13 @@ class BasicViewCell : UITableViewCell{
     @IBOutlet var mainImage : UIImageView?
     @IBOutlet var subImage : UIImageView?
     @IBOutlet var lineView : UIView?
+    
+    public var disposeBag = DisposeBag()
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag() // because life cicle of every cell ends on prepare
+    }
  
     func fillCellWithObject(object:BasicCellObject){
     
@@ -45,8 +53,6 @@ class BasicViewCell : UITableViewCell{
         }
     
     }
-    
-    
     
 
 }

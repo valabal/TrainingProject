@@ -96,6 +96,20 @@ class APIManager2: NSObject {
         
     }
     
+    static func MerchantFavorite (merchantID:NSNumber, isFavorite:Bool) -> Observable<NSDictionary>{
+        
+        return Provider.requestJSON(.merchantFavorite(merchantID: merchantID, isFavorite: isFavorite)).flatMap{ jsonResult -> Observable<NSDictionary> in
+            
+            guard let json = jsonResult as? [String: AnyObject] else {
+                return Observable.empty()
+            }
+        
+            return Observable.just(json as NSDictionary)
+            
+        }
+        
+    }
+    
     
     
 }

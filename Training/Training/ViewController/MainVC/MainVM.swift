@@ -10,6 +10,20 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+enum FeedType:String {
+    case all
+    case new
+    
+    static let allValues = [all,new]
+}
+
+
+enum RefreshPolicy{
+    case allData
+    case partial
+}
+
+
 protocol MainVMInputs {
     
     var loadPageTrigger:PublishSubject<Void> { get }
@@ -19,14 +33,13 @@ protocol MainVMInputs {
     var loadTopTrigger:PublishSubject<Void> { get }
     var loadNewTrigger:PublishSubject<Void> { get }
     
-    func refresh()
+    func refresh(_ refreshPolicy:RefreshPolicy)
     func tapped(row:NSInteger)
     
 }
 
 protocol MainVMOutputs {
     var isLoading: Driver<Bool> { get }
-    var isHUDLoading: Driver<Bool> { get }
     var isComplete: Variable<Bool> { get }
     var contents:Variable<[Merchant]> { get }
 }
@@ -36,12 +49,7 @@ protocol MainVMType {
     var outputs: MainVMOutputs { get }
 }
 
-enum FeedType:String {
-    case all
-    case new
-    
-    static let allValues = [all,new]
-}
+
 
 class ContentModel{
     var content:Variable<[Merchant]> = Variable<[Merchant]>([])
@@ -67,13 +75,12 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
 
     //output
     public var isLoading: Driver<Bool>
-    public var isHUDLoading: Driver<Bool>
     public var isComplete: Variable<Bool>
     public var contents:Variable<[Merchant]>
     
     //local subject
     public var loadHUDTrigger:PublishSubject<Void>
-    public var refreshDataTrigger:PublishSubject<Void>
+    public var refreshDataTrigger:PublishSubject<RefreshPolicy>
     
     private var contentArray:[FeedType:ContentModel]
     
@@ -97,7 +104,7 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
         
         self.loadHUDTrigger = PublishSubject<Void>()
         self.viewWillAppearTrigger = PublishSubject<Bool>()
-        self.refreshDataTrigger = PublishSubject<Void>()
+        self.refreshDataTrigger = PublishSubject<RefreshPolicy>()
         
         //output
         self.contents = Variable<[Merchant]>([])
@@ -113,8 +120,7 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
         let Loading = ActivityIndicator()
         self.isLoading = Loading.asDriver()
         
-        let HUDLoading = ActivityIndicator()
-        self.isHUDLoading = HUDLoading.asDriver()
+        let HUDLoading = ActivityIndicator.getHUDLoader(disposeBag: disposeBag)
         
         //change the contents based on the selected state
         let changeContent = PublishSubject<Observable<[Merchant]>>()
@@ -177,10 +183,14 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
           emptyReqContent.map{_ in return Void()}.bind(to: self.loadHUDTrigger).disposed(by: disposeBag)
         
         //refresh data setiap kali ketriger (lewat hud trigger)
-          self.refreshDataTrigger.bind(to: self.loadHUDTrigger).disposed(by: disposeBag)
+        self.refreshDataTrigger.filter{$0 == .allData}
+            .map{_ in Void()}
+            .bind(to: self.loadHUDTrigger).disposed(by: disposeBag)
         
         //refresh data untuk button2 event lainnya (lewat hud trigger)
-          self.refreshDataTrigger.asObservable().sample(mergeTypeReq).bind(to: self.loadHUDTrigger).disposed(by: disposeBag)
+          self.refreshDataTrigger.asObservable().sample(mergeTypeReq)
+            .map{_ in Void()}
+            .bind(to: self.loadHUDTrigger).disposed(by: disposeBag)
 
           let loadRequest = self.loadPageTrigger.map{return "reload"}
           let nextRequest = self.loadNextPageTrigger.map{return "next"}
@@ -193,7 +203,7 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
             
           let hudTriggerRequest = self.loadHUDTrigger.map{return "reload"}
             
-          let hudRequest =  Observable.combineLatest(self.isHUDLoading.asObservable(),hudTriggerRequest){load,action in return(load,action)}
+          let hudRequest =  Observable.combineLatest(HUDLoading.asObservable(),hudTriggerRequest){load,action in return(load,action)}
                 .sample(hudTriggerRequest)
                 .map{($0.0,$0.1,HUDLoading)}
         
@@ -284,8 +294,8 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
         }
 
         
-        func refresh() {
-            self.refreshDataTrigger.onNext()
+       func refresh(_ refreshPolicy:RefreshPolicy) {
+            self.refreshDataTrigger.onNext(refreshPolicy)
         }
         
         func tapped(row: NSInteger) {
@@ -298,7 +308,7 @@ class MainVM : MainVMType, MainVMInputs, MainVMOutputs {
             self.viewWillAppearTrigger.withLatestFrom(detailVM.detailModalTrigger).map{return $0.merchant_id}
                 .debug().subscribe(onNext:{
                     [unowned self] _ in
-                    self.refresh()
+                    self.refresh(.allData)
                 }).disposed(by: detailVM.disposeBag)
             
             let scene = Scene.detailVC(detailVM)

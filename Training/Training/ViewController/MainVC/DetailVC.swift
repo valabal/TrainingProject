@@ -81,7 +81,7 @@ class DetailVC: BasicVC{
         refreshMerchant.bind(to: self.viewModel.inputs.loadMerchantDetail).disposed(by: disposeBag)
         
         //output
-        let response = self.viewModel.outputs.current_merchant.asDriver().asObservable()
+        let response = self.viewModel.outputs.current_merchant.asDriver().asObservable().share()
         
         response.subscribe(onNext:{
             [unowned self] merchant in
@@ -92,18 +92,6 @@ class DetailVC: BasicVC{
             self.createHeaderView()
         }).disposed(by: disposeBag)
         
-        let loadingState = self.viewModel.outputs.isLoading.asObservable()
-            .distinctUntilChanged()
-        
-        loadingState.subscribe(onNext:{
-            isLoading in
-            if(isLoading){
-                FunctionHelper.showHUD()
-            }
-            else{
-                FunctionHelper.hideHUD()
-            }
-        }).disposed(by: disposeBag)
         
         //slide show the images
         Observable<Int>.interval(3.0, scheduler: MainScheduler.instance)
@@ -506,7 +494,6 @@ extension DetailVC{
             if let scrollViews = imageScrollView {
                 scrollViews.setContentOffset(CGPoint(x: CGFloat(currentPage)*scrollViews.frame.size.width, y: 0), animated: true)
             }
-            
             
         }
         
